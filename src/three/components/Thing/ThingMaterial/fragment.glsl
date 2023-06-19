@@ -7,7 +7,7 @@ varying vec2 vUv;
 
 void main() {
   vec3 baseColor = mix(uColor0, uColor1, vUv.y);
-  vec3 lightColor =  mix(uColor0, uColor1, max(0.0, -vNormal.y));
+  vec3 lightColor =  mix(uColor0, uColor1, max(0.0, vNormal.y));
   
   float colorAmount = (vNormal.y + 1.0) * 0.5;
   // vec3 color = mix(lightColor, baseColor, pow(colorAmount, 10.0));

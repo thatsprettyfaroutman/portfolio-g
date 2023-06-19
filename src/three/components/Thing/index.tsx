@@ -13,13 +13,17 @@ extend({
 })
 
 // TODO: try with sheen material and light
-type TThingProps = Pick<TThingMaterialProps, 'color0' | 'color1'> & {
+type TThingProps = Pick<
+  TThingMaterialProps,
+  'color0' | 'color1' | 'baseOpacity'
+> & {
   onFirstRender?: () => void
 }
 
 export default function Thing({
   color0,
   color1,
+  baseOpacity,
   onFirstRender,
   ...restProps
 }: TThingProps) {
@@ -46,7 +50,12 @@ export default function Thing({
         <ringGeometry args={[0.7, 1, 360, 16]} />
         {/* <ringGeometry args={[0.618, 1, 360, 16]} /> */}
         {/* <ringGeometry args={[0.8, 1, 360, 16]} /> */}
-        <ThingMaterial color0={color0} color1={color1} resolution={scale} />
+        <ThingMaterial
+          color0={color0}
+          color1={color1}
+          resolution={scale}
+          baseOpacity={baseOpacity}
+        />
       </mesh>
     </group>
   )

@@ -13,7 +13,8 @@ const AImage = a(Image)
 
 export default function Hero({ ...restProps }) {
   const ambientColor = usePalette(palette.main.text)
-  const color = usePalette(palette.main.background.bottom)
+  const color0 = usePalette(palette.accent[0])
+  const color1 = usePalette(palette.accent[1])
 
   const loading = useSpringValue(1)
 
@@ -22,7 +23,13 @@ export default function Hero({ ...restProps }) {
       <Three keepScrollPerspective>
         <ambientLight color={ambientColor} />
         <MouseOrbiter>
-          <Thing onFirstRender={() => loading.start(0)} position-z={-100} />
+          <Thing
+            onFirstRender={() => loading.start(0)}
+            position-z={-100}
+            color0={color0}
+            color1={color1}
+            baseOpacity={-0.08}
+          />
           <ThingTitle scale={[80, 80, 4]}>Hi ghost!</ThingTitle>
         </MouseOrbiter>
       </Three>
