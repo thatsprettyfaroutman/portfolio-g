@@ -1,8 +1,12 @@
 import { useMemo } from 'react'
+import { extend } from '@react-three/fiber'
 import { FontLoader, TextGeometry } from 'three-stdlib'
+import { Mesh, MeshStandardMaterial } from 'three'
 import { usePalette, palette } from '@/styles/theme'
 import FontJson from './CabinGhost.json'
 import { Center } from '@react-three/drei'
+
+extend({ Mesh, MeshStandardMaterial })
 
 const fl = new FontLoader()
 const font = fl.parse(
@@ -21,7 +25,7 @@ export default function ThingTitle({ children = 'Hi', ...restProps }) {
     [children]
   )
 
-  const color = usePalette(palette.main.fg)
+  const color = usePalette(palette.main.text)
 
   return (
     <>

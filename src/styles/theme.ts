@@ -7,8 +7,13 @@ import createThemes from 'styled-palette'
 
 const mainPalette = {
   main: {
-    bg: '#000',
-    fg: '#fff',
+    background: {
+      top: '#001e1b',
+      bottom: '#2b001f',
+    },
+    text: '#fff',
+    // bg: '#000',
+    // fg: '#fff',
     // bg: '#010A2D',
     // fg: '#fff',
   },

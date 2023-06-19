@@ -1,5 +1,5 @@
-import Image from 'next/image'
-import * as Styled from './styled'
+import Image from "next/image";
+import Styled from "./styled";
 
 export default function LoadingHero({ ...restProps }) {
   return (
@@ -11,5 +11,5 @@ export default function LoadingHero({ ...restProps }) {
         height={511}
       />
     </Styled.Hero>
-  )
+  );
 }
