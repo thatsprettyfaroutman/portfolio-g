@@ -3,7 +3,8 @@
 import React, { useState } from 'react'
 import { useServerInsertedHTML } from 'next/navigation'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
-import { CustomThemeProvider, GlobalStyle } from '.'
+import CustomThemeProvider from './CustomThemeProvider'
+import GlobalStyle from './GlobalStyle'
 
 export default function StyledComponentsRegistry({
   children,
@@ -24,22 +25,23 @@ export default function StyledComponentsRegistry({
     return <>{styles}</>
   })
 
-  // TODO: why is this needed?
-  // if (typeof window !== 'undefined') {
-  //   return (
-  //     <CustomThemeProvider>
-  //       <>
-  //         <GlobalStyle />
-  //         <>{children}</>
-  //       </>
-  //     </CustomThemeProvider>
-  //   )
-  // }
+  if (typeof window !== 'undefined') {
+    return (
+      <CustomThemeProvider>
+        <>
+          {/* @ts-ignore */}
+          <GlobalStyle />
+          <>{children}</>
+        </>
+      </CustomThemeProvider>
+    )
+  }
 
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
       <CustomThemeProvider>
         <>
+          {/* @ts-ignore */}
           <GlobalStyle />
           <>{children}</>
         </>
