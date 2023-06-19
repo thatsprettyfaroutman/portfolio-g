@@ -1,27 +1,28 @@
 'use client'
 
 import { useRef } from 'react'
-import * as THREE from 'three'
-import { useThree, useFrame } from '@react-three/fiber'
+import { Group, Mesh, RingGeometry } from 'three'
+import { useThree, useFrame, extend } from '@react-three/fiber'
 import clamp from 'ramda/src/clamp'
-import chroma from 'chroma-js'
-import ThingMaterial from './ThingMaterial'
+import ThingMaterial, { type TThingMaterialProps } from './ThingMaterial'
+
+extend({
+  Group,
+  Mesh,
+  RingGeometry,
+})
 
 // TODO: try with sheen material and light
-// TODO: fix prop type, extend thing material
-type TThingProps = {
-  color: string
-  ambientColor?: string
+type TThingProps = Pick<TThingMaterialProps, 'color0' | 'color1'> & {
   onFirstRender?: () => void
 }
 
 export default function Thing({
-  color,
-  ambientColor,
+  color0,
+  color1,
   onFirstRender,
   ...restProps
 }: TThingProps) {
-  const ref = useRef<THREE.Group>(null)
   const { size } = useThree()
   const minRadius = 80
   const maxRadius = 256
@@ -40,16 +41,12 @@ export default function Thing({
   })
 
   return (
-    <group {...restProps} scale={[scale, scale, 100]} ref={ref}>
-      <mesh>
+    <group {...restProps}>
+      <mesh scale={[scale, scale, 100]}>
         <ringGeometry args={[0.7, 1, 360, 16]} />
-        <ThingMaterial
-          color={chroma(color).alpha(0.1).hex()}
-          ambientColor={ambientColor}
-          r0={0.7}
-          r1={1}
-          resolution={scale}
-        />
+        {/* <ringGeometry args={[0.618, 1, 360, 16]} /> */}
+        {/* <ringGeometry args={[0.8, 1, 360, 16]} /> */}
+        <ThingMaterial color0={color0} color1={color1} resolution={scale} />
       </mesh>
     </group>
   )

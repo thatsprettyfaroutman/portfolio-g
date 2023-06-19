@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import styled from "styled-components";
-import { palette } from "@/styles/theme";
+import styled from 'styled-components'
+import { palette } from '@/styles/theme'
 
-export const Hero = styled.section`
+const Hero = styled.section`
   position: relative;
   display: flex;
   justify-content: center;
@@ -12,8 +12,8 @@ export const Hero = styled.section`
   height: 100vh;
   min-height: 600px;
   background: linear-gradient(
-    ${palette.accent[1].darken(5)},
-    ${palette.accent[0].darken(5)}
+    ${palette.main.background.top},
+    ${palette.main.background.bottom}
   );
 
   > .three {
@@ -30,4 +30,6 @@ export const Hero = styled.section`
     left: 50%;
     transform: translate(-50%, -50%);
   }
-`;
+`
+
+export default { Hero }

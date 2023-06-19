@@ -1,8 +1,22 @@
-import * as THREE from 'three'
-import { useThree, useFrame } from '@react-three/fiber'
+import { useThree, useFrame, extend } from '@react-three/fiber'
 import { PropsWithChildren, useRef } from 'react'
+import {
+  Vector2,
+  Mesh,
+  PlaneGeometry,
+  ShaderMaterial,
+  MathUtils,
+  Group,
+} from 'three'
 
-const ZERO_UV = new THREE.Vector2(0)
+extend({
+  Group,
+  Mesh,
+  PlaneGeometry,
+  ShaderMaterial,
+})
+
+const ZERO_UV = new Vector2(0)
 
 type TMouseOrbiterProps = {
   areaSize?: 'full' | 'half'
@@ -15,10 +29,10 @@ export default function MouseOrbiter({
 }: PropsWithChildren<TMouseOrbiterProps>) {
   const { size } = useThree()
 
-  const ref = useRef<THREE.Group>(null)
+  const ref = useRef<Group>(null)
 
   const mouseRef = useRef({
-    position: new THREE.Vector2(0),
+    position: new Vector2(0),
     hover: 0,
   })
 
@@ -27,19 +41,13 @@ export default function MouseOrbiter({
       return
     }
 
-    const rx = mouseRef.current.position.y * -0.06125 * Math.PI
+    const rx = mouseRef.current.position.y * -0.125 * Math.PI
     const ry = mouseRef.current.position.x * 0.125 * Math.PI
 
-    ref.current.rotation.x = THREE.MathUtils.lerp(
-      ref.current.rotation.x,
-      rx,
-      0.025
-    )
-    ref.current.rotation.y = THREE.MathUtils.lerp(
-      ref.current.rotation.y,
-      ry,
-      0.05
-    )
+    const speed = MathUtils.lerp(0.0025, 0.025, mouseRef.current.hover)
+
+    ref.current.rotation.x = MathUtils.lerp(ref.current.rotation.x, rx, speed)
+    ref.current.rotation.y = MathUtils.lerp(ref.current.rotation.y, ry, speed)
   })
 
   const scale = areaSize === 'half' ? 0.5 : 1.0

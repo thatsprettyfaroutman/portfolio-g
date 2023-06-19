@@ -1,34 +1,27 @@
-uniform vec3 uColor;
-uniform float uOpacity;
 uniform float uResolution;
-uniform float uR0;
-uniform float uR1;
+uniform vec3 uColor0;
+uniform vec3 uColor1;
+uniform float uBaseOpacity;
 varying vec3 vNormal;
 varying vec2 vUv;
 
 void main() {
-  float lineWidth = 1.0 / uResolution;
-  float aa = lineWidth * 2.0;
-  float edgeDistance = distance(vUv, vec2(0.5)) * 2.0;
-  float outerEdge = smoothstep(uR1 - lineWidth - aa, uR1 - lineWidth, edgeDistance);
-  float innerEdge = 1.0 - smoothstep(uR0 + lineWidth, uR0 + lineWidth + aa, edgeDistance);
-
-  // TODO: remove commented wip code
-  // float strength = clamp(uOpacity + innerEdge + outerEdge, 0.0, 1.0);
-  // float strength = uOpacity;
-  float strength = 0.125;
-  vec3 color = mix(vec3(0.0), uColor, strength);
+  vec3 baseColor = mix(uColor0, uColor1, vUv.y);
+  vec3 lightColor =  mix(uColor0, uColor1, max(0.0, -vNormal.y));
   
-  vec3 topColor =  mix(vec3(1.0, 0.0, 1.0), vec3(0.0, 1.0, 1.0), max(0.0, -vNormal.y));
+  float colorAmount = (vNormal.y + 1.0) * 0.5;
+  // vec3 color = mix(lightColor, baseColor, pow(colorAmount, 10.0));
+  vec3 color = mix(lightColor, baseColor, colorAmount);
+  color.rgb = vec3(
+    pow(color.r, 1.0 + colorAmount),
+    pow(color.g, 1.0 + colorAmount),
+    pow(color.b, 1.0 + colorAmount)
+  );
   
-  color = mix(topColor, vec3(1.0, 0.0, 1.0), (vNormal.y + 1.0) * 0.5);
-  // color = mix(vec3(1.0, 0.0, 1.0), vec3(0.0, 1.0, 1.0), vNormal.y * 10.0);
+  // More opacity when in light or shadow
+  float power = 4.0;
+  float maxTransformedOpacity = pow(2.0, power);
+  float transformedOpacity = pow(abs(vNormal.y) + 1.0, power);
   
-  
-  float factor = 4.0;
-  float maxOp = pow(2.0, factor);
-  float maxOpHalf = maxOp * 0.5;
-  float op = pow(abs(vNormal.y) + 1.0, factor);
-  
-  gl_FragColor = vec4(color, strength + (op) / maxOp);
+  gl_FragColor = vec4(color, uBaseOpacity + (transformedOpacity) / maxTransformedOpacity);
 }
