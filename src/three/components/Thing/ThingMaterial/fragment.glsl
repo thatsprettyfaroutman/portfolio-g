@@ -13,8 +13,22 @@ void main() {
   float outerEdge = smoothstep(uR1 - lineWidth - aa, uR1 - lineWidth, edgeDistance);
   float innerEdge = 1.0 - smoothstep(uR0 + lineWidth, uR0 + lineWidth + aa, edgeDistance);
 
-  float strength = clamp(uOpacity + innerEdge + outerEdge, 0.0, 1.0);
+  // TODO: remove commented wip code
+  // float strength = clamp(uOpacity + innerEdge + outerEdge, 0.0, 1.0);
+  // float strength = uOpacity;
+  float strength = 0.125;
   vec3 color = mix(vec3(0.0), uColor, strength);
-  color *= abs(vNormal.z);
-  gl_FragColor = vec4(color, strength * abs(vNormal.z));
+  
+  vec3 topColor =  mix(vec3(1.0, 0.0, 1.0), vec3(0.0, 1.0, 1.0), max(0.0, -vNormal.y));
+  
+  color = mix(topColor, vec3(1.0, 0.0, 1.0), (vNormal.y + 1.0) * 0.5);
+  // color = mix(vec3(1.0, 0.0, 1.0), vec3(0.0, 1.0, 1.0), vNormal.y * 10.0);
+  
+  
+  float factor = 4.0;
+  float maxOp = pow(2.0, factor);
+  float maxOpHalf = maxOp * 0.5;
+  float op = pow(abs(vNormal.y) + 1.0, factor);
+  
+  gl_FragColor = vec4(color, strength + (op) / maxOp);
 }

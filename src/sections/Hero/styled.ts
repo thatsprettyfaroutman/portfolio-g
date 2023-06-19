@@ -1,6 +1,7 @@
-'use client'
+"use client";
 
-import styled from 'styled-components'
+import styled from "styled-components";
+import { palette } from "@/styles/theme";
 
 export const Hero = styled.section`
   position: relative;
@@ -10,6 +11,10 @@ export const Hero = styled.section`
   pointer-events: none;
   height: 100vh;
   min-height: 600px;
+  background: linear-gradient(
+    ${palette.accent[1].darken(5)},
+    ${palette.accent[0].darken(5)}
+  );
 
   > .three {
     position: absolute;
@@ -25,4 +30,4 @@ export const Hero = styled.section`
     left: 50%;
     transform: translate(-50%, -50%);
   }
-`
+`;

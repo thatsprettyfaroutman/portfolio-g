@@ -29,19 +29,6 @@ export default function Thing({
   const radius = Math.min(size.width, size.height) * 0.5
   const scale = clamp(minRadius, maxRadius, radius - padding)
 
-  // let printAsImage = true
-  // useFrame((s) => {
-  //   if (printAsImage) {
-  //     setTimeout(() => {
-  //       console.log(s.gl)
-  //       printAsImage = false
-  //       const img = document.createElement('img')
-  //       img.src = s.gl.domElement.toDataURL()
-  //       document.body.prepend(img)
-  //     }, 100)
-  //   }
-  // })
-
   const firstRender = useRef(true)
   useFrame(() => {
     if (firstRender.current) {
@@ -55,9 +42,9 @@ export default function Thing({
   return (
     <group {...restProps} scale={[scale, scale, 100]} ref={ref}>
       <mesh>
-        <ringGeometry args={[0.7, 1, 360, 10]} />
+        <ringGeometry args={[0.7, 1, 360, 16]} />
         <ThingMaterial
-          color={chroma(color).alpha(0.5).hex()}
+          color={chroma(color).alpha(0.1).hex()}
           ambientColor={ambientColor}
           r0={0.7}
           r1={1}

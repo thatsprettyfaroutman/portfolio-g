@@ -7,8 +7,10 @@ import createThemes from 'styled-palette'
 
 const mainPalette = {
   main: {
-    bg: '#010A2D',
+    bg: '#000',
     fg: '#fff',
+    // bg: '#010A2D',
+    // fg: '#fff',
   },
   accent: ['#f0f', '#0ff'],
 }
@@ -21,6 +23,5 @@ const {
   palette, //: palette0,
   usePalette,
 } = createThemes([mainPalette])
-
 
 export { palette, usePalette, mainTheme }

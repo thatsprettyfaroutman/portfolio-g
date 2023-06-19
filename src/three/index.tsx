@@ -15,6 +15,10 @@ import { useInView } from 'react-intersection-observer'
 import useMeasure from 'react-use-measure'
 import Camera from './components/Camera'
 
+// Uncomment to print loading images (part 1/2)
+// import { WebGLRenderer } from 'three'
+// import { printImage } from './lib'
+
 type TThreeProps = {
   name?: string
   keepScrollPerspective?: boolean
@@ -71,7 +75,16 @@ function Three(
       ref={mergeRefs([ref, forwardedRef, measureRef])}
       {...restProps}
     >
-      <Canvas frameloop={inView ? 'always' : 'never'} linear flat>
+      <Canvas
+        frameloop={inView ? 'always' : 'never'}
+        linear
+        flat
+        // Uncomment to print loading images (part 2/2)
+        // gl={(canvas) => {
+        //   printImage()
+        //   return new WebGLRenderer({ canvas, preserveDrawingBuffer: true })
+        // }}
+      >
         <Camera
           // TODO: constate instead of prop-drilling
           bounds={scrollCompensatedBounds}

@@ -1,6 +1,6 @@
-import { createGlobalStyle } from 'styled-components'
-import FONT from './fonts'
-import { palette } from './theme'
+import { createGlobalStyle } from "styled-components";
+import FONT from "./fonts";
+import { palette } from "./theme";
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -18,6 +18,6 @@ const GlobalStyle = createGlobalStyle`
   h1, h2, h3, h4, h5, h6 {
     font-family: ${FONT.Blinker};
   }
-`
+`;
 
-export default GlobalStyle
+export default GlobalStyle;
