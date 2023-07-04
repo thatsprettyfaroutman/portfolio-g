@@ -5,9 +5,6 @@ import { palette } from '@/styles/theme'
 
 const Hero = styled.section`
   position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   pointer-events: none;
   height: 100vh;
   min-height: 600px;
