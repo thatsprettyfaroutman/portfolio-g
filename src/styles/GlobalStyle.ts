@@ -6,7 +6,7 @@ const GlobalStyle = createGlobalStyle`
   :root {
     background-color: ${palette.main.background.bottom};
     color: ${palette.main.text};
-    font-family: ${FONT.Barlow};
+    font-family: ${FONT.Montserrat};
     font-size: 16px;
     line-height: 1.4;
   }
