@@ -1,11 +1,10 @@
-import dynamic from 'next/dynamic'
-import * as Styled from './styled'
-import LoadingHero from '@/sections/Hero/loading'
+'use client'
 
-const Hero = dynamic(() => import('@/sections/Hero'), {
-  ssr: false,
-  loading: LoadingHero,
-})
+// TODO: get rid of 'use client'
+
+import * as Styled from './styled'
+
+import Hero from '@/sections/Hero'
 
 export default function Home() {
   return (

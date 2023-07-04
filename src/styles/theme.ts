@@ -1,3 +1,4 @@
+import chroma from 'chroma-js'
 import createThemes from 'styled-palette'
 
 // TODO: remove styled-palette as is
@@ -8,14 +9,10 @@ import createThemes from 'styled-palette'
 const mainPalette = {
   main: {
     background: {
-      top: '#001e1b',
-      bottom: '#2b001f',
+      top: chroma('#0ff').darken(5).hex(),
+      bottom: chroma('#f0f').darken(6).hex(),
     },
     text: '#fff',
-    // bg: '#000',
-    // fg: '#fff',
-    // bg: '#010A2D',
-    // fg: '#fff',
   },
   accent: ['#f0f', '#0ff'],
 }
@@ -25,7 +22,7 @@ const mainPalette = {
 
 const {
   themes: [mainTheme],
-  palette, //: palette0,
+  palette,
   usePalette,
 } = createThemes([mainPalette])
 
