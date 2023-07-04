@@ -1,18 +1,16 @@
 'use client'
 
-import {
-  forwardRef,
-  useEffect,
-  useRef,
-  useMemo,
-  ForwardedRef,
-  ReactNode,
-} from 'react'
+import { useEffect, useRef, useMemo, ReactNode, CSSProperties } from 'react'
 import { Canvas } from '@react-three/fiber'
 import styled from 'styled-components'
 import { mergeRefs } from 'react-merge-refs'
 import { useInView } from 'react-intersection-observer'
 import useMeasure from 'react-use-measure'
+
+// TODO: remove debug stuff
+// import { Edges, MeshDiscardMaterial } from '@react-three/drei'
+// import ViewSizeDebug from './components/ViewSizeDebug'
+
 import Camera from './components/Camera'
 
 // Uncomment to print loading images (part 1/2)
@@ -26,25 +24,31 @@ type TThreeProps = {
   offsetY?: number
   onResize?: (width: number, height: number) => {}
   children?: ReactNode
+  style?: CSSProperties
+  dpr?: number
 }
 
 const StyledThree = styled.div`
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  > * {
+    border-radius: inherit;
+  }
 `
 
-function Three(
-  {
-    name,
-    children,
-    keepScrollPerspective,
-    offsetX = 0,
-    offsetY = 0,
-    onResize,
-    ...restProps
-  }: TThreeProps,
-  forwardedRef: ForwardedRef<HTMLDivElement>
-) {
+export default function Three({
+  name,
+  children,
+  keepScrollPerspective,
+  offsetX = 0,
+  offsetY = 0,
+  onResize,
+  dpr,
+  ...restProps
+}: TThreeProps) {
   const [ref, inView] = useInView()
   const [measureRef, bounds] = useMeasure()
 
@@ -72,13 +76,18 @@ function Three(
   return (
     <StyledThree
       className="three"
-      ref={mergeRefs([ref, forwardedRef, measureRef])}
+      ref={mergeRefs([
+        ref,
+        // forwardedRef,
+        measureRef,
+      ])}
       {...restProps}
     >
       <Canvas
         frameloop={inView ? 'always' : 'never'}
         linear
         flat
+        dpr={dpr}
         // Uncomment to print loading images (part 2/2)
         // gl={(canvas) => {
         //   printImage()
@@ -93,9 +102,15 @@ function Three(
           keepScrollPerspective={keepScrollPerspective}
         />
         {children}
+
+        {/* TODO: remove debug stuff */}
+        {/* <mesh scale={100} rotation={[0, Math.PI * 0.25, 0]}>
+          <boxGeometry />
+          <MeshDiscardMaterial />
+          <Edges color="#0ff" />
+        </mesh>
+        <ViewSizeDebug /> */}
       </Canvas>
     </StyledThree>
   )
 }
-
-export default forwardRef<HTMLDivElement, TThreeProps>(Three)
