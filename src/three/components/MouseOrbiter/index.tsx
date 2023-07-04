@@ -1,13 +1,15 @@
-import { useThree, useFrame, extend } from '@react-three/fiber'
 import { PropsWithChildren, useRef } from 'react'
 import {
   Vector2,
+  Vector3,
   Mesh,
   PlaneGeometry,
   ShaderMaterial,
   MathUtils,
   Group,
 } from 'three'
+import { useThree, useFrame, extend } from '@react-three/fiber'
+import { MeshDiscardMaterial } from '@react-three/drei'
 
 extend({
   Group,
@@ -16,24 +18,41 @@ extend({
   ShaderMaterial,
 })
 
-const ZERO_UV = new Vector2(0)
+const TEMP_VEC3 = new Vector3()
 
 type TMouseOrbiterProps = {
-  areaSize?: 'full' | 'half'
+  hoverWidth?: number
+  hoverHeight?: number
+  hideCursor?: boolean
+  speed?: number
+  moveAmount?: number
+  maxAngle?: number
 }
 
 export default function MouseOrbiter({
-  areaSize = 'full',
+  hoverWidth,
+  hoverHeight,
+  hideCursor = false,
   children,
+  speed = 0.025,
+  moveAmount = 0,
+  maxAngle = Math.PI * 0.025,
   ...restProps
 }: PropsWithChildren<TMouseOrbiterProps>) {
   const { size } = useThree()
+
+  const w = hoverWidth || size.width
+  const h = hoverHeight || size.height
+  const aspect = w / h
 
   const ref = useRef<Group>(null)
 
   const mouseRef = useRef({
     position: new Vector2(0),
-    hover: 0,
+    hover: {
+      target: 0,
+      value: 0,
+    },
   })
 
   useFrame((s) => {
@@ -41,39 +60,53 @@ export default function MouseOrbiter({
       return
     }
 
-    const rx = mouseRef.current.position.y * -0.125 * Math.PI
-    const ry = mouseRef.current.position.x * 0.125 * Math.PI
+    const { position, hover } = mouseRef.current
+    hover.value = MathUtils.lerp(hover.value, hover.target, speed)
+    ref.current.rotation.x = MathUtils.lerp(
+      ref.current.rotation.x,
+      hover.target * position.y * -maxAngle,
+      speed
+    )
+    ref.current.rotation.y = MathUtils.lerp(
+      ref.current.rotation.y,
+      hover.target * position.x * (maxAngle / aspect),
+      speed
+    )
 
-    const speed = MathUtils.lerp(0.0025, 0.025, mouseRef.current.hover)
-
-    ref.current.rotation.x = MathUtils.lerp(ref.current.rotation.x, rx, speed)
-    ref.current.rotation.y = MathUtils.lerp(ref.current.rotation.y, ry, speed)
+    if (moveAmount) {
+      TEMP_VEC3.x = position.x * moveAmount
+      TEMP_VEC3.y = position.y * moveAmount
+      ref.current.position.lerp(TEMP_VEC3, speed)
+    }
   })
-
-  const scale = areaSize === 'half' ? 0.5 : 1.0
 
   return (
     <group {...restProps}>
       <group ref={ref}>{children}</group>
       <mesh
-        onPointerMove={(e) => {
-          const uv = e.uv || ZERO_UV
-          mouseRef.current.position.set(uv.x * 2 - 1, uv.y * 2 - 1)
-          mouseRef.current.hover = 1
-        }}
         onPointerEnter={() => {
-          mouseRef.current.hover = 1
+          mouseRef.current.hover.target = 1
+
+          if (hideCursor) {
+            document.body.style.cursor = 'none'
+          }
+        }}
+        onPointerMove={(e) => {
+          mouseRef.current.position.set(e.uv!.x * 2 - 1, e.uv!.y * 2 - 1)
         }}
         onPointerLeave={() => {
-          mouseRef.current.hover = 0
+          mouseRef.current.hover.target = 0
           mouseRef.current.position.set(0, 0)
+
+          if (hideCursor) {
+            document.body.style.cursor = ''
+          }
         }}
       >
-        <planeGeometry args={[size.width * scale, size.height * scale]} />
-        {/* TODO: create InvisibleMaterial component */}
-        <shaderMaterial
-          vertexShader={'void main() {gl_Position = vec4(999.0);}'}
+        <planeGeometry
+          args={[hoverWidth || size.width, hoverHeight || size.height]}
         />
+        <MeshDiscardMaterial />
       </mesh>
     </group>
   )

@@ -1,0 +1,79 @@
+[
+  {
+    "title": "Duo Reges",
+    "originalTitle": "Rhetorice igitur",
+    "startDate": "2017-01-01",
+    "endDate": "2022-01-01",
+    "client": "Est igitur",
+    "type": "Freelance",
+    "tldr": "Si enim ad populum me vocas, eum. Ex rebus enim timiditas, non ex vocabulis nascitur. Videamus igitur sententias eorum, tum ad verba redeamus. Est enim effectrix multarum et magnarum voluptatum. Aliter enim nosmet ipsos nosse non possumus. Mihi quidem Antiochum, quem audis, satis belle videris attendere. Ergo ita: non posse honeste vivi, nisi honeste vivatur? Ut optime, secundum naturam affectum esse possit. Bork Restatis igitur vos; Est igitur officium eius generis, quod nec in bonis ponatur nec in contrariis.",
+    "impacts": [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Quantum Aristoxeni ingenium consumptum videmus in musicis."
+    ],
+    "tech": ["React", "Lottie"],
+    "card": "/work/kp2.mp4",
+    "name": "kp2"
+  },
+  {
+    "title": "Paulum sum regem",
+    "originalTitle": "Atqui reperies",
+    "startDate": "2017-01-01",
+    "endDate": "2017-01-01",
+    "client": "Officio",
+    "type": "Freelance",
+    "tldr": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid in isto egregio tuo officio et tanta fide-sic enim existimo-ad corpus refers? Sit enim idem caecus, debilis. Quid sequatur, quid repugnet, vident. Quod mihi quidem visus est, cum sciret, velle tamen confitentem audire Torquatum. Dat enim intervalla et relaxat. Duo Reges: constructio interrete. Atqui reperies, inquit, in hoc quidem pertinacem; Paulum, cum regem Persem captum adduceret, eodem flumine invectio? Invidiosum nomen est, infame, suspectum.",
+    "impacts": [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid dubitas igitur mutare principia naturae."
+    ],
+    "tech": ["React", "Three.js", "Node", "Express", "Postgres", "AWS"],
+    "card": "/work/pumpum.mp4",
+    "name": "pumpum"
+  },
+  {
+    "title": "Nec enim ignoras his",
+    "originalTitle": null,
+    "startDate": "2019-01-01",
+    "endDate": "2023-01-01",
+    "client": "Etiam",
+    "type": "Employment",
+    "tldr": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. De maximma autem re eodem modo, divina mente atque natura mundum universum et eius maxima partis administrari. Nec enim ignoras his istud honestum non summum modo, sed etiam, ut tu vis, solum bonum videri. Si verbum sequimur, primum longius verbum praepositum quam bonum. A villa enim, credo, et: Si ibi te esse scissem, ad te ipse venissem. Ergo in gubernando nihil, in officio plurimum interest, quo in genere peccetur. Tum ille: Ain tandem? Duo Reges: constructio interrete. Conferam tecum, quam cuique verso rem subicias; Pauca mutat vel plura sane; Nam et a te perfici istam disputationem volo, nec tua mihi oratio longa videri potest.",
+    "impacts": [
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Non quam nostram quidem, inquit Pomponius iocans."
+    ],
+    "tech": [
+      "Typescript",
+      "React",
+      "React Spring",
+      "Styled Components",
+      "Lottie"
+    ],
+    "card": "/work/hox2.mp4",
+    "name": "hox2"
+  },
+  {
+    "title": "Virtutibus igitur",
+    "originalTitle": null,
+    "startDate": "2022-01-01",
+    "endDate": "2023-01-01",
+    "client": "Principia",
+    "type": "Employment",
+    "tldr": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid dubitas igitur mutare principia naturae? Virtutibus igitur rectissime mihi videris et ad consuetudinem nostrae orationis vitia posuisse contraria. Sullae consulatum? Sed utrum hortandus es nobis, Luci, inquit, an etiam tua sponte propensus es? Hos contra singulos dici est melius.",
+    "impacts": [
+      "Bork Qui-vere falsone.",
+      "Quod quidem nobis non saepe contingit."
+    ],
+    "tech": [
+      "Typescript",
+      "React",
+      "React Spring",
+      "Styled Components",
+      "Lottie",
+      "Nextjs",
+      "Contentful"
+    ],
+    "card": "/work/sh22.mp4",
+    "name": "sh22"
+  }
+]
