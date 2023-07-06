@@ -1,7 +1,5 @@
 'use client'
 
-// TODO: get rid of 'use client'
-
 import Hero from '@/sections/Hero'
 import Work from '@/sections/Work'
 import * as Styled from './styled'

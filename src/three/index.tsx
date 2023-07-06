@@ -1,5 +1,7 @@
 'use client'
 
+// TODO: clean up file
+
 import { useEffect, useRef, useMemo, ReactNode, CSSProperties } from 'react'
 import { Canvas } from '@react-three/fiber'
 import styled from 'styled-components'
@@ -66,7 +68,7 @@ export default function Three({
     () => ({
       x: bounds.x,
       // Non-scroll y
-      y: window.scrollY + bounds.y,
+      y: (typeof window !== 'undefined' ? window.scrollY : 0) + bounds.y,
       width: bounds.width,
       height: bounds.height,
     }),
