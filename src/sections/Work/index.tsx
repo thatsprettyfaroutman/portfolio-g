@@ -1,80 +1,52 @@
 'use client'
 
-import dynamic from 'next/dynamic'
-import { MeshBasicMaterial, BoxGeometry, Mesh } from 'three'
-import { extend } from '@react-three/fiber'
-import Text from '@/components/DeprecatedText'
-import Styled from './styled'
-import content from './dummyContent.json'
+import styled from 'styled-components'
+import Text from '@/components/Text'
+import GridSection from '@/components/GridSection'
+import WorkItem from '@/components/WorkItem'
 
-extend({
-  MeshBasicMaterial,
-  BoxGeometry,
-  Mesh,
-})
+import content from './dummyContent.json'
 
 const WORK = content
   .filter((x) => !!x.card)
   .sort((a, b) => (a.endDate < b.endDate ? 1 : -1))
 
-const Three = dynamic(() => import('@/three'), {
-  ssr: false,
-  loading: () => <>Loading Three</>,
-})
-
-// TODO: move lazyloading to a file next to the component
-const Card = dynamic(() => import('@/three/components/Card/components/Video'), {
-  ssr: false,
-  loading: () => (
-    <mesh scale={100}>
-      <boxGeometry />
-    </mesh>
-  ),
-})
-
 // TODO: better texts
 // TODO: lazy load three
 
+const Wrapper = styled(GridSection)`
+  grid-row-gap: calc(var(--col) * 4);
+`
+
 export default function Work({ ...restProps }) {
-  const scale = 1.5
-
-  const cardW = (375 - 32) * scale
-  const cardH = cardW / (2 / 3)
-
   return (
-    <Styled.Work {...restProps}>
-      <Text.Block>
-        <Text.MainHeading>{'Here’s some of my work'}</Text.MainHeading>
-      </Text.Block>
-
-      <Styled.WorkItems>
-        {WORK.map((item, i) => (
-          <Styled.WorkItem key={i}>
-            <Three
-              keepScrollPerspective
-              dpr={2}
-              style={{
-                width: cardW + 64,
-                height: cardH + 64,
-              }}
-            >
-              {/* @ts-ignore */}
-              <Card
-                name={item.name!}
-                width={cardW}
-                height={cardH}
-                src={item.card!}
-                title={item.title}
-                meta={[item.client, item.startDate]}
-              />
-            </Three>
-            <Text.Block className="content">
-              <Text.Heading>{item.title}</Text.Heading>
-              <Text.Paragraph>{item.tldr}</Text.Paragraph>
-            </Text.Block>
-          </Styled.WorkItem>
-        ))}
-      </Styled.WorkItems>
-    </Styled.Work>
+    <Wrapper {...restProps}>
+      <Text.HeadingBlock>
+        <Text.Heading2>Recent Work</Text.Heading2>
+        <Text.BigParagraph>
+          Here&apos;s some of my favorite projects
+        </Text.BigParagraph>
+      </Text.HeadingBlock>
+      {WORK.map((item, i) => (
+        <WorkItem key={i}>
+          <WorkItem.Title
+            altTitle={item.altTitle}
+            startDate={item.startDate}
+            endDate={item.endDate}
+          >
+            {item.title}
+          </WorkItem.Title>
+          <WorkItem.Client>{item.client}</WorkItem.Client>
+          <WorkItem.Card
+          // TODO: pass video src
+          // TODO: pass clientLogo src
+          // TODO: 1st impact to the backside?
+          />
+          <WorkItem.Tldr>{item.tldr}</WorkItem.Tldr>
+          <WorkItem.Impacts>{item.impacts}</WorkItem.Impacts>
+          <WorkItem.Techs>{item.techs}</WorkItem.Techs>
+        </WorkItem>
+      ))}
+    </Wrapper>
   )
 }

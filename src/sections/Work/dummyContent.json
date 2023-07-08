@@ -1,7 +1,7 @@
 [
   {
     "title": "Duo Reges",
-    "originalTitle": "Rhetorice igitur",
+    "altTitle": "Rhetorice igitur",
     "startDate": "2017-01-01",
     "endDate": "2022-01-01",
     "client": "Est igitur",
@@ -9,15 +9,17 @@
     "tldr": "Si enim ad populum me vocas, eum. Ex rebus enim timiditas, non ex vocabulis nascitur. Videamus igitur sententias eorum, tum ad verba redeamus. Est enim effectrix multarum et magnarum voluptatum. Aliter enim nosmet ipsos nosse non possumus. Mihi quidem Antiochum, quem audis, satis belle videris attendere. Ergo ita: non posse honeste vivi, nisi honeste vivatur? Ut optime, secundum naturam affectum esse possit. Bork Restatis igitur vos; Est igitur officium eius generis, quod nec in bonis ponatur nec in contrariis.",
     "impacts": [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "Quantum Aristoxeni ingenium consumptum videmus in musicis."
+      "Quantum Aristoxeni ingenium consumptum videmus in musicis.",
+      "Ponatur nec in contrariis.",
+      "Aliter enim nosmet ipsos nosse non possumus."
     ],
-    "tech": ["React", "Lottie"],
+    "techs": ["React", "Lottie"],
     "card": "/work/kp2.mp4",
     "name": "kp2"
   },
   {
     "title": "Paulum sum regem",
-    "originalTitle": "Atqui reperies",
+    "altTitle": "Atqui reperies",
     "startDate": "2017-01-01",
     "endDate": "2017-01-01",
     "client": "Officio",
@@ -26,13 +28,13 @@
     "impacts": [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid dubitas igitur mutare principia naturae."
     ],
-    "tech": ["React", "Three.js", "Node", "Express", "Postgres", "AWS"],
+    "techs": ["React", "Three.js", "Node", "Express", "Postgres", "AWS"],
     "card": "/work/pumpum.mp4",
     "name": "pumpum"
   },
   {
     "title": "Nec enim ignoras his",
-    "originalTitle": null,
+    "altTitle": null,
     "startDate": "2019-01-01",
     "endDate": "2023-01-01",
     "client": "Etiam",
@@ -42,7 +44,7 @@
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
       "Non quam nostram quidem, inquit Pomponius iocans."
     ],
-    "tech": [
+    "techs": [
       "Typescript",
       "React",
       "React Spring",
@@ -54,7 +56,7 @@
   },
   {
     "title": "Virtutibus igitur",
-    "originalTitle": null,
+    "altTitle": null,
     "startDate": "2022-01-01",
     "endDate": "2023-01-01",
     "client": "Principia",
@@ -62,9 +64,10 @@
     "tldr": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid dubitas igitur mutare principia naturae? Virtutibus igitur rectissime mihi videris et ad consuetudinem nostrae orationis vitia posuisse contraria. Sullae consulatum? Sed utrum hortandus es nobis, Luci, inquit, an etiam tua sponte propensus es? Hos contra singulos dici est melius.",
     "impacts": [
       "Bork Qui-vere falsone.",
-      "Quod quidem nobis non saepe contingit."
+      "Quod quidem nobis non saepe contingit.",
+      "Qudici est melius."
     ],
-    "tech": [
+    "techs": [
       "Typescript",
       "React",
       "React Spring",
