@@ -1,61 +1,50 @@
-'use client'
-
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import FONT from '@/styles/fonts'
-import { palette } from '@/styles/theme'
 
-const MainHeading = styled.h1`
-  font-family: ${FONT.Blinker};
-  font-style: normal;
-  font-weight: 300;
-  font-size: 48px;
-  line-height: 54px;
+const noMargins = css`
+  margin-top: 0;
+  margin-bottom: 0;
 `
 
-const Heading = styled.h2`
+const Heading3 = styled.h3`
+  ${noMargins};
   font-family: ${FONT.Montserrat};
-  font-style: normal;
-  font-weight: 200;
-  font-size: 40px;
-  line-height: 48px;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 40px;
 `
 
 const Paragraph = styled.p`
+  ${noMargins};
+  font-family: ${FONT.Karla};
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 25.5px;
+`
+
+const ParagraphBlock = styled.div`
+  display: grid;
+  grid-gap: calc(var(--maxCol) / 4);
+
+  // Allow text to bleed outside to visually balance text lines
+  margin-right: calc(var(--col) / -2);
+`
+
+const BigParagraph = styled(Paragraph)`
   font-family: ${FONT.Montserrat};
-  font-style: normal;
-  font-weight: 200;
-  font-size: 28px;
+  font-size: 24px;
   line-height: 48px;
-  color: ${palette.main.text.darken(2.5)};
-  // hyphens: auto;
 `
-
-const ParagraphSmall = styled.p`
-  font-family: ${FONT.Montserrat};
-  font-style: normal;
-  font-weight: 200;
-  font-size: 20px;
-  line-height: 42px;
-  color: ${palette.main.text.darken(2.5)};
-  // hyphens: auto;
-`
-
-const Block = styled.div`
-  max-width: 768px;
-  padding: 0 32px;
-  margin: 0 auto;
-
-  > ${MainHeading} {
-    text-align: center;
-  }
+const BigParagraphBlock = styled(ParagraphBlock)`
+  grid-gap: calc(var(--maxCol) / 2);
 `
 
 const Text = {
-  MainHeading,
-  Heading,
+  Heading3,
   Paragraph,
-  ParagraphSmall,
-  Block,
+  ParagraphBlock,
+  BigParagraph,
+  BigParagraphBlock,
 }
 
 export default Text

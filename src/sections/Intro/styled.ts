@@ -2,6 +2,9 @@
 
 import styled from 'styled-components'
 
+// TODO: remove styled.ts file
+// TODO: rename to Wrapper
+
 const Intro = styled.section`
   display: flex;
   flex-direction: column;
