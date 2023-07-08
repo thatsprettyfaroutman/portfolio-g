@@ -3,6 +3,9 @@
 import styled from 'styled-components'
 import { palette } from '@/styles/theme'
 
+// TODO: remove styled.ts file
+// TODO: rename to Wrapper
+
 const Hero = styled.section`
   position: relative;
   pointer-events: none;
