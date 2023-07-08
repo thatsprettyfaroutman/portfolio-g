@@ -13,6 +13,7 @@ const mainPalette = {
       bottom: chroma('#f0f').darken(6).hex(),
     },
     text: '#fff',
+    border: '#fff',
   },
   accent: ['#f0f', '#0ff'],
 }

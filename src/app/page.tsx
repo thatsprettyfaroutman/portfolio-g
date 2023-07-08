@@ -1,14 +1,14 @@
 'use client'
 
 import Hero from '@/sections/Hero'
-import Work from '@/sections/Work'
+import Intro from '@/sections/Intro'
 import * as Styled from './styled'
 
 export default function Home() {
   return (
     <Styled.Main>
       <Hero />
-      <Work />
+      <Intro />
     </Styled.Main>
   )
 }
