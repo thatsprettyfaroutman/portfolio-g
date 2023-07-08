@@ -1,9 +1,12 @@
 import { createGlobalStyle } from 'styled-components'
 import FONT from './fonts'
 import { palette } from './theme'
+import { gridVars } from './grid'
 
 const GlobalStyle = createGlobalStyle`
   :root {
+    ${gridVars};
+
     background-color: ${palette.main.background.bottom};
     color: ${palette.main.text};
     font-family: ${FONT.Montserrat};
@@ -15,9 +18,6 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: ${FONT.Blinker};
-  }
 `
 
 export default GlobalStyle
