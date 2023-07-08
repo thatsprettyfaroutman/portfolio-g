@@ -28,11 +28,8 @@ export default function StyledComponentsRegistry({
   if (typeof window !== 'undefined') {
     return (
       <CustomThemeProvider>
-        <>
-          {/* @ts-ignore */}
-          <GlobalStyle />
-          <>{children}</>
-        </>
+        <GlobalStyle />
+        <>{children}</>
       </CustomThemeProvider>
     )
   }
@@ -40,11 +37,8 @@ export default function StyledComponentsRegistry({
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
       <CustomThemeProvider>
-        <>
-          {/* @ts-ignore */}
-          <GlobalStyle />
-          <>{children}</>
-        </>
+        <GlobalStyle />
+        <>{children}</>
       </CustomThemeProvider>
     </StyleSheetManager>
   )
