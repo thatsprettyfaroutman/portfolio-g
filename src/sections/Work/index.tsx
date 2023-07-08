@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic'
 import { MeshBasicMaterial, BoxGeometry, Mesh } from 'three'
 import { extend } from '@react-three/fiber'
-import Text from '@/components/Text'
+import Text from '@/components/DeprecatedText'
 import Styled from './styled'
 import content from './dummyContent.json'
 

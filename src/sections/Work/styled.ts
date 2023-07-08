@@ -2,6 +2,9 @@
 
 import styled from 'styled-components'
 
+// TODO: remove styled.ts file
+// TODO: rename to Wrapper
+
 const Work = styled.section`
   display: grid;
   grid-gap: 256px;
