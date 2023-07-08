@@ -13,7 +13,7 @@ const font = fl.parse(
   FontJson
 )
 
-export default function ThingTitle({
+export default function Text3d({
   children = 'Hi',
   color = '#fff',
   ...restProps
