@@ -1,14 +1,21 @@
 'use client'
 
+import styled from 'styled-components'
 import Hero from '@/sections/Hero'
 import Intro from '@/sections/Intro'
-import * as Styled from './styled'
+import Work from '@/sections/Work'
+
+const Wrapper = styled.main`
+  display: grid;
+  grid-gap: calc(var(--col) * 4);
+`
 
 export default function Home() {
   return (
-    <Styled.Main>
+    <Wrapper>
       <Hero />
       <Intro />
-    </Styled.Main>
+      <Work />
+    </Wrapper>
   )
 }

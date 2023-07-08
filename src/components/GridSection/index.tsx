@@ -12,7 +12,7 @@ const GridSection = styled.section`
   padding-right: var(--col);
 
   // TODO: remove debug border
-  border: 1px solid #f0f8;
+  border: 1px solid #f0f1;
 
   ${MEDIA.tablet} {
     grid-template-columns: ${templateCols(-2)};

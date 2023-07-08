@@ -14,12 +14,21 @@ const Heading1 = styled.h1`
   line-height: 72px;
 `
 
+const Heading2 = styled(Heading1).attrs({ as: 'h2' })``
+
 const Heading3 = styled.h3`
   ${noMargins};
   font-family: ${FONT.Montserrat};
   font-weight: 400;
   font-size: 28px;
   line-height: 40px;
+`
+
+const HeadingBlock = styled.div`
+  display: grid;
+  grid-gap: calc(var(--maxCol) / 8);
+  grid-column: 1 / -1;
+  place-items: center;
 `
 
 const Paragraph = styled.p`
@@ -42,6 +51,22 @@ const ParagraphBlock = styled.div<{ allowEndBleed?: boolean }>`
     `}
 `
 
+const SmallParagraph = styled(Paragraph)`
+  font-size: 15px;
+  line-height: 22.5px;
+`
+
+const SmallParagraphBlock = styled(ParagraphBlock)``
+
+const MediumParagraph = styled(Paragraph)`
+  font-family: ${FONT.Montserrat};
+  font-size: 18px;
+  line-height: 36px;
+`
+const MediumParagraphBlock = styled(ParagraphBlock)`
+  grid-gap: calc(var(--maxCol) / 2);
+`
+
 const BigParagraph = styled(Paragraph)`
   font-family: ${FONT.Montserrat};
   font-size: 24px;
@@ -53,9 +78,15 @@ const BigParagraphBlock = styled(ParagraphBlock)`
 
 const Text = {
   Heading1,
+  Heading2,
   Heading3,
+  HeadingBlock,
   Paragraph,
   ParagraphBlock,
+  SmallParagraph,
+  SmallParagraphBlock,
+  MediumParagraph,
+  MediumParagraphBlock,
   BigParagraph,
   BigParagraphBlock,
 }
