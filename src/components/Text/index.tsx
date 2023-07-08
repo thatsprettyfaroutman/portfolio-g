@@ -6,6 +6,14 @@ const noMargins = css`
   margin-bottom: 0;
 `
 
+const Heading1 = styled.h1`
+  ${noMargins};
+  font-family: ${FONT.Montserrat};
+  font-weight: 400;
+  font-size: 48px;
+  line-height: 72px;
+`
+
 const Heading3 = styled.h3`
   ${noMargins};
   font-family: ${FONT.Montserrat};
@@ -22,24 +30,29 @@ const Paragraph = styled.p`
   line-height: 25.5px;
 `
 
-const ParagraphBlock = styled.div`
+const ParagraphBlock = styled.div<{ allowEndBleed?: boolean }>`
   display: grid;
   grid-gap: calc(var(--maxCol) / 4);
 
-  // Allow text to bleed outside to visually balance text lines
-  margin-right: calc(var(--col) / -2);
+  ${(p) =>
+    p.allowEndBleed &&
+    css`
+      // Allow text to bleed outside to visually balance text lines
+      margin-right: calc(var(--col) / -2);
+    `}
 `
 
 const BigParagraph = styled(Paragraph)`
   font-family: ${FONT.Montserrat};
   font-size: 24px;
-  line-height: 48px;
+  line-height: 36px;
 `
 const BigParagraphBlock = styled(ParagraphBlock)`
   grid-gap: calc(var(--maxCol) / 2);
 `
 
 const Text = {
+  Heading1,
   Heading3,
   Paragraph,
   ParagraphBlock,

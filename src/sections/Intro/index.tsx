@@ -1,5 +1,3 @@
-'use client'
-
 import styled from 'styled-components'
 import GridSection from '@/components/GridSection'
 import { MEDIA } from '@/styles/media'
@@ -75,7 +73,7 @@ export default function Intro({ ...restProps }) {
       <Picture />
       <Info>
         <Text.Heading3>Hulabalo Balo</Text.Heading3>
-        <Text.ParagraphBlock>
+        <Text.ParagraphBlock allowEndBleed>
           <Text.Paragraph>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Graccho,
             eius fere, aequalí? Maximus dolor, inquit, brevis est. Tuo vero id
