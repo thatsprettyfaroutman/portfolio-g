@@ -18,7 +18,7 @@ export const templateCols = (amount?: number) => {
     cols = `calc(var(--cols) - ${Math.abs(amount)})`
   }
   return css`
-    repeat(${cols}, var(--col));
+    repeat(${cols}, 1fr);
   `
 }
 
