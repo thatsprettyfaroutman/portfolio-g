@@ -1,22 +1,16 @@
 import { useThree, useFrame } from '@react-three/fiber'
 import { useEffect, useCallback } from 'react'
+import { useThreeContext } from '@/three/context'
 
-// TODO: dry this more?
-
-export type TUseUpdateScrollPerspectiveProps = {
-  bounds: { width: number; height: number; y: number }
-  active?: boolean
-  offsetX: number
-  offsetY: number
-}
-
-export default function useUpdateScrollPerspective({
-  bounds,
-  active = true,
-  offsetX = 0,
-  offsetY = 0,
-}: TUseUpdateScrollPerspectiveProps) {
+export default function useUpdateScrollPerspective() {
   const { camera } = useThree()
+
+  const {
+    keepScrollPerspective,
+    offsetX,
+    offsetY,
+    scrollCompensatedBounds: bounds,
+  } = useThreeContext()
 
   const updateCamera = useCallback(
     (width = 0, height = 0, offsetX = 0, offsetY = 0, scrollY = 0) => {
@@ -38,7 +32,7 @@ export default function useUpdateScrollPerspective({
   }, [updateCamera, bounds.width, bounds.height, offsetX, offsetY])
 
   useFrame(() => {
-    if (!active) {
+    if (!keepScrollPerspective) {
       return
     }
     const scrollY = bounds.y - window.scrollY
