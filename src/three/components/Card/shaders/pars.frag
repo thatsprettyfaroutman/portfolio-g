@@ -28,7 +28,7 @@ uniform sampler2D uOverlayMap;
 #pragma glslify: roundRect = require(../../../shaders/roundRect.glsl)
 
 // TODO: uniform
-bool flipY = true;
+bool flipY = false;
 
 vec4 paper(vec4 color) {
   vec4 hardLightColor = texture2D(uHardLightMap, vRoughnessMapUv);
