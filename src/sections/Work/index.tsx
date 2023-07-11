@@ -15,7 +15,8 @@ const WORK = content
 // TODO: lazy load three
 
 const Wrapper = styled(GridSection)`
-  grid-row-gap: calc(var(--col) * 4);
+  position: relative;
+  grid-row-gap: calc(var(--col) * 2);
 `
 
 export default function Work({ ...restProps }) {
@@ -38,9 +39,10 @@ export default function Work({ ...restProps }) {
           </WorkItem.Title>
           <WorkItem.Client>{item.client}</WorkItem.Client>
           <WorkItem.Card
-          // TODO: pass video src
-          // TODO: pass clientLogo src
-          // TODO: 1st impact to the backside?
+            src={item.card}
+            // TODO: pass video src
+            // TODO: pass clientLogo src
+            // TODO: 1st impact to the backside?
           />
           <WorkItem.Tldr>{item.tldr}</WorkItem.Tldr>
           <WorkItem.Impacts>{item.impacts}</WorkItem.Impacts>

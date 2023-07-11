@@ -10,6 +10,7 @@ const GridSection = styled.section`
   margin-right: auto;
   padding-left: var(--col);
   padding-right: var(--col);
+  box-sizing: border-box;
 
   // TODO: remove debug border
   border: 1px solid #f0f1;

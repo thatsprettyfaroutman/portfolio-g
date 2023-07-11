@@ -25,7 +25,7 @@ import Camera from './components/Camera'
 
 // TODO: remove debug stuff
 // import { Edges, MeshDiscardMaterial } from '@react-three/drei'
-// import ViewSizeDebug from './components/ViewSizeDebug'
+import ViewSizeDebug from './components/ViewSizeDebug'
 
 // Uncomment to print loading images (part 1/2)
 // import { WebGLRenderer } from 'three'
@@ -82,7 +82,8 @@ function Three({ children, ...restProps }: TThreeCanvasProps) {
           <MeshDiscardMaterial />
           <Edges color="#0ff" />
         </mesh>
-        <ViewSizeDebug /> */}
+        */}
+      <ViewSizeDebug />
     </Canvas>
   )
 }

@@ -61,7 +61,7 @@ const IntroText = styled.div`
   }
 
   ${MEDIA.desktop} {
-    grid-column: 10 / -2;
+    grid-column: 10 / -1;
     grid-row: 1;
     padding-top: 0;
   }
