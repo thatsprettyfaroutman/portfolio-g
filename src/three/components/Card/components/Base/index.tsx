@@ -6,11 +6,17 @@ import getShaderInjectors from '@/three/utils/injectShader'
 
 // TODO: create useFontsReady hook
 // import useFontsReady from 'hooks/useFontsReady'
-import { MeshDiscardMaterial, useHelper, useTexture } from '@react-three/drei'
+import {
+  MeshDiscardMaterial,
+  useHelper,
+  useTexture,
+  Box,
+} from '@react-three/drei'
 import { usePalette, palette } from '@/styles/theme'
 import MouseOrbiter from '@/three/components/MouseOrbiter'
 
-import Cube from '../Cube'
+// TODO: rm Cube
+// import Cube from '../Cube'
 
 // @ts-ignore
 import fragmentPars from '../../shaders/pars.frag'
@@ -39,11 +45,27 @@ export type TCardProps = {
   meta: string[]
 }
 
+const useContainSize = (width: number, height: number) => {
+  const { size } = useThree()
+  const aspect = width / height
+  const sizeAspect = size.width / size.height
+  if (sizeAspect < aspect) {
+    if (width > size.width) {
+      return { width: size.width, height: size.width / aspect }
+    }
+  } else {
+    if (height > size.height) {
+      return { width: size.height * aspect, height: size.height }
+    }
+  }
+  return { width, height }
+}
+
 export default function Card({
   name,
   map,
-  width = 400,
-  height = 600,
+  width: widthProp = 300,
+  height: heightProp = 200,
   depth = 8,
   mapWidth,
   mapHeight,
@@ -54,7 +76,13 @@ export default function Card({
   meta,
   ...restProps
 }: TCardProps) {
-  const aspect = width / height
+  const aspect = widthProp / heightProp
+  const { width, height } = useContainSize(widthProp, heightProp)
+  const ambientLight = usePalette(palette.main.background.bottom)
+  const [titleMap, bumpMap] = useTexture([
+    `/work/${name || 'kp2'}-title.png`,
+    `/work/${name || 'kp2'}-bump.png`,
+  ])
 
   const lightRef = useRef<THREE.DirectionalLight>(null)
   useHelper(
@@ -64,36 +92,18 @@ export default function Card({
     '#0ff'
   )
 
-  const ambientLight = usePalette(palette.main.background.bottom)
-  const { viewport } = useThree()
-  const { dpr } = viewport
-
-  // const fontsLoaded = true
-  // const fontsLoaded = useFontsReady()
-
-  const [titleMap, bumpMap] = useTexture(
-    [`/work/${name}-title.png`, `/work/${name}-bump.png`],
-    (t) => {
-      // @ts-ignore
-      t.forEach((x) => (x.flipY = false))
-    }
-  )
-
   const hardLightMap = useTexture(paperNormal.src, (t) => {
     const textures = Array.isArray(t) ? t : [t]
-
     textures.map((t) => {
       t.wrapS = THREE.RepeatWrapping
       t.wrapT = THREE.RepeatWrapping
       t.repeat.x = 3.0
       t.repeat.y = 3.0 / aspect
-      t.flipY = false
     })
   })
 
   map.minFilter = THREE.NearestFilter
   map.magFilter = THREE.NearestFilter
-  map.flipY = false
 
   const uniforms = useRef({
     // TODO: remove unused
@@ -126,7 +136,7 @@ export default function Card({
   uniforms.current.uMapPosition.value.y = mapY || 0
   uniforms.current.uMapBorderRadius.value = mapBorderRadius
 
-  const flip = useSpringValue(0)
+  const cardFlip = useSpringValue(0)
 
   return (
     <group {...restProps}>
@@ -153,7 +163,7 @@ export default function Card({
           scale-y={height}
           onClick={(e) => {
             const dir = Math.sign(e.uv!.x - 0.5) || 1
-            flip.start(flip.goal + dir)
+            cardFlip.start(cardFlip.goal + dir)
           }}
           onPointerEnter={() => {
             uniforms.current.uMouseHover.value = 1
@@ -171,13 +181,15 @@ export default function Card({
 
         <a.group
           // This group rotates (flips) on click
-          rotation-y={flip.to((p) => THREE.MathUtils.lerp(0, Math.PI, p % 2))}
-          position-z={flip.to(
+          rotation-y={cardFlip.to((p) =>
+            THREE.MathUtils.lerp(0, Math.PI, p % 2)
+          )}
+          position-z={cardFlip.to(
             (p) => Math.sin(Math.abs(p % 1) * Math.PI) * -200
           )}
           scale={[width, height, depth]}
         >
-          <Cube rotation-y={Math.PI * -0.5} edgeMaterial={EDGE_MATERIAL}>
+          <Box rotation-y={Math.PI * -0.5}>
             <meshPhysicalMaterial
               attach="material"
               map={map}
@@ -188,6 +200,7 @@ export default function Card({
                   ...uniforms.current,
                 }
 
+                // Inject fragment shader code to specific positions
                 const { fragment } = getShaderInjectors(shaderObject)
                 fragment(
                   '#include <clipping_planes_pars_fragment>',
@@ -196,7 +209,7 @@ export default function Card({
                 fragment('#include <map_fragment>', fragmentMain)
               }}
             />
-          </Cube>
+          </Box>
         </a.group>
       </MouseOrbiter>
     </group>
