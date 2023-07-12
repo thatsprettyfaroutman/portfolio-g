@@ -1,6 +1,7 @@
 uniform vec3 uColor0;
 uniform vec3 uColor1;
 uniform float uBaseOpacity;
+uniform float uOpacity;
 varying vec3 vNormal;
 varying vec2 vUv;
 
@@ -17,5 +18,5 @@ void main() {
   float maxTransformedOpacity = pow(2.0, power);
   float transformedOpacity = pow(abs(vNormal.y) + 1.0, power);
 
-  gl_FragColor = vec4(color, uBaseOpacity + (transformedOpacity) / maxTransformedOpacity);
+  gl_FragColor = vec4(color, (uBaseOpacity + transformedOpacity / maxTransformedOpacity) * uOpacity);
 }
