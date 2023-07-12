@@ -35,7 +35,7 @@ export default function useUpdateScrollPerspective() {
     if (!keepScrollPerspective) {
       return
     }
-    const scrollY = bounds.y - window.scrollY
+    const scrollY = bounds.y - window.scrollY - bounds.height * 0.25
     updateCamera(bounds.width, bounds.height, offsetX, offsetY, scrollY)
   })
 }

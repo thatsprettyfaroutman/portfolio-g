@@ -1,6 +1,7 @@
 'use client'
 
 // TODO: clean up file
+// TODO: move ThreeCanvas to own file
 
 import {
   useEffect,
@@ -10,7 +11,8 @@ import {
   CSSProperties,
   PropsWithChildren,
 } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Group } from 'three'
+import { Canvas, extend } from '@react-three/fiber'
 import styled from 'styled-components'
 import pick from 'ramda/src/pick'
 import { mergeRefs } from 'react-merge-refs'
@@ -25,11 +27,14 @@ import Camera from './components/Camera'
 
 // TODO: remove debug stuff
 // import { Edges, MeshDiscardMaterial } from '@react-three/drei'
-import ViewSizeDebug from './components/ViewSizeDebug'
+// import ViewSizeDebug from './components/ViewSizeDebug'
+import { useSpringValue } from 'react-spring'
 
 // Uncomment to print loading images (part 1/2)
 // import { WebGLRenderer } from 'three'
 // import { printImage } from './lib'
+
+extend({ Group })
 
 const CONTEXT_PROP_KEYS = [
   'keepScrollPerspective',
@@ -45,9 +50,9 @@ type TThreeProps = {
   className?: string
 } & Pick<TUseThreeContextProps, (typeof CONTEXT_PROP_KEYS)[number]>
 
-type TThreeCanvasProps = PropsWithChildren
+type TThreeCanvasProps = PropsWithChildren<>
 
-const StyledThree = styled.div`
+const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -57,12 +62,13 @@ const StyledThree = styled.div`
     border-radius: inherit;
   }
 `
-function Three({ children, ...restProps }: TThreeCanvasProps) {
-  const { inView, dpr } = useThreeContext()
+
+function ThreeCanvas({ children, ...restProps }: TThreeCanvasProps) {
+  const { renderEnabled, dpr } = useThreeContext()
 
   return (
     <Canvas
-      frameloop={inView ? 'always' : 'never'}
+      frameloop={renderEnabled ? 'always' : 'never'}
       linear
       flat
       dpr={dpr}
@@ -83,20 +89,23 @@ function Three({ children, ...restProps }: TThreeCanvasProps) {
           <Edges color="#0ff" />
         </mesh>
         */}
-      <ViewSizeDebug />
+      {/* <ViewSizeDebug /> */}
     </Canvas>
   )
 }
 
-export default function ThreeWithContext({
+export default function Three({
   className,
   children,
   onResize,
   ...restProps
 }: TThreeProps) {
-  const [ref, inView] = useInView()
   const [measureRef, bounds] = useMeasure()
-
+  const [renderRef, renderEnabled] = useInView()
+  const [inViewRef, inView] = useInView({
+    threshold: 1,
+    rootMargin: '320px 0px',
+  })
   // No need to trigger when onResize function changes
   // Also, this way no need to useCallback onResize
   const onResizeRef = useRef(onResize)
@@ -118,21 +127,28 @@ export default function ThreeWithContext({
     [bounds.width, bounds.height, bounds.x, bounds.y]
   )
 
+  const inViewSpring = useSpringValue(0)
+  useEffect(() => {
+    inViewSpring.start(inView ? 1 : 0)
+  }, [inView, inViewSpring])
+
   const contextProps = {
     ...pick(CONTEXT_PROP_KEYS, restProps),
+    renderEnabled,
     inView,
+    inViewSpring,
     scrollCompensatedBounds,
   }
 
   return (
-    <StyledThree
+    <Wrapper
       className={`three ${className || ''}`}
-      ref={mergeRefs([ref, measureRef])}
+      ref={mergeRefs([renderRef, inViewRef, measureRef])}
       {...restProps}
     >
       <ThreeContextProvider {...contextProps}>
-        <Three>{children}</Three>
+        <ThreeCanvas>{children}</ThreeCanvas>
       </ThreeContextProvider>
-    </StyledThree>
+    </Wrapper>
   )
 }
