@@ -1,50 +1,33 @@
-import { type PropsWithChildren } from 'react'
 import styled from 'styled-components'
+import useMeasure from 'react-use-measure'
 import { MEDIA } from '@/styles/media'
-import Text from '@/components/Text'
-import FONT from '@/styles/fonts'
+import Tech, { type TTechProps } from './components/Tech'
 
-type TTechsProps = PropsWithChildren
+type TTechsProps = { children: Omit<TTechProps, 'updateBordersKey'>[] }
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  gap: calc(var(--col));
-  align-content: start;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(max(var(--col) * 4, var(--maxCol) * 2.5), 1fr)
+  );
 
   ${MEDIA.tablet} {
     grid-column: 1 / -1;
   }
 
   ${MEDIA.desktop} {
-    gap: calc(var(--col) / 2);
     grid-column: 1 / 10;
   }
 `
 
-const Tech = styled(Text.SmallParagraphBlock)`
-  display: flex;
-  gap: calc(var(--col) / 2);
-  place-items: center;
-  font-family: ${FONT.Inconsolata};
-
-  > div {
-    width: calc(var(--maxCol) / 4);
-    aspect-ratio: 1;
-    background-color: #f0f;
-  }
-`
-
 export default function Techs({ children, ...restProps }: TTechsProps) {
-  const items = Array.isArray(children) ? children : [children]
-
+  const [ref, bounds] = useMeasure({ debounce: 320 })
   return (
-    <Wrapper {...restProps}>
-      {items.map((child, i) => (
-        <Tech key={i}>
-          <div />
-          <Text.SmallParagraph key={i}>{child}</Text.SmallParagraph>
-        </Tech>
+    <Wrapper ref={ref} {...restProps}>
+      {children.map((tech) => (
+        <Tech key={tech.name} updateBordersKey={bounds.width} {...tech} />
       ))}
     </Wrapper>
   )
