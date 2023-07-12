@@ -1,7 +1,10 @@
 import constate from 'constate'
+import { type SpringValue } from 'react-spring'
 
 export type TUseThreeContextProps = {
+  renderEnabled: boolean
   inView: boolean
+  inViewSpring: SpringValue<number>
   scrollCompensatedBounds: {
     x: number
     y: number
