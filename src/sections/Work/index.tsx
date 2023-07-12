@@ -37,7 +37,7 @@ export default function Work({ ...restProps }) {
           >
             {item.title}
           </WorkItem.Title>
-          <WorkItem.Client>{item.client}</WorkItem.Client>
+            <WorkItem.Client {...item.client} />
           <WorkItem.Card
             src={item.card}
             // TODO: pass video src
