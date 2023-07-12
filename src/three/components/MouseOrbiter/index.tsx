@@ -10,6 +10,7 @@ import {
 } from 'three'
 import { useThree, useFrame, extend } from '@react-three/fiber'
 import { MeshDiscardMaterial } from '@react-three/drei'
+import { useThreeContext } from '@/three/context'
 
 extend({
   Group,
@@ -40,6 +41,7 @@ export default function MouseOrbiter({
   ...restProps
 }: PropsWithChildren<TMouseOrbiterProps>) {
   const { size } = useThree()
+  const { inView } = useThreeContext()
 
   const w = hoverWidth || size.width
   const h = hoverHeight || size.height
@@ -61,22 +63,23 @@ export default function MouseOrbiter({
     }
 
     const { position, hover } = mouseRef.current
+    const speedSpeed = MathUtils.lerp(speed * 0.1, speed, hover.target)
     hover.value = MathUtils.lerp(hover.value, hover.target, speed)
     ref.current.rotation.x = MathUtils.lerp(
       ref.current.rotation.x,
       hover.target * position.y * -maxAngle,
-      speed
+      speedSpeed
     )
     ref.current.rotation.y = MathUtils.lerp(
       ref.current.rotation.y,
       hover.target * position.x * (maxAngle / aspect),
-      speed
+      speedSpeed
     )
 
     if (moveAmount) {
       TEMP_VEC3.x = position.x * moveAmount
       TEMP_VEC3.y = position.y * moveAmount
-      ref.current.position.lerp(TEMP_VEC3, speed)
+      ref.current.position.lerp(TEMP_VEC3, speedSpeed)
     }
   })
 
@@ -87,7 +90,7 @@ export default function MouseOrbiter({
         onPointerEnter={() => {
           mouseRef.current.hover.target = 1
 
-          if (hideCursor) {
+          if (inView && hideCursor) {
             document.body.style.cursor = 'none'
           }
         }}
