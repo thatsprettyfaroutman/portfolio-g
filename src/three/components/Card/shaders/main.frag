@@ -11,6 +11,8 @@ diffuseColor = getDiffuseColor(vMapUv);
 // }
 
 // diffuseColor = mixTitle(diffuseColor);
+
 diffuseColor = mixMouseBlob(diffuseColor);
+diffuseColor = mixOverlay(diffuseColor, vMapUv);
 
 #endif
