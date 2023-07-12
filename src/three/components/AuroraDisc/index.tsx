@@ -1,8 +1,16 @@
 import { useRef } from 'react'
-import { Group, Mesh, RingGeometry, ShaderMaterial, Color } from 'three'
+import {
+  Group,
+  Mesh,
+  RingGeometry,
+  ShaderMaterial,
+  Color,
+  MathUtils,
+} from 'three'
 import { useThree, useFrame, extend } from '@react-three/fiber'
 import clamp from 'ramda/src/clamp'
 import chroma from 'chroma-js'
+import { useThreeContext } from '@/three/context'
 
 // @ts-ignore
 import vertexShader from './shaders/vertex.glsl'
@@ -33,6 +41,7 @@ export default function AuroraDisc({
   ...restProps
 }: TThingProps) {
   const { size } = useThree()
+  const { inViewSpring } = useThreeContext()
   const minRadius = 80
   const maxRadius = 256
   const padding = 64
@@ -44,6 +53,7 @@ export default function AuroraDisc({
     uColor0: { value: new Color(color0) },
     uColor1: { value: new Color(color1) },
     uBaseOpacity: { value: baseOpacity },
+    uOpacity: { value: 1 },
   })
 
   uniforms.current.uBaseOpacity.value = baseOpacity
@@ -60,6 +70,7 @@ export default function AuroraDisc({
 
   useFrame((s) => {
     uniforms.current.uTime.value = s.clock.getElapsedTime()
+    uniforms.current.uOpacity.value = MathUtils.lerp(0.1, 1, inViewSpring.get())
   })
 
   const firstRender = useRef(true)
