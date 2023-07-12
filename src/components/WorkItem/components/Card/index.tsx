@@ -11,7 +11,7 @@ const CARD_HEIGHT = 600
 const CARD_ASPECT = CARD_WIDTH / CARD_HEIGHT
 const CARD_PR = 2
 
-type TCardProps = { src: string; label: string; labelImageSrc: string }
+type TCardProps = { src: string; iconSrc: string }
 
 const Wrapper = styled.div`
   display: grid;
@@ -56,18 +56,13 @@ function useImage(src: string) {
   return loadedImage
 }
 
-export default function Card({
-  src,
-  label,
-  labelImageSrc,
-  ...restProps
-}: TCardProps) {
+export default function Card({ src, iconSrc, ...restProps }: TCardProps) {
   const [measureRef, bounds] = useMeasure()
-  const labelImage = useImage(labelImageSrc)
+  const iconImage = useImage(iconSrc)
 
   // TODO: prolly move this somewhere
   const overlayMap = useMemo(() => {
-    if (!labelImage) {
+    if (!iconImage) {
       return
     }
     const canvas = document.createElement('canvas')
@@ -83,45 +78,18 @@ export default function Card({
     canvas.width = CARD_WIDTH * scale
     canvas.height = CARD_HEIGHT * scale
 
-    const labelImageAspect = labelImage.width / labelImage.height
-    const labelImageHeight = 40 * scale
-    const labelImageWidth = labelImageHeight * labelImageAspect
-    const labelImageX = canvas.width - labelImageWidth + 1
-    const labelImageY = canvas.height - labelImageHeight + 1
+    const iconAspect = iconImage.width / iconImage.height
+    const iconHeight = 40 * scale
+    const iconWidth = iconHeight * iconAspect
+    const iconX = canvas.width - iconWidth + 1
+    const iconY = canvas.height - iconHeight + 1
 
     ctx.save()
-    ctx.drawImage(
-      labelImage,
-      labelImageX,
-      labelImageY,
-      labelImageWidth,
-      labelImageHeight
-    )
-    ctx.restore()
-
-    // Label Box + Text
-    ctx.save()
-    const hPadding = 20 * scale
-    const fontSize = 15 * scale
-    ctx.font = `${fontSize}px Karla, sans-serif`
-    const textMeasure = ctx.measureText(label)
-    const textHeight =
-      textMeasure.actualBoundingBoxAscent - textMeasure.actualBoundingBoxDescent
-    const textX = hPadding //labelImageX - textMeasure.width - hPadding
-    const textY = labelImageY + labelImageHeight * 0.5 + textHeight
-    ctx.fillStyle = '#fff'
-    ctx.fillRect(
-      textX - hPadding,
-      labelImageY,
-      textMeasure.width + hPadding * 2,
-      labelImageHeight
-    )
-    ctx.fillStyle = '#000'
-    ctx.fillText(label, textX, textY)
+    ctx.drawImage(iconImage, iconX, iconY, iconWidth, iconHeight)
     ctx.restore()
 
     return new CanvasTexture(canvas)
-  }, [labelImage, label])
+  }, [iconImage])
 
   return (
     <Wrapper ref={measureRef} {...restProps}>

@@ -50,8 +50,7 @@ export default function Work({ ...restProps }) {
             <WorkItem.Client {...item.client} />
             <WorkItem.Card
               src={item.card}
-              label={item.title}
-              labelImageSrc={item.client.logo}
+              iconSrc={item.client.logo}
               // TODO: 1st impact to the backside?
             />
             <WorkItem.Tldr>{item.tldr}</WorkItem.Tldr>
