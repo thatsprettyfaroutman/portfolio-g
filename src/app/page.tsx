@@ -8,7 +8,6 @@ import Work from '@/sections/Work'
 
 const Wrapper = styled.main`
   display: grid;
-  grid-gap: calc(var(--col) * 4);
 `
 
 export default function Home() {
@@ -19,7 +18,7 @@ export default function Home() {
         <Intro />
         <Work />
       </Wrapper>
-      <GridHelper />
+      {/* <GridHelper /> */}
     </>
   )
 }

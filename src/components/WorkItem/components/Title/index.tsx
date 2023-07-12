@@ -13,9 +13,13 @@ const Wrapper = styled.div`
   display: grid;
 
   ${MEDIA.tablet} {
-    grid-column: 1 / 10;
+    grid-column: 1 / -1;
     grid-template-columns: 1fr auto;
     align-items: baseline;
+  }
+
+  ${MEDIA.desktop} {
+    grid-column: 1 / 10;
   }
 `
 

@@ -10,7 +10,7 @@ import { cssMaxWidth as cssProfilePictureMaxWidth } from '@/components/ProfilePi
 
 const Wrapper = styled(GridSection)`
   padding-top: calc(var(--col) * 2);
-  padding-bottom: calc(var(--col) * 2);
+  padding-bottom: calc(var(--col) * 4);
   grid-template-rows: auto 1fr;
 `
 
