@@ -6,20 +6,23 @@ import VideoCard from '@/three/components/Card/components/Video'
 import { useEffect, useMemo, useState } from 'react'
 import { CanvasTexture } from 'three'
 
-const CARD_WIDTH = 400
-const CARD_HEIGHT = 600
-const CARD_ASPECT = CARD_WIDTH / CARD_HEIGHT
-const CARD_PR = 2
+const CARD_PIXEL_RATIO = 2
 
-type TCardProps = { src: string; iconSrc: string }
+type TCardProps = {
+  src: string
+  iconSrc: string
+  width?: number
+  height?: number
+}
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ aspectRatio: number }>`
   display: grid;
   position: relative;
   justify-items: start;
   box-sizing: border-box;
+  aspect-ratio: ${(p) => p.aspectRatio};
+
   grid-row: 2;
-  aspect-ratio: ${CARD_ASPECT};
 
   ${MEDIA.tablet} {
     grid-column: 10 / -1;
@@ -56,9 +59,16 @@ function useImage(src: string) {
   return loadedImage
 }
 
-export default function Card({ src, iconSrc, ...restProps }: TCardProps) {
+export default function Card({
+  width = 400,
+  height = 600,
+  src,
+  iconSrc,
+  ...restProps
+}: TCardProps) {
   const [measureRef, bounds] = useMeasure()
   const iconImage = useImage(iconSrc)
+  const aspectRatio = width / height
 
   // TODO: prolly move this somewhere
   const overlayMap = useMemo(() => {
@@ -73,10 +83,10 @@ export default function Card({ src, iconSrc, ...restProps }: TCardProps) {
       return
     }
 
-    const scale = CARD_PR
+    const scale = CARD_PIXEL_RATIO
 
-    canvas.width = CARD_WIDTH * scale
-    canvas.height = CARD_HEIGHT * scale
+    canvas.width = width * scale
+    canvas.height = height * scale
 
     const iconAspect = iconImage.width / iconImage.height
     const iconHeight = 40 * scale
@@ -89,16 +99,16 @@ export default function Card({ src, iconSrc, ...restProps }: TCardProps) {
     ctx.restore()
 
     return new CanvasTexture(canvas)
-  }, [iconImage])
+  }, [iconImage, width, height])
 
   return (
-    <Wrapper ref={measureRef} {...restProps}>
-      <Three keepScrollPerspective dpr={CARD_PR}>
+    <Wrapper ref={measureRef} {...restProps} aspectRatio={aspectRatio}>
+      <Three keepScrollPerspective dpr={CARD_PIXEL_RATIO}>
         {/* @ts-ignore */}
         <VideoCard
           src={src}
           width={bounds.width}
-          height={bounds.width / CARD_ASPECT}
+          height={bounds.width / aspectRatio}
           overlayMap={overlayMap}
         />
       </Three>
