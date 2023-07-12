@@ -1,6 +1,22 @@
-import * as THREE from 'three'
-import { useRef } from 'react'
-import { useThree } from '@react-three/fiber'
+import {
+  Group,
+  Mesh,
+  BoxGeometry,
+  PlaneGeometry,
+  MeshPhysicalMaterial,
+  AmbientLight,
+  DirectionalLight,
+  // DirectionalLightHelper,
+  Color,
+  Texture,
+  Vector2,
+  RepeatWrapping,
+  NearestFilter,
+  UniformsLib,
+  MathUtils,
+} from 'three'
+import { useEffect, useRef } from 'react'
+import { useThree, extend } from '@react-three/fiber'
 import { a, useSpringValue } from '@react-spring/three'
 import getShaderInjectors from '@/three/utils/injectShader'
 
@@ -8,15 +24,11 @@ import getShaderInjectors from '@/three/utils/injectShader'
 // import useFontsReady from 'hooks/useFontsReady'
 import {
   MeshDiscardMaterial,
-  useHelper,
+  // useHelper,
   useTexture,
-  Box,
 } from '@react-three/drei'
 import { usePalette, palette } from '@/styles/theme'
 import MouseOrbiter from '@/three/components/MouseOrbiter'
-
-// TODO: rm Cube
-// import Cube from '../Cube'
 
 // @ts-ignore
 import fragmentPars from '../../shaders/pars.frag'
@@ -24,15 +36,25 @@ import fragmentPars from '../../shaders/pars.frag'
 import fragmentMain from '../../shaders/main.frag'
 
 import paperNormal from '../../textures/paper-normal.jpg'
+import { useThreeContext } from '@/three/context'
+
+extend({
+  Group,
+  Mesh,
+  MeshPhysicalMaterial,
+  DirectionalLight,
+  AmbientLight,
+})
 
 // TODO: clean up this file
 
-const LOW_POLY_PLANE = new THREE.PlaneGeometry(1, 1, 1, 1)
-const EDGE_MATERIAL = new THREE.MeshStandardMaterial({ color: '#f0f' })
+// Recycled Geometries
+const BOX_GEOMETRY = new BoxGeometry()
+const PLANE_GEOMETRY = new PlaneGeometry()
 
 export type TCardProps = {
   name: string
-  map: THREE.Texture
+  map: Texture
   width?: number
   height?: number
   depth?: number
@@ -43,6 +65,7 @@ export type TCardProps = {
   mapBorderRadius?: number
   title: string
   meta: string[]
+  overlayMap?: Texture
 }
 
 const useContainSize = (width: number, height: number) => {
@@ -74,79 +97,111 @@ export default function Card({
   mapBorderRadius = 0,
   title,
   meta,
+  overlayMap,
   ...restProps
 }: TCardProps) {
   const aspect = widthProp / heightProp
   const { width, height } = useContainSize(widthProp, heightProp)
-  const ambientLight = usePalette(palette.main.background.bottom)
-  const [titleMap, bumpMap] = useTexture([
-    `/work/${name || 'kp2'}-title.png`,
-    `/work/${name || 'kp2'}-bump.png`,
-  ])
+  const { inView, inViewSpring } = useThreeContext()
+  const ambientLightColor = usePalette(palette.main.background.bottom)
+  const backgroundColor = ambientLightColor // usePalette(palette.accent[0])
+  const textColor = usePalette(palette.main.text)
 
-  const lightRef = useRef<THREE.DirectionalLight>(null)
-  useHelper(
-    // @ts-ignore
-    lightRef,
-    THREE.DirectionalLightHelper,
-    '#0ff'
-  )
+  const lightRef = useRef<DirectionalLight>(null)
+  // useHelper(
+  //   // @ts-ignore
+  //   lightRef,
+  //   DirectionalLightHelper,
+  //   '#0ff'
+  // )
 
   const hardLightMap = useTexture(paperNormal.src, (t) => {
     const textures = Array.isArray(t) ? t : [t]
     textures.map((t) => {
-      t.wrapS = THREE.RepeatWrapping
-      t.wrapT = THREE.RepeatWrapping
-      t.repeat.x = 3.0
-      t.repeat.y = 3.0 / aspect
+      t.wrapS = RepeatWrapping
+      t.wrapT = RepeatWrapping
+      t.repeat.x = 4.0
+      t.repeat.y = 4.0 / aspect
     })
   })
 
-  map.minFilter = THREE.NearestFilter
-  map.magFilter = THREE.NearestFilter
+  map.minFilter = NearestFilter
+  map.magFilter = NearestFilter
 
   const uniforms = useRef({
     // TODO: remove unused
-    ...THREE.UniformsLib['fog'],
+    ...UniformsLib['fog'],
     uTime: { value: 0 },
-    uResolution: { value: new THREE.Vector2(width, height) },
+    uResolution: { value: new Vector2(width, height) },
     uAspect: { value: aspect },
     uMap: { value: map },
     uMapSize: {
-      value: new THREE.Vector2(mapWidth ?? width, mapHeight ?? height),
+      value: new Vector2(mapWidth ?? width, mapHeight ?? height),
     },
     uMapPosition: {
-      value: new THREE.Vector2(mapX || 0, mapY || 0),
+      value: new Vector2(mapX || 0, mapY || 0),
     },
     uMapBorderRadius: { value: 0 },
-    uOverlayMap: { value: bumpMap },
-    uTitleMap: { value: titleMap },
-    uMouse: { value: new THREE.Vector2(0) },
+    uOverlayMap: { value: new Texture() },
+    uOverlayBackgroundColor: { value: new Color() },
+    uOverlayTextColor: { value: new Color() },
+    // uTitleMap: { value: titleMap },
+    uMouse: { value: new Vector2(0) },
     uMouseHover: { value: 0 },
     uHardLightMap: { value: hardLightMap },
   })
 
-  uniforms.current.uOverlayMap.value = bumpMap
-  uniforms.current.uResolution.value.x = width
-  uniforms.current.uResolution.value.y = height
-  uniforms.current.uAspect.value = aspect
-  uniforms.current.uMapSize.value.x = mapWidth ?? width
-  uniforms.current.uMapSize.value.y = mapHeight ?? height
-  uniforms.current.uMapPosition.value.x = mapX || 0
-  uniforms.current.uMapPosition.value.y = mapY || 0
-  uniforms.current.uMapBorderRadius.value = mapBorderRadius
+  useEffect(() => {
+    if (overlayMap) {
+      uniforms.current.uOverlayMap.value = overlayMap
+    }
+    uniforms.current.uOverlayBackgroundColor.value.set(backgroundColor)
+    uniforms.current.uOverlayTextColor.value.set(textColor)
+    uniforms.current.uResolution.value.x = width
+    uniforms.current.uResolution.value.y = height
+    uniforms.current.uAspect.value = aspect
+    uniforms.current.uMapSize.value.x = mapWidth ?? width
+    uniforms.current.uMapSize.value.y = mapHeight ?? height
+    uniforms.current.uMapPosition.value.x = mapX || 0
+    uniforms.current.uMapPosition.value.y = mapY || 0
+    uniforms.current.uMapBorderRadius.value = mapBorderRadius
+  }, [
+    aspect,
+    backgroundColor,
+    width,
+    height,
+    mapBorderRadius,
+    mapHeight,
+    mapWidth,
+    mapX,
+    mapY,
+    overlayMap,
+    textColor,
+  ])
+
+  // Play video textures when in view
+  useEffect(() => {
+    if (inView) {
+      // console.log('playing', map.source.data.src.split('/').pop())
+      map.source.data.play?.()
+    } else {
+      // console.log('pausing', map.source.data.src.split('/').pop())
+      map.source.data.pause?.()
+    }
+  }, [inView, map])
 
   const cardFlip = useSpringValue(0)
 
   return (
     <group {...restProps}>
-      <ambientLight color={ambientLight} />
-      <directionalLight
+      <ambientLight color={ambientLightColor} />
+      <a.directionalLight
         ref={lightRef}
         color="#fff"
         position-z={600}
-        position-y={200}
-        intensity={0.9}
+        // position-y={200}
+        // @ts-ignore
+        intensity={inViewSpring.to((p) => MathUtils.lerp(0.3, 0.9, p))}
       />
 
       <MouseOrbiter
@@ -158,7 +213,7 @@ export default function Card({
       >
         <mesh
           // Hover mesh
-          geometry={LOW_POLY_PLANE}
+          geometry={PLANE_GEOMETRY}
           scale-x={width}
           scale-y={height}
           onClick={(e) => {
@@ -181,15 +236,13 @@ export default function Card({
 
         <a.group
           // This group rotates (flips) on click
-          rotation-y={cardFlip.to((p) =>
-            THREE.MathUtils.lerp(0, Math.PI, p % 2)
-          )}
+          rotation-y={cardFlip.to((p) => MathUtils.lerp(0, Math.PI, p % 2))}
           position-z={cardFlip.to(
             (p) => Math.sin(Math.abs(p % 1) * Math.PI) * -200
           )}
           scale={[width, height, depth]}
         >
-          <Box rotation-y={Math.PI * -0.5}>
+          <mesh rotation-y={Math.PI * -0.5} geometry={BOX_GEOMETRY}>
             <meshPhysicalMaterial
               attach="material"
               map={map}
@@ -209,7 +262,7 @@ export default function Card({
                 fragment('#include <map_fragment>', fragmentMain)
               }}
             />
-          </Box>
+          </mesh>
         </a.group>
       </MouseOrbiter>
     </group>

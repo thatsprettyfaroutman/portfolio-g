@@ -3,18 +3,23 @@ import useMeasure from 'react-use-measure'
 import { MEDIA } from '@/styles/media'
 import Three from '@/three'
 import VideoCard from '@/three/components/Card/components/Video'
+import { useEffect, useMemo, useState } from 'react'
+import { CanvasTexture } from 'three'
 
-type TCardProps = { src: string }
+const CARD_WIDTH = 400
+const CARD_HEIGHT = 600
+const CARD_ASPECT = CARD_WIDTH / CARD_HEIGHT
+const CARD_PR = 2
+
+type TCardProps = { src: string; label: string; labelImageSrc: string }
 
 const Wrapper = styled.div`
   display: grid;
   position: relative;
   justify-items: start;
   box-sizing: border-box;
-  // TODO: rm border
-  border: 1px solid #0ff8;
-  /* background-color: #111; */
   grid-row: 2;
+  aspect-ratio: ${CARD_ASPECT};
 
   ${MEDIA.tablet} {
     grid-column: 10 / -1;
@@ -24,7 +29,7 @@ const Wrapper = styled.div`
 
   ${MEDIA.desktop} {
     grid-column-start: 13;
-    grid-row: 2 / 6;
+    grid-row: 1 / 6;
     justify-items: start;
   }
 
@@ -39,41 +44,94 @@ const Wrapper = styled.div`
   }
 `
 
-/*
-
- > div {
-    aspect-ratio: 2 / 3;
-    width: min(400px, 100%);
-    background-color: #f0f;
-
-    ${MEDIA.tablet} {
-      // TODO: ease stickiness when using 3d card
-      position: sticky;
-      top: calc(50% - min(300px, 50vh - var(--col)));
-      width: min(calc(var(--col) * 8.5), 100%);
-      max-height: max(600px, calc(100vh - var(--col) * 2));
+function useImage(src: string) {
+  const [loadedImage, setLoadedImage] = useState<HTMLImageElement | null>(null)
+  useEffect(() => {
+    const image = new Image()
+    image.src = src
+    image.onload = () => {
+      setLoadedImage(image)
     }
+  }, [src])
+  return loadedImage
+}
 
-    ${MEDIA.desktop} {
-      width: min(400px, 100%);
-    }
-  }
-
-*/
-
-export default function Card({ src, ...restProps }: TCardProps) {
+export default function Card({
+  src,
+  label,
+  labelImageSrc,
+  ...restProps
+}: TCardProps) {
   const [measureRef, bounds] = useMeasure()
+  const labelImage = useImage(labelImageSrc)
+
+  // TODO: prolly move this somewhere
+  const overlayMap = useMemo(() => {
+    if (!labelImage) {
+      return
+    }
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+
+    // Skip if canvas not supported
+    if (!ctx) {
+      return
+    }
+
+    const scale = CARD_PR
+
+    canvas.width = CARD_WIDTH * scale
+    canvas.height = CARD_HEIGHT * scale
+
+    const labelImageAspect = labelImage.width / labelImage.height
+    const labelImageHeight = 40 * scale
+    const labelImageWidth = labelImageHeight * labelImageAspect
+    const labelImageX = canvas.width - labelImageWidth + 1
+    const labelImageY = canvas.height - labelImageHeight + 1
+
+    ctx.save()
+    ctx.drawImage(
+      labelImage,
+      labelImageX,
+      labelImageY,
+      labelImageWidth,
+      labelImageHeight
+    )
+    ctx.restore()
+
+    // Label Box + Text
+    ctx.save()
+    const hPadding = 20 * scale
+    const fontSize = 15 * scale
+    ctx.font = `${fontSize}px Karla, sans-serif`
+    const textMeasure = ctx.measureText(label)
+    const textHeight =
+      textMeasure.actualBoundingBoxAscent - textMeasure.actualBoundingBoxDescent
+    const textX = hPadding //labelImageX - textMeasure.width - hPadding
+    const textY = labelImageY + labelImageHeight * 0.5 + textHeight
+    ctx.fillStyle = '#fff'
+    ctx.fillRect(
+      textX - hPadding,
+      labelImageY,
+      textMeasure.width + hPadding * 2,
+      labelImageHeight
+    )
+    ctx.fillStyle = '#000'
+    ctx.fillText(label, textX, textY)
+    ctx.restore()
+
+    return new CanvasTexture(canvas)
+  }, [labelImage, label])
 
   return (
     <Wrapper ref={measureRef} {...restProps}>
-      {/* <div /> */}
-
-      <Three keepScrollPerspective>
+      <Three keepScrollPerspective dpr={CARD_PR}>
         {/* @ts-ignore */}
         <VideoCard
           src={src}
           width={bounds.width}
-          height={bounds.width / (2 / 3)}
+          height={bounds.width / CARD_ASPECT}
+          overlayMap={overlayMap}
         />
       </Three>
     </Wrapper>

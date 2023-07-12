@@ -18,8 +18,10 @@ uniform sampler2D uTitleMap;
 
 // TODO: remove if unused
 uniform sampler2D uHardLightMap;
-// TODO: remove if unused
+
 uniform sampler2D uOverlayMap;
+uniform vec3 uOverlayBackgroundColor;
+uniform vec3 uOverlayTextColor;
 
 #pragma glslify: blendHardLight = require(glsl-blend/hard-light)
 #pragma glslify: blendOverlay = require(glsl-blend/darken)
@@ -36,15 +38,21 @@ vec4 paper(vec4 color) {
 }
 
 // TODO: remove if unused
-vec4 mixOverlay(vec4 color) {
-  vec4 color2 = texture2D(uOverlayMap, vMapUv);
-  return vec4(blendHardLight(color.rgb, color2.rgb, 0.1), color.a);
-}
+// vec4 mixOverlay(vec4 color) {
+//   vec4 color2 = texture2D(uOverlayMap, vMapUv);
+//   return vec4(blendHardLight(color.rgb, color2.rgb, 0.1), color.a);
+// }
 
-vec4 mixTitle(vec4 color) {
-  vec4 titleColor = texture2D(uTitleMap, vMapUv);
-  vec3 mixedColor = mix(color.rgb, titleColor.rgb, titleColor.a);
-  return vec4(mixedColor, color.a);
+// vec4 mixTitle(vec4 color) {
+//   vec4 titleColor = texture2D(uTitleMap, vMapUv);
+//   vec3 mixedColor = mix(color.rgb, titleColor.rgb, titleColor.a);
+//   return vec4(mixedColor, color.a);
+// }
+
+vec4 mixOverlay(vec4 color, vec2 uv) {
+  vec4 overlayMapColor = texture2D(uOverlayMap, uv);
+  vec3 overlayColor = mix(uOverlayBackgroundColor, uOverlayTextColor, 1.0 - overlayMapColor.r);
+  return vec4(mix(color.rgb, overlayColor, overlayMapColor.a), color.a);
 }
 
 vec4 getDiffuseColor(vec2 uv) {
