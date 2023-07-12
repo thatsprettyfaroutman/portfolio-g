@@ -16,7 +16,10 @@
       "Ponatur nec in contrariis.",
       "Aliter enim nosmet ipsos nosse non possumus."
     ],
-    "techs": ["React", "Lottie"],
+    "techs": [
+      { "name": "React", "icon": "/tech/react.svg" },
+      { "name": "Lottie", "icon": "/tech/lottie.svg" }
+    ],
     "card": "/work/kp2.mp4",
     "name": "kp2"
   },
@@ -34,7 +37,14 @@
     "impacts": [
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quid dubitas igitur mutare principia naturae."
     ],
-    "techs": ["React", "Three.js", "Node", "Express", "Postgres", "AWS"],
+    "techs": [
+      { "name": "React", "icon": "/tech/react.svg" },
+      { "name": "Three.js", "icon": "/tech/three.svg" },
+      { "name": "Node", "icon": "/tech/node.svg" },
+      { "name": "Express", "icon": "/tech/express.svg" },
+      { "name": "Postgres", "icon": "/tech/postgres.svg" },
+      { "name": "AWS", "icon": "/tech/aws.svg" }
+    ],
     "card": "/work/pumpum.mp4",
     "name": "pumpum"
   },
@@ -54,11 +64,11 @@
       "Non quam nostram quidem, inquit Pomponius iocans."
     ],
     "techs": [
-      "Typescript",
-      "React",
-      "React Spring",
-      "Styled Components",
-      "Lottie"
+      { "name": "Typescript", "icon": "/tech/typescript.svg" },
+      { "name": "React", "icon": "/tech/react.svg" },
+      { "name": "React Spring", "icon": "/tech/react-spring.svg" },
+      { "name": "Styled Components", "icon": "/tech/styled-components.svg" },
+      { "name": "Lottie", "icon": "/tech/lottie.svg" }
     ],
     "card": "/work/hox2.mp4",
     "name": "hox2"
@@ -80,13 +90,13 @@
       "Qudici est melius."
     ],
     "techs": [
-      "Typescript",
-      "React",
-      "React Spring",
-      "Styled Components",
-      "Lottie",
-      "Nextjs",
-      "Contentful"
+      { "name": "Typescript", "icon": "/tech/typescript.svg" },
+      { "name": "React", "icon": "/tech/react.svg" },
+      { "name": "React Spring", "icon": "/tech/react-spring.svg" },
+      { "name": "Styled Components", "icon": "/tech/styled-components.svg" },
+      { "name": "Lottie", "icon": "/tech/lottie.svg" },
+      { "name": "Next.js", "icon": "/tech/next.svg" },
+      { "name": "Contentful", "icon": "/tech/contentful.svg" }
     ],
     "card": "/work/sh22.mp4",
     "name": "sh22"
