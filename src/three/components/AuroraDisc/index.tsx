@@ -1,76 +1,68 @@
 import { useRef } from 'react'
-import {
-  Group,
-  Mesh,
-  RingGeometry,
-  ShaderMaterial,
-  Color,
-  MathUtils,
-} from 'three'
-import { useThree, useFrame, extend } from '@react-three/fiber'
+import { Group, Mesh, RingGeometry, MathUtils } from 'three'
+import { useThree, useFrame, extend, ReactThreeFiber } from '@react-three/fiber'
 import clamp from 'ramda/src/clamp'
-import chroma from 'chroma-js'
 import { useThreeContext } from '@/three/context'
-
-// @ts-ignore
-import vertexShader from './shaders/vertex.glsl'
-// @ts-ignore
-import fragmentShader from './shaders/fragment.glsl'
-
-extend({
-  Group,
-  Mesh,
-  RingGeometry,
-  ShaderMaterial,
-})
+import MeshAuroraMaterial, {
+  TMeshAuroraMaterial,
+} from './materials/MeshAuroraMaterial'
 
 // TODO: try with sheen material and light
 
 type TThingProps = {
   color0?: string
   color1?: string
-  baseOpacity?: number
+  opacity?: TMeshAuroraMaterial['uOpacity']
+  baseOpacity?: TMeshAuroraMaterial['uBaseOpacity']
   onFirstRender?: () => void
 }
 
+extend({
+  Group,
+  Mesh,
+  RingGeometry,
+  MeshAuroraMaterial,
+})
+
+// Extend type
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      meshAuroraMaterial: ReactThreeFiber.MaterialNode<
+        TMeshAuroraMaterial,
+        TMeshAuroraMaterial
+      >
+    }
+  }
+}
+
 export default function AuroraDisc({
-  color0 = '#f0f',
-  color1 = '#0ff',
-  baseOpacity = 0.125,
+  color0,
+  color1,
+  baseOpacity,
+  opacity = 1,
   onFirstRender,
   ...restProps
 }: TThingProps) {
   const { size } = useThree()
   const { inViewSpring } = useThreeContext()
+  const materialRef = useRef<TMeshAuroraMaterial>(null)
   const minRadius = 80
   const maxRadius = 256
   const padding = 64
   const radius = Math.min(size.width, size.height) * 0.5
   const scale = clamp(minRadius, maxRadius, radius - padding)
 
-  const uniforms = useRef({
-    uTime: { value: 0 },
-    uColor0: { value: new Color(color0) },
-    uColor1: { value: new Color(color1) },
-    uBaseOpacity: { value: baseOpacity },
-    uOpacity: { value: 1 },
-  })
-
-  uniforms.current.uBaseOpacity.value = baseOpacity
-
-  // Update color uniforms
-  const glColor0 = chroma(color0).gl()
-  uniforms.current.uColor0.value.r = glColor0[0]
-  uniforms.current.uColor0.value.g = glColor0[1]
-  uniforms.current.uColor0.value.b = glColor0[2]
-  const glColor1 = chroma(color1).gl()
-  uniforms.current.uColor1.value.r = glColor1[0]
-  uniforms.current.uColor1.value.g = glColor1[1]
-  uniforms.current.uColor1.value.b = glColor1[2]
-
   useFrame((s) => {
-    uniforms.current.uTime.value = s.clock.getElapsedTime()
-    uniforms.current.uOpacity.value = MathUtils.lerp(0.1, 1, inViewSpring.get())
+    if (!materialRef.current) {
+      return
+    }
+    materialRef.current.uTime = s.clock.getElapsedTime()
+    materialRef.current.uOpacity = MathUtils.lerp(
+      0.1,
+      1,
+      inViewSpring.get() * opacity
+    )
   })
 
   const firstRender = useRef(true)
@@ -87,12 +79,13 @@ export default function AuroraDisc({
     <group {...restProps}>
       <mesh scale={[scale, scale, 100]}>
         <ringGeometry args={[0.7, 1, 360, 16]} />
-        <shaderMaterial
-          {...restProps}
+        <meshAuroraMaterial
+          uColor0={color0}
+          uColor1={color1}
+          uBaseOpacity={baseOpacity}
+          key={MeshAuroraMaterial.key}
           transparent
-          uniforms={uniforms.current}
-          vertexShader={vertexShader}
-          fragmentShader={fragmentShader}
+          ref={materialRef}
         />
       </mesh>
     </group>
