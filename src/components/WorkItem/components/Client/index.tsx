@@ -19,7 +19,7 @@ const Wrapper = styled.div`
 const Logo = styled.img`
   display: block;
   margin: 0;
-  height: max(calc(var(--maxCol) / 2), calc(var(--col) * 0.75));
+  height: calc(var(--maxCol) / 2);
 `
 
 export default function Client({ name, logo, ...restProps }: TClientProps) {
