@@ -1,6 +1,6 @@
 import { useThree } from '@react-three/fiber'
 
-export default function ViewSizeDebug({ ...restProps }) {
+export default function ViewSizeHelper({ ...restProps }) {
   const { size } = useThree()
 
   return (
