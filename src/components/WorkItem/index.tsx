@@ -25,6 +25,7 @@ type TWorkItem = FC<TWorkItemProps> & {
 const Wrapper = styled(GridSection).attrs({ as: 'div' })`
   grid-column: 1 / -1;
   grid-template-rows: auto auto 1fr;
+  grid-row-gap: calc(var(--maxCol) * 1.5);
   padding-left: 0;
   padding-right: 0;
 `
