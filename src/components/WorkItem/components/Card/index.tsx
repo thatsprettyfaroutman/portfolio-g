@@ -26,7 +26,7 @@ const Wrapper = styled.div<{ aspectRatio: number }>`
 
   ${MEDIA.tablet} {
     grid-column: 10 / -1;
-    grid-row: 2 / 4;
+    grid-row: 1 / 4;
     justify-items: end;
   }
 
