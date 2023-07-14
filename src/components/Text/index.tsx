@@ -11,7 +11,7 @@ const Heading1 = styled.h1`
   font-family: ${FONT.Montserrat};
   font-weight: 400;
   font-size: 48px;
-  line-height: 72px;
+  line-height: 48px;
 `
 
 const Heading2 = styled(Heading1).attrs({ as: 'h2' })``

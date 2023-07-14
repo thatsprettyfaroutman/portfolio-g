@@ -11,20 +11,16 @@ type TTitleProps = PropsWithChildren<{
 
 const Wrapper = styled.div`
   display: grid;
+  grid-gap: calc(var(--maxCol) / 8);
+  align-items: baseline;
 
   ${MEDIA.tablet} {
-    grid-column: 1 / -1;
-    grid-template-columns: 1fr auto;
-    align-items: baseline;
-  }
-
-  ${MEDIA.desktop} {
     grid-column: 1 / 10;
   }
 `
 
 const Date = styled(Text.Paragraph)`
-  grid-row: 2;
+  /* grid-row: 2; */
 `
 
 export default function Title({
