@@ -1,19 +1,11 @@
-import { useRef, useLayoutEffect, useState } from 'react'
 import styled from 'styled-components'
 import FONT from '@/styles/fonts'
 import { palette } from '@/styles/theme'
 import Text from '@/components/Text'
 
-export type TTechProps = {
-  name: string
-  icon?: string
-  updateBordersKey?: number
-}
+export type TTechProps = { name: string; icon?: string }
 
-const Wrapper = styled.div<{
-  firstCol: boolean
-  firstRow: boolean
-}>`
+const Wrapper = styled.div`
   display: flex;
   width: 100%;
   place-items: center;
@@ -23,8 +15,6 @@ const Wrapper = styled.div<{
   grid-gap: 0;
 
   border: 1px solid ${palette.main.background.bottom.brighten()};
-  ${(p) => !p.firstCol && `border-left:none;`}
-  ${(p) => !p.firstRow && `border-top:none;`}
 
   font-family: ${FONT.Inconsolata};
 
@@ -62,24 +52,9 @@ const Icon = styled.div`
   }
 `
 
-export default function Tech({ name, icon, updateBordersKey }: TTechProps) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [firstRow, setFirstRow] = useState(false)
-  const [firstCol, setFirstCol] = useState(false)
-
-  // Detect if should have top or left border 🫠
-  useLayoutEffect(() => {
-    if (!ref.current) {
-      return
-    }
-    const x = ref.current.offsetLeft
-    const y = ref.current.offsetTop
-    setFirstCol(x === 0)
-    setFirstRow(y === 0)
-  }, [updateBordersKey])
-
+export default function Tech({ name, icon }: TTechProps) {
   return (
-    <Wrapper ref={ref} firstCol={firstCol} firstRow={firstRow}>
+    <Wrapper>
       <Icon>
         {icon && (
           // eslint-disable-next-line @next/next/no-img-element
