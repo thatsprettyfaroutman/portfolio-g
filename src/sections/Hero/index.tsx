@@ -35,7 +35,7 @@ export default function Hero({ ...restProps }) {
   return (
     <Wrapper {...restProps}>
       <Three keepScrollPerspective>
-        <MouseOrbiter maxAngle={Math.PI * 0.125}>
+        <MouseOrbiter maxAngle={Math.PI * 0.06125}>
           <AuroraDisc color0={color0} color1={color1} />
         </MouseOrbiter>
       </Three>
