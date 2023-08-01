@@ -19,9 +19,10 @@ uniform sampler2D uTitleMap;
 // TODO: remove if unused
 uniform sampler2D uHardLightMap;
 
-uniform sampler2D uOverlayMap;
-uniform vec3 uOverlayBackgroundColor;
-uniform vec3 uOverlayTextColor;
+uniform sampler2D uIconMap;
+uniform vec3 uIconMapColorBackground;
+uniform vec3 uIconMapColorForeground;
+uniform vec2 uIconMapResolution;
 
 #pragma glslify: blendHardLight = require(glsl-blend/hard-light)
 #pragma glslify: blendOverlay = require(glsl-blend/darken)
@@ -39,7 +40,7 @@ vec4 paper(vec4 color) {
 
 // TODO: remove if unused
 // vec4 mixOverlay(vec4 color) {
-//   vec4 color2 = texture2D(uOverlayMap, vMapUv);
+//   vec4 color2 = texture2D(uIconMap, vMapUv);
 //   return vec4(blendHardLight(color.rgb, color2.rgb, 0.1), color.a);
 // }
 
@@ -49,10 +50,21 @@ vec4 paper(vec4 color) {
 //   return vec4(mixedColor, color.a);
 // }
 
-vec4 mixOverlay(vec4 color, vec2 uv) {
-  vec4 overlayMapColor = texture2D(uOverlayMap, uv);
-  vec3 overlayColor = mix(uOverlayBackgroundColor, uOverlayTextColor, 1.0 - overlayMapColor.r);
-  return vec4(mix(color.rgb, overlayColor, overlayMapColor.a), color.a);
+vec4 mixIcon(vec4 color, vec2 uv) {
+  vec2 iconSize = uIconMapResolution / uResolution;
+
+  vec2 iconUv = uv / iconSize;
+  // Offset icon to bottom right
+  iconUv.x -= (uResolution.x - uIconMapResolution.x) / uIconMapResolution.x;
+
+  vec4 iconMap = texture2D(uIconMap, iconUv);
+  vec3 iconColor = mix(uIconMapColorBackground, uIconMapColorForeground, 1.0 - iconMap.r);
+
+  float edgeH = min(step(0.0, 1.0 - iconUv.x), step(0.0, iconUv.x));
+  float edgeV = min(step(0.0, 1.0 - iconUv.y), step(0.0, iconUv.y));
+  float edge = min(edgeH, edgeV);
+
+  return vec4(mix(color.rgb, iconColor, edge), color.a);
 }
 
 vec4 getDiffuseColor(vec2 uv) {

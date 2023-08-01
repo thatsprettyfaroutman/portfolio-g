@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import range from 'ramda/src/range'
 import { MEDIA } from '@/styles/media'
 import { templateCols } from '@/styles/grid'
-import Text from '@/components/Text'
+import { SmallParagraph } from '@/components/Text'
 
 const Wrapper = styled.div`
   position: absolute;
@@ -87,7 +87,7 @@ export default function GridHelper({ ...restProps }) {
       <VerticalLines>
         {range(0, 18).map((i) => (
           <div key={i}>
-            <Text.SmallParagraph>{i + 1}</Text.SmallParagraph>
+            <SmallParagraph>{i + 1}</SmallParagraph>
           </div>
         ))}
       </VerticalLines>
@@ -95,7 +95,7 @@ export default function GridHelper({ ...restProps }) {
       <HorizontalLines>
         {range(0, 100).map((i) => (
           <div key={i}>
-            <Text.SmallParagraph>{i + 1}</Text.SmallParagraph>
+            <SmallParagraph>{i + 1}</SmallParagraph>
           </div>
         ))}
       </HorizontalLines>

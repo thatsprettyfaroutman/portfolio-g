@@ -1,10 +1,13 @@
-import { type PropsWithChildren, useMemo } from 'react'
+import { useMemo } from 'react'
 import styled from 'styled-components'
+import randomSeed from 'math-random-seed'
 import { MEDIA } from '@/styles/media'
-import Text from '@/components/Text'
-import { palette } from '@/styles/theme'
+import { SmallParagraphBlock, SmallParagraph } from '@/components/Text'
+import { type TImpact } from '@/contentful/types'
 
-type TImpactsProps = PropsWithChildren
+type TImpactsProps = {
+  children: TImpact[]
+}
 
 const Wrapper = styled.div`
   display: grid;
@@ -22,7 +25,7 @@ const Wrapper = styled.div`
   }
 `
 
-const Impact = styled(Text.SmallParagraphBlock)`
+const Impact = styled(SmallParagraphBlock)`
   position: relative;
   align-content: start;
   width: 100%;
@@ -35,34 +38,33 @@ const Impact = styled(Text.SmallParagraphBlock)`
   > img {
     display: block;
     margin: 0;
+    width: auto;
     height: calc(var(--maxCol) / 4);
     /* mix-blend-mode: difference; */
   }
 `
 
 export default function Impacts({ children, ...restProps }: TImpactsProps) {
-  const items = Array.isArray(children) ? children : [children]
-
-  // TODO: Seeded shuffle
-  const shuffledIcons = useMemo(
-    () =>
-      [
-        '/praise/clap.png',
-        '/praise/duck.png',
-        '/praise/hands.png',
-        '/praise/icecream.png',
-        '/praise/party.png',
-      ].sort(() => (Math.random() > 0.5 ? 1 : -1)),
-    []
-  )
+  const shuffledIcons = useMemo(() => {
+    const random = randomSeed(children[0].body)
+    return [
+      '/praise/clap.png',
+      '/praise/duck.png',
+      '/praise/hands.png',
+      '/praise/icecream.png',
+      '/praise/party.png',
+    ].sort(() => (random() > 0.5 ? 1 : -1))
+    // We only want to shuffle this list once, so no need for deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Wrapper {...restProps}>
-      {items.map((child, i) => (
+      {children.map((impact, i) => (
         <Impact key={i}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={shuffledIcons[i % shuffledIcons.length]} alt="" />
-          <Text.SmallParagraph key={i}>{child}</Text.SmallParagraph>
+          <SmallParagraph key={i}>{impact.body}</SmallParagraph>
         </Impact>
       ))}
     </Wrapper>

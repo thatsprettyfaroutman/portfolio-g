@@ -3,8 +3,6 @@ import useMeasure from 'react-use-measure'
 import { MEDIA } from '@/styles/media'
 import Three from '@/three'
 import VideoCard from '@/three/components/Card/components/Video'
-import { useEffect, useMemo, useState } from 'react'
-import { CanvasTexture } from 'three'
 
 const CARD_PIXEL_RATIO = 2
 
@@ -47,18 +45,6 @@ const Wrapper = styled.div<{ aspectRatio: number }>`
   }
 `
 
-function useImage(src: string) {
-  const [loadedImage, setLoadedImage] = useState<HTMLImageElement | null>(null)
-  useEffect(() => {
-    const image = new Image()
-    image.src = src
-    image.onload = () => {
-      setLoadedImage(image)
-    }
-  }, [src])
-  return loadedImage
-}
-
 export default function Card({
   width = 400,
   height = 600,
@@ -67,49 +53,16 @@ export default function Card({
   ...restProps
 }: TCardProps) {
   const [measureRef, bounds] = useMeasure()
-  const iconImage = useImage(iconSrc)
   const aspectRatio = width / height
-
-  // TODO: prolly move this somewhere
-  const overlayMap = useMemo(() => {
-    if (!iconImage) {
-      return
-    }
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-
-    // Skip if canvas not supported
-    if (!ctx) {
-      return
-    }
-
-    const scale = CARD_PIXEL_RATIO
-
-    canvas.width = width * scale
-    canvas.height = height * scale
-
-    const iconAspect = iconImage.width / iconImage.height
-    const iconHeight = 40 * scale
-    const iconWidth = iconHeight * iconAspect
-    const iconX = canvas.width - iconWidth + 1
-    const iconY = canvas.height - iconHeight + 1
-
-    ctx.save()
-    ctx.drawImage(iconImage, iconX, iconY, iconWidth, iconHeight)
-    ctx.restore()
-
-    return new CanvasTexture(canvas)
-  }, [iconImage, width, height])
 
   return (
     <Wrapper ref={measureRef} {...restProps} aspectRatio={aspectRatio}>
       <Three keepScrollPerspective dpr={CARD_PIXEL_RATIO}>
-        {/* @ts-ignore */}
         <VideoCard
           src={src}
           width={bounds.width}
           height={bounds.width / aspectRatio}
-          overlayMap={overlayMap}
+          iconMapSrc={iconSrc}
         />
       </Three>
     </Wrapper>

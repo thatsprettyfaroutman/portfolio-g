@@ -13,6 +13,6 @@ diffuseColor = getDiffuseColor(vMapUv);
 // diffuseColor = mixTitle(diffuseColor);
 
 diffuseColor = mixMouseBlob(diffuseColor);
-diffuseColor = mixOverlay(diffuseColor, vMapUv);
+diffuseColor = mixIcon(diffuseColor, vMapUv);
 
 #endif
