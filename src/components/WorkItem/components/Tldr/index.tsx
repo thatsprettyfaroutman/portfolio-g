@@ -1,11 +1,8 @@
-import { type PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import { MEDIA } from '@/styles/media'
-import Text from '@/components/Text'
+import { MediumMarkdown } from '@/components/Text'
 
-type TTldrProps = PropsWithChildren
-
-const Wrapper = styled(Text.MediumParagraphBlock)`
+const Tldr = styled(MediumMarkdown)`
   ${MEDIA.tablet} {
     grid-column: 1 / 9;
   }
@@ -19,14 +16,4 @@ const Wrapper = styled(Text.MediumParagraphBlock)`
   } */
 `
 
-export default function Tldr({ children, ...restProps }: TTldrProps) {
-  const items = Array.isArray(children) ? children : [children]
-
-  return (
-    <Wrapper {...restProps}>
-      {items.map((child, i) => (
-        <Text.MediumParagraph key={i}>{child}</Text.MediumParagraph>
-      ))}
-    </Wrapper>
-  )
-}
+export default Tldr

@@ -1,32 +1,31 @@
-import { type PropsWithChildren } from 'react'
+import Image from 'next/image'
 import styled from 'styled-components'
+import { TClient } from '@/contentful/types'
 import { MEDIA } from '@/styles/media'
-import Text from '@/components/Text'
+import { SmallParagraph } from '@/components/Text'
 
-type TClientProps = PropsWithChildren<{
-  name: string
-  logo: string
-}>
+type TClientProps = {
+  children: TClient
+}
 
 const Wrapper = styled.div`
   ${MEDIA.tablet} {
-    grid-column: 1 / span 8;
+    grid-column: 1 / 8;
   }
   display: grid;
   grid-gap: calc(var(--maxCol) / 4);
 `
 
-const Logo = styled.img`
+const Logo = styled(Image)`
   display: block;
   margin: 0;
-  height: calc(var(--maxCol) / 2);
 `
 
-export default function Client({ name, logo, ...restProps }: TClientProps) {
+export default function Client({ children, ...restProps }: TClientProps) {
   return (
     <Wrapper {...restProps}>
-      <Logo src={logo} alt="" />
-      <Text.SmallParagraph>{name}</Text.SmallParagraph>
+      <Logo src={children.logoMap.url} alt="" width={40} height={40} />
+      <SmallParagraph>{children.name}</SmallParagraph>
     </Wrapper>
   )
 }

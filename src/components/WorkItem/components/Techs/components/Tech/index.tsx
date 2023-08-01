@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import FONT from '@/styles/fonts'
 import { palette } from '@/styles/theme'
-import Text from '@/components/Text'
+import { SmallParagraph } from '@/components/Text'
 
-export type TTechProps = { name: string; icon?: string }
+type TTechProps = { name: string; iconSrc?: string }
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,7 +26,8 @@ const Wrapper = styled.div`
 const Icon = styled.div`
   align-self: stretch;
   display: flex;
-  place-content: center;
+  justify-content: center;
+  align-items: center;
   padding: calc(var(--maxCol) / 5);
   width: calc(var(--maxCol) / 4);
 
@@ -35,6 +36,8 @@ const Icon = styled.div`
     margin: 0;
     width: 100%;
     height: auto;
+    max-width: 16px;
+    max-height: 16px;
   }
 
   // Empty state icon
@@ -52,16 +55,16 @@ const Icon = styled.div`
   }
 `
 
-export default function Tech({ name, icon }: TTechProps) {
+export default function Tech({ name, iconSrc }: TTechProps) {
   return (
     <Wrapper>
       <Icon>
-        {icon && (
+        {iconSrc && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={icon} alt="" />
+          <img src={iconSrc} alt="" />
         )}
       </Icon>
-      <Text.SmallParagraph>{name}</Text.SmallParagraph>
+      <SmallParagraph>{name}</SmallParagraph>
     </Wrapper>
   )
 }

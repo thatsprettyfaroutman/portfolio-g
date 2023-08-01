@@ -53,7 +53,6 @@ const BOX_GEOMETRY = new BoxGeometry()
 const PLANE_GEOMETRY = new PlaneGeometry()
 
 export type TCardProps = {
-  name: string
   map: Texture
   width?: number
   height?: number
@@ -63,9 +62,10 @@ export type TCardProps = {
   mapX?: number
   mapY?: number
   mapBorderRadius?: number
-  title: string
-  meta: string[]
   overlayMap?: Texture
+  iconMapSrc: string
+  iconMapWidth?: number
+  iconMapHeight?: number
 }
 
 const useContainSize = (width: number, height: number) => {
@@ -85,7 +85,6 @@ const useContainSize = (width: number, height: number) => {
 }
 
 export default function Card({
-  name,
   map,
   width: widthProp = 300,
   height: heightProp = 200,
@@ -95,9 +94,10 @@ export default function Card({
   mapX,
   mapY,
   mapBorderRadius = 0,
-  title,
-  meta,
   overlayMap,
+  iconMapSrc,
+  iconMapWidth = 40,
+  iconMapHeight = 40,
   ...restProps
 }: TCardProps) {
   const aspect = widthProp / heightProp
@@ -105,7 +105,9 @@ export default function Card({
   const { inView, inViewSpring } = useThreeContext()
   const ambientLightColor = usePalette(palette.main.background.bottom)
   const backgroundColor = ambientLightColor // usePalette(palette.accent[0])
-  const textColor = usePalette(palette.main.text)
+  const foregroundColor = usePalette(palette.main.text)
+
+  const iconMap = useTexture(iconMapSrc)
 
   const lightRef = useRef<DirectionalLight>(null)
   // useHelper(
@@ -142,9 +144,10 @@ export default function Card({
       value: new Vector2(mapX || 0, mapY || 0),
     },
     uMapBorderRadius: { value: 0 },
-    uOverlayMap: { value: new Texture() },
-    uOverlayBackgroundColor: { value: new Color() },
-    uOverlayTextColor: { value: new Color() },
+    uIconMap: { value: new Texture() },
+    uIconMapResolution: { value: new Vector2(iconMapWidth, iconMapHeight) },
+    uIconMapColorBackground: { value: new Color(backgroundColor) },
+    uIconMapColorForeground: { value: new Color(foregroundColor) },
     // uTitleMap: { value: titleMap },
     uMouse: { value: new Vector2(0) },
     uMouseHover: { value: 0 },
@@ -152,11 +155,13 @@ export default function Card({
   })
 
   useEffect(() => {
-    if (overlayMap) {
-      uniforms.current.uOverlayMap.value = overlayMap
+    if (iconMap) {
+      uniforms.current.uIconMap.value = iconMap
+      uniforms.current.uIconMapResolution.value.x = iconMapWidth
+      uniforms.current.uIconMapResolution.value.y = iconMapHeight
     }
-    uniforms.current.uOverlayBackgroundColor.value.set(backgroundColor)
-    uniforms.current.uOverlayTextColor.value.set(textColor)
+    uniforms.current.uIconMapColorBackground.value.set(backgroundColor)
+    uniforms.current.uIconMapColorForeground.value.set(foregroundColor)
     uniforms.current.uResolution.value.x = width
     uniforms.current.uResolution.value.y = height
     uniforms.current.uAspect.value = aspect
@@ -175,17 +180,17 @@ export default function Card({
     mapWidth,
     mapX,
     mapY,
-    overlayMap,
-    textColor,
+    iconMap,
+    foregroundColor,
+    iconMapWidth,
+    iconMapHeight,
   ])
 
   // Play video textures when in view
   useEffect(() => {
     if (inView) {
-      // console.log('playing', map.source.data.src.split('/').pop())
       map.source.data.play?.()
     } else {
-      // console.log('pausing', map.source.data.src.split('/').pop())
       map.source.data.pause?.()
     }
   }, [inView, map])

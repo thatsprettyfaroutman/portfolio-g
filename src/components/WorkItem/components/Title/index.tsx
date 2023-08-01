@@ -1,7 +1,7 @@
 import { type PropsWithChildren, type ReactNode } from 'react'
 import styled from 'styled-components'
 import { MEDIA } from '@/styles/media'
-import Text from '@/components/Text'
+import { Heading2, BigParagraph, Paragraph } from '@/components/Text'
 
 type TTitleProps = PropsWithChildren<{
   startDate?: string
@@ -19,10 +19,6 @@ const Wrapper = styled.div`
   }
 `
 
-const Date = styled(Text.Paragraph)`
-  /* grid-row: 2; */
-`
-
 export default function Title({
   children,
   startDate,
@@ -30,15 +26,17 @@ export default function Title({
   altTitle,
   ...restProps
 }: TTitleProps) {
-  const startDateYear = startDate?.split('-')[0]
-  const endDateYear = endDate?.split('-')[0]
+  const startDateYear = startDate && new Date(startDate).getUTCFullYear()
+  const endDateYear = endDate && new Date(endDate).getUTCFullYear()
 
   return (
     <Wrapper {...restProps}>
-      <Text.Heading2>{children}</Text.Heading2>
-      {altTitle && <Text.BigParagraph>{`"${altTitle}"`}</Text.BigParagraph>}
+      <Heading2>{children}</Heading2>
+      {altTitle && <BigParagraph>{`"${altTitle}"`}</BigParagraph>}
       {(startDate || endDate) && (
-        <Date>{[startDateYear, endDateYear].filter(Boolean).join(' - ')}</Date>
+        <Paragraph>
+          {[startDateYear, endDateYear].filter(Boolean).join(' - ')}
+        </Paragraph>
       )}
     </Wrapper>
   )
