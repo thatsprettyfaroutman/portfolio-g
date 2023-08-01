@@ -1,8 +1,6 @@
 import chroma from 'chroma-js'
 import createThemes from 'styled-palette'
 
-// TODO: remove styled-palette as is
-
 // Palettes
 // ------------------------------------
 
