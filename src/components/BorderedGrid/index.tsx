@@ -11,14 +11,14 @@ const Wrapper = styled.div`
 `
 
 /**
- * Allows children to have single width borders between them
+ * Removes double borders from cells
  *
  * ```
  * ┌───┬┬───┐
- * │   ││   │
+ * │ a ││ b │
  * ├───┼┼───┤ ◄─┬─ Double borders, boo!
  * ├───┼┼───┤   │
- * │   ││   │   │
+ * │ c ││ d │   │
  * └───┴┴───┘   │
  *      ▲       │
  *      └───────┘
@@ -26,9 +26,9 @@ const Wrapper = styled.div`
  *    vs.
  *
  * ┌───┬───┐
- * │   │   │
- * ├───┼───┤ ◄──── Single borders, yiss!
- * │   │   │
+ * │ a │ b │
+ * ├───┼───┤ ◄──── Solo borders, yiss!
+ * │ c │ d │
  * └───┴───┘
  *
  * ```
@@ -45,7 +45,7 @@ export default function BorderedGrid(props: TBorderedGridProps) {
     }
     const children = Array.from(ref.current.children) as HTMLElement[]
 
-    // Set top and left borders to none if child isn't on first col or row
+    // Set top and left borders to none if child isn't in first col or row
     children.forEach((child) => {
       child.style.borderLeft = child.offsetLeft === 0 ? '' : 'none'
       child.style.borderTop = child.offsetTop === 0 ? '' : 'none'

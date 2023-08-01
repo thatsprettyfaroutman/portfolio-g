@@ -1,23 +1,17 @@
-'use client'
-
-import styled from 'styled-components'
-import GridHelper from '@/components/GridHelper'
+// import GridHelper from '@/components/GridHelper'
+import Main from '@/components/Main'
 import Hero from '@/sections/Hero'
 import Intro from '@/sections/Intro'
 import Work from '@/sections/Work'
 
-const Wrapper = styled.main`
-  display: grid;
-`
-
-export default function Home() {
+export default async function Home() {
   return (
     <>
-      <Wrapper>
+      <Main>
         <Hero />
         <Intro />
         <Work />
-      </Wrapper>
+      </Main>
       {/* <GridHelper /> */}
     </>
   )
