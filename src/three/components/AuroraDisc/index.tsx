@@ -1,7 +1,10 @@
+'use client'
+
 import { useRef } from 'react'
 import { Group, Mesh, RingGeometry, MathUtils } from 'three'
 import { useThree, useFrame, extend, ReactThreeFiber } from '@react-three/fiber'
 import clamp from 'ramda/src/clamp'
+import { usePalette, palette } from '@/styles/theme'
 import { useThreeContext } from '@/three/context'
 import MeshAuroraMaterial, {
   TMeshAuroraMaterial,
@@ -9,9 +12,11 @@ import MeshAuroraMaterial, {
 
 // TODO: try with sheen material and light
 
+const RADIUS_BOUNDS = [80, 256] as [min: number, max: number]
+const PADDING = 64
+const RING_GEOMETRY = new RingGeometry(0.7, 1, 360, 16)
+
 type TThingProps = {
-  color0?: string
-  color1?: string
   opacity?: TMeshAuroraMaterial['uOpacity']
   baseOpacity?: TMeshAuroraMaterial['uBaseOpacity']
   onFirstRender?: () => void
@@ -37,8 +42,6 @@ declare global {
 }
 
 export default function AuroraDisc({
-  color0,
-  color1,
   baseOpacity,
   opacity = 1,
   onFirstRender,
@@ -47,11 +50,10 @@ export default function AuroraDisc({
   const { size } = useThree()
   const { inViewSpring } = useThreeContext()
   const materialRef = useRef<TMeshAuroraMaterial>(null)
-  const minRadius = 80
-  const maxRadius = 256
-  const padding = 64
   const radius = Math.min(size.width, size.height) * 0.5
-  const scale = clamp(minRadius, maxRadius, radius - padding)
+  const scale = clamp(...RADIUS_BOUNDS, radius - PADDING)
+  const color0 = usePalette(palette.accent[0])
+  const color1 = usePalette(palette.accent[1])
 
   useFrame((s) => {
     if (!materialRef.current) {
@@ -77,8 +79,7 @@ export default function AuroraDisc({
 
   return (
     <group {...restProps}>
-      <mesh scale={[scale, scale, 100]}>
-        <ringGeometry args={[0.7, 1, 360, 16]} />
+      <mesh scale={[scale, scale, 100]} geometry={RING_GEOMETRY}>
         <meshAuroraMaterial
           uColor0={color0}
           uColor1={color1}
