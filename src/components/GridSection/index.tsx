@@ -2,6 +2,9 @@ import styled from 'styled-components'
 import { templateCols } from '@/styles/grid'
 import { MEDIA } from '@/styles/media'
 
+/**
+ * @deprecated
+ */
 const GridSection = styled.section`
   display: grid;
   grid-row-gap: var(--col);

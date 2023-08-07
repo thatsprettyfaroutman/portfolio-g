@@ -6,7 +6,7 @@ const fontInconsolata = Inconsolata({
 })
 const fontKarla = Karla({
   subsets: ['latin'],
-  weight: ['400'],
+  weight: ['400', '700'],
 })
 const fontMontserrat = Montserrat({
   subsets: ['latin'],

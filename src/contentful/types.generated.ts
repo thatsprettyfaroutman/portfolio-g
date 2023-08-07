@@ -85,7 +85,7 @@ export interface IIntroFields {
   body: string
 
   /** Author */
-  author?: IAuthor | undefined
+  author: IAuthor
 }
 
 export interface IIntro extends Entry<IIntroFields> {

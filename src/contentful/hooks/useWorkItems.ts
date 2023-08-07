@@ -1,5 +1,5 @@
 import { fetchContent } from '@/contentful'
-import { TWork, TClient, TTech, TImpact } from '@/contentful/types'
+import { TWorkItem } from '@/contentful/types'
 
 export default async function useWorkItems() {
   const { workCollection } = await fetchContent(`
@@ -48,14 +48,12 @@ export default async function useWorkItems() {
   
 `)
 
-  return (workCollection.items as TWork[]).map((work) => ({
+  return workCollection.items.map((work: Record<string, unknown>) => ({
     ...work,
-    client: work.client as TClient,
+    client: work.client,
     // @ts-ignore
-    techs: (work.techsCollection?.items || []) as TTech[],
+    techs: work.techsCollection?.items || [],
     // @ts-ignore
-    impacts: (work.impactsCollection?.items || []) as TImpact[],
-  }))
+    impacts: work.impactsCollection?.items || [],
+  })) as TWorkItem
 }
-
-export type TWorkItem = Awaited<ReturnType<typeof useWorkItems>>[0]
