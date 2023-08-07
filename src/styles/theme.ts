@@ -13,7 +13,7 @@ const mainPalette = {
     text: '#fff',
     border: '#fff',
   },
-  accent: ['#f0f', '#0ff'],
+  accent: ['#f0f', '#0ff', '#40F'],
 }
 
 // Theme

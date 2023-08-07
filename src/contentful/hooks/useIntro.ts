@@ -1,5 +1,5 @@
 import { fetchContent } from '@/contentful'
-import { TIntroSection } from '@/contentful/types'
+import { TAuthor, TIntroSection } from '@/contentful/types'
 
 export default async function useIntro() {
   const { introCollection } = await fetchContent(`

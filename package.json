@@ -37,6 +37,7 @@
     "glsl-blend": "1.0.3",
     "glsl-color": "1.0.0",
     "glsl-noise": "0.0.0",
+    "lerp": "1.0.3",
     "leva": "0.9.34",
     "math-random-seed": "2.0.0",
     "next": "13.4.6",

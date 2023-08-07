@@ -2,8 +2,8 @@
 
 import { type PropsWithChildren } from 'react'
 import styled from 'styled-components'
-import { type TWorkItem } from '@/contentful/hooks/useWorkItems'
 import GridSection from '@/components/GridSection'
+import { type TWorkItem } from '@/contentful/types'
 
 import Title from './components/Title'
 import Client from './components/Client'

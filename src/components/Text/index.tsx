@@ -4,6 +4,7 @@ import { FC } from 'react'
 import styled, { css } from 'styled-components'
 import ReactMarkdown from 'react-markdown'
 import FONT from '@/styles/fonts'
+import { palette } from '@/styles/theme'
 
 // TODO: clean up deprecated styles
 
@@ -29,6 +30,15 @@ export const Heading3 = styled.h3`
   font-size: 28px;
   line-height: 40px;
 `
+
+export const Heading4 = styled.h4`
+  ${noMargins};
+  font-family: ${FONT.Karla};
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 25.5px;
+`
+
 /**
  * @deprecated
  */
@@ -45,6 +55,7 @@ export const Paragraph = styled.p`
   font-weight: 400;
   font-size: 17px;
   line-height: 25.5px;
+  color: ${palette.main.text.alpha(0.8)};
 `
 /**
  * @deprecated
@@ -116,6 +127,13 @@ export const Markdown = styled(ReactMarkdown).attrs({
     `}
 `
 
+export const SmallMarkdown = styled(Markdown).attrs((props) => ({
+  components: {
+    ...props.components,
+    p: SmallParagraph as FC,
+  },
+}))``
+
 export const MediumMarkdown = styled(Markdown).attrs((props) => ({
   components: {
     ...props.components,
@@ -129,6 +147,7 @@ export const BigMarkdown = styled(Markdown).attrs((props) => ({
   components: {
     ...props.components,
     p: BigParagraph as FC,
+    h2: Heading4 as FC,
   },
 }))`
   grid-gap: calc(var(--maxCol) / 2);

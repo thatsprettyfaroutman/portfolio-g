@@ -3,3 +3,7 @@ declare module 'math-random-seed' {
     return function random(): number
   }
 }
+
+declare module 'lerp' {
+  export default function lerp(x:number,y:number,a:number ):number
+}

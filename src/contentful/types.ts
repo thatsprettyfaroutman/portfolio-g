@@ -27,4 +27,14 @@ export type TTech = DeepReplace<ITech & ITechFields, Asset, TAsset>
 export type TImpact = DeepReplace<IImpact & IImpactFields, Asset, TAsset>
 export type TAuthor = DeepReplace<IAuthor & IAuthorFields, Asset, TAsset>
 
-export type TIntroSection = DeepReplace<IIntro & IIntroFields, Asset, TAsset>
+export type TWorkItem = TWork & {
+  client: TClient
+  techs: TTech[]
+  impacts: TImpact[]
+}
+
+export type TIntroSection = DeepReplace<
+  IIntro & IIntroFields,
+  Asset,
+  TAsset
+> & { author: TAuthor }
