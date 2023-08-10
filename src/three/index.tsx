@@ -16,7 +16,6 @@ import { Canvas, extend } from '@react-three/fiber'
 import styled from 'styled-components'
 import pick from 'ramda/src/pick'
 import { mergeRefs } from 'react-merge-refs'
-import { useInView } from 'react-intersection-observer'
 import useMeasure from 'react-use-measure'
 import {
   type TUseThreeContextProps,
@@ -28,7 +27,7 @@ import Camera from './components/Camera'
 // TODO: remove debug stuff
 // import { Edges, MeshDiscardMaterial } from '@react-three/drei'
 // import ViewSizeDebug from './components/ViewSizeDebug'
-import { useSpringValue } from 'react-spring'
+import { useSpringValue, useInView } from 'react-spring'
 
 // Uncomment to print loading images (part 1/2)
 // import { WebGLRenderer } from 'three'
@@ -103,7 +102,7 @@ export default function Three({
   const [measureRef, bounds] = useMeasure()
   const [renderRef, renderEnabled] = useInView()
   const [inViewRef, inView] = useInView({
-    threshold: 1,
+    amount: 1,
     rootMargin: '320px 0px',
   })
   // No need to trigger when onResize function changes
