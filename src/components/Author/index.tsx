@@ -2,9 +2,14 @@
 
 import { type PropsWithChildren, useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { type SpringValue, a, useSpringValue } from 'react-spring'
+import {
+  type SpringValue,
+  a,
+  useSpringValue,
+  easings,
+  useInView,
+} from 'react-spring'
 import useMeasure from 'react-use-measure'
-import { useInView } from 'react-intersection-observer'
 import clamp from 'ramda/src/clamp'
 import lerp from 'lerp'
 import { palette } from '@/styles/theme'
@@ -174,7 +179,7 @@ export default function Author({ children, ...restProps }: TAuthorProps) {
   const [profilePictureOpenRef, profilePictureOpenBounds] =
     useMeasure(MEASURE_OPTIONS)
 
-  const [inViewRef, inView] = useInView({ threshold: 0.75 })
+  const [inViewRef, inView] = useInView({ amount: 0.75 })
   const popperRef = useRef<HTMLDivElement>(null)
 
   const openScrollRef = useRef(null as [from: number, to: number] | null)
