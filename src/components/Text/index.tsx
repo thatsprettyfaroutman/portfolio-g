@@ -110,7 +110,11 @@ export const Markdown = styled(ReactMarkdown).attrs({
     h1: Heading1 as FC,
     h2: Heading2 as FC,
     h3: Heading3 as FC,
+    h4: Heading4 as FC,
+    h5: Heading4 as FC,
+    h6: Heading4 as FC,
     p: Paragraph as FC,
+    // TODO: ul, li
   },
 })<{
   // TODO: rename endBleed
@@ -127,13 +131,23 @@ export const Markdown = styled(ReactMarkdown).attrs({
     `}
 `
 
+// TODO: move these custom markdowns to components, e.g. AuthorMarkdown = styled(Markdown)...
+/**
+ * @deprecated
+ */
 export const SmallMarkdown = styled(Markdown).attrs((props) => ({
   components: {
     ...props.components,
     p: SmallParagraph as FC,
+    h1: Heading4 as FC,
+    h2: Heading4 as FC,
+    h3: Heading4 as FC,
   },
 }))``
 
+/**
+ * @deprecated
+ */
 export const MediumMarkdown = styled(Markdown).attrs((props) => ({
   components: {
     ...props.components,
@@ -143,6 +157,9 @@ export const MediumMarkdown = styled(Markdown).attrs((props) => ({
   grid-gap: calc(var(--maxCol) / 2);
 `
 
+/**
+ * @deprecated
+ */
 export const BigMarkdown = styled(Markdown).attrs((props) => ({
   components: {
     ...props.components,
