@@ -3,10 +3,15 @@ import useMeasure from 'react-use-measure'
 import { a, useSpring } from 'react-spring'
 import { palette, usePalette } from '@/styles/theme'
 
+type TFancyBorderProps = {
+  showing?: boolean
+  delay?: number
+  borderWidth?: number
+  borderRadius?: number
+}
+
 export const Wrapper = styled.div`
   position: absolute;
-  /* top: calc(var(--maxCol) / 8); */
-  /* left: calc(var(--maxCol) / 8); */
   top: 0;
   left: 0;
   width: 100%;
@@ -25,10 +30,12 @@ export const Wrapper = styled.div`
 `
 
 export default function FancyBorder({
-  borderWidth = 2,
+  showing = true,
+  delay = 100,
+  borderWidth = 1,
   borderRadius = 12,
   ...restProps
-}) {
+}: TFancyBorderProps) {
   const [ref, bounds] = useMeasure()
   const w = bounds.width
   const h = bounds.height
@@ -41,10 +48,12 @@ export default function FancyBorder({
     L${hbw},${h - hbw}
   `
 
+  const show = bounds.width && showing
+
   const { p } = useSpring({
     from: { p: 0 },
-    p: bounds.width ? 1 : 0,
-    delay: 300,
+    p: show ? 1 : 0,
+    delay: show ? delay : 0,
   })
 
   return (
@@ -56,21 +65,24 @@ export default function FancyBorder({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         style={{
-          transform: p.to((p) => {
-            const pos = `calc(var(--maxCol) / 8 * ${1 - p})`
-            return `translate3d(${pos}, ${pos}, 0)`
-          }),
           opacity: p,
         }}
       >
-        <path
+        <a.path
+          style={{
+            strokeDasharray: p.to((p) => {
+              const l = w + h
+
+              return `0 ${(1 - p) * l * 0.5} ${p * l} ${l}`
+            }),
+          }}
           d={d}
           strokeWidth={borderWidth}
-          stroke="url(#paint0_linear_317_301)"
+          stroke="url(#FancyBorder__gradient)"
         />
         <defs>
           <linearGradient
-            id="paint0_linear_317_301"
+            id="FancyBorder__gradient"
             x1="0"
             y1={h}
             x2={w}
