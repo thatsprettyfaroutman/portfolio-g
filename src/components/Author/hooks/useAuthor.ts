@@ -6,10 +6,11 @@ import { mergeRefs } from 'react-merge-refs'
 import lerp from 'lerp'
 import useProfilePictureDelta from './useProfilePictureDelta'
 
-const EXPANDED_CONTENT_SAFE_TOP_MARGIN = 20
+const EXPANDED_CONTENT_SAFE_MARGIN = 20
 
 export default function useAuthor() {
-  const [open, setOpen] = useState(false)
+  const [isOpen, setOpen] = useState(false)
+  const [isOpening, setIsOpening] = useState(false)
   const [inViewRef, isInView] = useInView({
     // This is used for auto collapsing the popup when there is less than 10% of the popup visible
     amount: 0.1,
@@ -21,86 +22,128 @@ export default function useAuthor() {
   // Springs
   // ------------------------------------------------------
 
-  const { open: x } = useSpring({
-    open: open ? 1 : 0,
+  const { progress: progressX } = useSpring({
+    progress: isOpen ? 1 : 0,
   })
 
   // Separate spring for y axis because we want to add a whimsically wobbly effect to it
-  const { open: y } = useSpring({
+  const { progress: progressY } = useSpring({
     config: { friction: 15 },
-    open: open ? 1 : 0,
-    onChange: ({ value: { open } }) => {
+    progress: isOpen ? 1 : 0,
+    onChange: ({ value: { progress } }) => {
       // Scroll with y if needed
       if (!scrollRef.current) {
         return
       }
       const { from, to } = scrollRef.current
-      window.scrollTo(window.scrollX, lerp(from, to, open))
+      window.scrollTo(window.scrollX, lerp(from, to, progress))
+    },
+    onRest: () => {
+      setIsOpening(false)
     },
   })
 
   // Events and effects
   // ------------------------------------------------------
 
-  // Handle interaction
-  const handleToggle = useCallback(() => {
-    setOpen((open) => {
-      const next = !open
+  const updateScrollRef = useCallback((nextIsOpen: boolean) => {
+    // Scroll the view if the expanded content is out of view
+    if (nextIsOpen) {
+      const expandedContentRect =
+        expandedContentRef.current!.getBoundingClientRect()
 
-      // Scroll the view if the (to be) expanded content is out of view
-      if (next) {
-        const profilePictureYMin =
-          expandedContentRef.current!.getBoundingClientRect().y -
-          EXPANDED_CONTENT_SAFE_TOP_MARGIN
-        if (profilePictureYMin < 0) {
-          scrollRef.current = {
-            from: window.scrollY,
-            to: window.scrollY + profilePictureYMin,
-          }
+      // If expanded content fits in view then scroll so expanded content is in the middle of the view
+      if (
+        expandedContentRect.height <
+        window.innerHeight - EXPANDED_CONTENT_SAFE_MARGIN * 2
+      ) {
+        scrollRef.current = {
+          from: window.scrollY,
+          to:
+            window.scrollY +
+            expandedContentRect.y -
+            (window.innerHeight - expandedContentRect.height) / 2,
         }
-      } else {
-        scrollRef.current = null
+        return
       }
 
-      return next
-    })
+      // Otherwise scroll so expanded content is at the top of the view
+      const expandedContentMinScroll =
+        expandedContentRect.y - EXPANDED_CONTENT_SAFE_MARGIN
+      if (expandedContentMinScroll < 0) {
+        scrollRef.current = {
+          from: window.scrollY,
+          to: window.scrollY + expandedContentMinScroll,
+        }
+      }
+      return
+    }
+
+    // Don't scroll if content isn't expanded
+    scrollRef.current = null
   }, [])
+
+  // Handle interaction
+  const toggle = useCallback(() => {
+    setOpen((previousIsOpen) => {
+      const nextIsOpen = !previousIsOpen
+      updateScrollRef(nextIsOpen)
+      setIsOpening(nextIsOpen)
+      return nextIsOpen
+    })
+  }, [updateScrollRef])
 
   // Collapse automatically if there is less than 10% of the popup visible
   useEffect(() => {
-    if (!isInView && open) {
-      handleToggle()
+    if (!isInView && isOpen && !isOpening) {
+      toggle()
     }
-  }, [isInView, open, handleToggle])
+  }, [isInView, isOpen, isOpening, toggle])
 
   // Styles
   // ------------------------------------------------------
 
+  const shadeStyle = {
+    opacity: progressX,
+    pointerEvents: progressX.to((p) => (p < 0.5 ? 'none' : undefined)),
+  }
+
   const collapsedContentStyle = {
-    opacity: x.to((p) => 1 - p),
-    pointerEvents: x.to((p) => (p > 0.5 ? 'none' : undefined)),
+    opacity: progressX.to((p) => 1 - p),
+    pointerEvents: progressX.to((p) => (p > 0.5 ? 'none' : undefined)),
   }
 
   // ExpandedContent is visible when `open` is true
   const expandedContentStyle = {
-    opacity: x,
-    pointerEvents: x.to((p) => (p < 0.5 ? 'none' : undefined)),
+    opacity: progressX,
+    pointerEvents: progressX.to((p) => (p < 0.5 ? 'none' : undefined)),
   }
 
   // Profile picture flies from closed to open in fluid motion
   const profilePictureStyle = {
-    x: x.to(profilePictureDelta.getX),
-    y: y.to(profilePictureDelta.getY),
-    scale: x.to(profilePictureDelta.getScale),
+    x: progressX.to(profilePictureDelta.getX),
+    y: progressY.to(profilePictureDelta.getY),
+    scale: progressX.to(profilePictureDelta.getScale),
+  }
+
+  const closeButtonStyle = {
+    transform: progressY.to(
+      (p) =>
+        `translate3d(0, calc(var(--maxCol) / 8 * ${
+          1 - p
+        }), 0) scale3d(${p}, ${p}, 1)`
+    ),
   }
 
   return {
-    open,
-    handleToggle,
+    isOpen,
+    toggle,
     style: {
+      shade: shadeStyle,
       collapsedContent: collapsedContentStyle,
       expandedContent: expandedContentStyle,
       profilePicture: profilePictureStyle,
+      closeButton: closeButtonStyle,
     },
     expandedContentRef: mergeRefs([expandedContentRef, inViewRef]),
     profilePictureDelta,
