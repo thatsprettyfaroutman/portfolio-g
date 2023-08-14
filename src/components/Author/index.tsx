@@ -8,9 +8,11 @@ import AnimateChildren from '@/components/AnimateChildren'
 import useAuthor from './hooks/useAuthor'
 import {
   Wrapper,
+  Shade,
   ProfilePictureTargetArea,
   CollapsedContent,
   ExpandedContent,
+  CloseButton,
 } from './styled'
 
 // TODO: Hover follow effect
@@ -22,31 +24,36 @@ type TAuthorProps = {
 }
 
 // Animated versions of components
+const AShade = a(Shade)
 const ACollapsedContent = a(CollapsedContent)
 const AExpandedContent = a(ExpandedContent)
 const AProfilePicture = a(ProfilePicture)
+const ACloseButton = a(CloseButton)
 
 export default function Author({ children, ...restProps }: TAuthorProps) {
-  const { open, handleToggle, style, expandedContentRef, profilePictureDelta } =
+  const { isOpen, toggle, style, expandedContentRef, profilePictureDelta } =
     useAuthor()
 
   return (
     <Wrapper {...restProps}>
-      <ACollapsedContent onClick={handleToggle} style={style.collapsedContent}>
+      <AShade style={style.shade} onClick={toggle} />
+
+      <ACollapsedContent onClick={toggle} style={style.collapsedContent}>
         <Paragraph>{children.name.split(' ')[0]}</Paragraph>
         <ProfilePictureTargetArea ref={profilePictureDelta.fromRef} />
       </ACollapsedContent>
 
       <AExpandedContent
         ref={expandedContentRef}
-        onClick={handleToggle}
+        onClick={toggle}
         style={style.expandedContent}
       >
         <ProfilePictureTargetArea ref={profilePictureDelta.toRef} />
-        <AnimateChildren showing={open} reverseAnimationOrder>
+        <AnimateChildren showing={isOpen} reverseAnimationOrder>
           <Heading4>{children.name}</Heading4>
           <SmallMarkdown>{children.bio}</SmallMarkdown>
         </AnimateChildren>
+        <ACloseButton style={style.closeButton} />
       </AExpandedContent>
 
       {/*
