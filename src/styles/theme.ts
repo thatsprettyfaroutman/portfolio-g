@@ -8,12 +8,12 @@ const mainPalette = {
   main: {
     background: {
       top: chroma('#0ff').darken(5).hex(),
-      bottom: chroma('#f0f').darken(6).hex(),
+      bottom: '#000',
     },
     text: '#fff',
     border: '#fff',
   },
-  accent: ['#f0f', '#0ff', '#40F'],
+  accents: ['#f0f', '#0ff', '#40F'],
 }
 
 // Theme
