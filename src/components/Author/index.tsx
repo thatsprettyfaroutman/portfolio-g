@@ -12,7 +12,6 @@ import {
   ProfilePictureTargetArea,
   CollapsedContent,
   ExpandedContent,
-  CloseButton,
 } from './styled'
 
 // TODO: Hover follow effect
@@ -28,7 +27,6 @@ const AShade = a(Shade)
 const ACollapsedContent = a(CollapsedContent)
 const AExpandedContent = a(ExpandedContent)
 const AProfilePicture = a(ProfilePicture)
-const ACloseButton = a(CloseButton)
 
 export default function Author({ children, ...restProps }: TAuthorProps) {
   const { isOpen, toggle, style, expandedContentRef, profilePictureDelta } =
@@ -53,7 +51,6 @@ export default function Author({ children, ...restProps }: TAuthorProps) {
           <Heading4>{children.name}</Heading4>
           <SmallMarkdown>{children.bio}</SmallMarkdown>
         </AnimateChildren>
-        <ACloseButton style={style.closeButton} />
       </AExpandedContent>
 
       {/*
