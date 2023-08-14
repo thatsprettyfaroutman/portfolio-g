@@ -196,6 +196,9 @@ export default function Card({
   }, [inView, map])
 
   const cardFlip = useSpringValue(0)
+  const cardFlipWobbly = useSpringValue(0, {
+    config: { friction: 30 },
+  })
 
   return (
     <group {...restProps}>
@@ -223,7 +226,9 @@ export default function Card({
           scale-y={height}
           onClick={(e) => {
             const dir = Math.sign(e.uv!.x - 0.5) || 1
-            cardFlip.start(cardFlip.goal + dir)
+            const next = cardFlip.goal + dir
+            cardFlip.start(next)
+            cardFlipWobbly.start(next)
           }}
           onPointerEnter={() => {
             uniforms.current.uMouseHover.value = 1
@@ -242,8 +247,11 @@ export default function Card({
         <a.group
           // This group rotates (flips) on click
           rotation-y={cardFlip.to((p) => MathUtils.lerp(0, Math.PI, p % 2))}
-          position-z={cardFlip.to(
-            (p) => Math.sin(Math.abs(p % 1) * Math.PI) * -200
+          // position-z={cardFlipWobbly.to(
+          //   (p) => Math.sin(Math.abs(p % 1) * Math.PI) * -400
+          // )}
+          position-z={cardFlipWobbly.to(
+            (p) => Math.sin(Math.abs(p % 1) * Math.PI) * -160
           )}
           scale={[width, height, depth]}
         >
