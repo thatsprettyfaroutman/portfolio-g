@@ -126,15 +126,6 @@ export default function useAuthor() {
     scale: progressX.to(profilePictureDelta.getScale),
   }
 
-  const closeButtonStyle = {
-    transform: progressY.to(
-      (p) =>
-        `translate3d(0, calc(var(--maxCol) / 8 * ${
-          1 - p
-        }), 0) scale3d(${p}, ${p}, 1)`
-    ),
-  }
-
   return {
     isOpen,
     toggle,
@@ -143,7 +134,6 @@ export default function useAuthor() {
       collapsedContent: collapsedContentStyle,
       expandedContent: expandedContentStyle,
       profilePicture: profilePictureStyle,
-      closeButton: closeButtonStyle,
     },
     expandedContentRef: mergeRefs([expandedContentRef, inViewRef]),
     profilePictureDelta,

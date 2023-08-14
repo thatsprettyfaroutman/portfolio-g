@@ -83,27 +83,3 @@ export const ExpandedContent = styled.div`
     margin-right: calc(var(--maxCol) / -8);
   }
 `
-
-export const CloseButton = styled.div`
-  position: absolute;
-  top: calc(var(--maxCol) / 4);
-  right: calc(var(--maxCol) / 4);
-  width: calc(var(--maxCol) / 8);
-  height: calc(var(--maxCol) / 8);
-  cursor: pointer;
-
-  ::before,
-  ::after {
-    top: 50%;
-    content: ' ';
-    position: absolute;
-    width: inherit;
-    height: 1px;
-    transform: rotate(45deg);
-    background-color: ${palette.main.text};
-  }
-
-  ::after {
-    transform: rotate(-45deg);
-  }
-`
