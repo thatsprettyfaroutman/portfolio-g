@@ -14,6 +14,7 @@ export default function useAuthor() {
   const [inViewRef, isInView] = useInView({
     // This is used for auto collapsing the popup when there is less than 10% of the popup visible
     amount: 0.1,
+    rootMargin: `-50% 0px 0px 0px`,
   })
   const expandedContentRef = useRef<HTMLDivElement>(null)
   const profilePictureDelta = useProfilePictureDelta()

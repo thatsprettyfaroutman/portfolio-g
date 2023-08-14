@@ -89,8 +89,8 @@ export default function FancyBorder({
             y2="0"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor={usePalette(palette.accent[0])} />
-            <stop offset="1" stopColor={usePalette(palette.accent[1])} />
+            <stop stopColor={usePalette(palette.accents[0])} />
+            <stop offset="1" stopColor={usePalette(palette.accents[1])} />
           </linearGradient>
         </defs>
       </a.svg>

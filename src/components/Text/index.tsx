@@ -72,6 +72,12 @@ export const ParagraphBlock = styled.div<{ allowEndBleed?: boolean }>`
     `}
 `
 
+export const UnorderedList = styled.ul`
+  ${noMargins};
+  padding: 0;
+  padding-left: calc(var(--maxCol) / 4);
+`
+
 export const SmallParagraph = styled(Paragraph)`
   font-size: 15px;
   line-height: 22.5px;
@@ -114,7 +120,8 @@ export const Markdown = styled(ReactMarkdown).attrs({
     h5: Heading4 as FC,
     h6: Heading4 as FC,
     p: Paragraph as FC,
-    // TODO: ul, li
+    ul: UnorderedList as FC,
+    li: styled(Paragraph).attrs({ as: 'li' })`` as FC,
   },
 })<{
   // TODO: rename endBleed
@@ -142,6 +149,7 @@ export const SmallMarkdown = styled(Markdown).attrs((props) => ({
     h1: Heading4 as FC,
     h2: Heading4 as FC,
     h3: Heading4 as FC,
+    li: styled(SmallParagraph).attrs({ as: 'li' })`` as FC,
   },
 }))``
 

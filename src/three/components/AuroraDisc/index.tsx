@@ -48,23 +48,23 @@ export default function AuroraDisc({
   ...restProps
 }: TThingProps) {
   const { size } = useThree()
-  const { inViewSpring } = useThreeContext()
+  // const { inViewSpring } = useThreeContext()
   const materialRef = useRef<TMeshAuroraMaterial>(null)
   const radius = Math.min(size.width, size.height) * 0.5
   const scale = clamp(...RADIUS_BOUNDS, radius - PADDING)
-  const color0 = usePalette(palette.accent[0])
-  const color1 = usePalette(palette.accent[1])
+  const color0 = usePalette(palette.accents[0])
+  const color1 = usePalette(palette.accents[1])
 
   useFrame((s) => {
     if (!materialRef.current) {
       return
     }
     materialRef.current.uTime = s.clock.getElapsedTime()
-    materialRef.current.uOpacity = MathUtils.lerp(
-      0.1,
-      1,
-      inViewSpring.get() * opacity
-    )
+    // materialRef.current.uOpacity = MathUtils.lerp(
+    //   0.1,
+    //   1,
+    //   inViewSpring.get() * opacity
+    // )
   })
 
   const firstRender = useRef(true)

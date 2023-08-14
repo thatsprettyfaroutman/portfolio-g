@@ -104,7 +104,7 @@ export default function Card({
   const { width, height } = useContainSize(widthProp, heightProp)
   const { inView, inViewSpring } = useThreeContext()
   const ambientLightColor = usePalette(palette.main.background.bottom)
-  const backgroundColor = ambientLightColor // usePalette(palette.accent[0])
+  const backgroundColor = ambientLightColor // usePalette(palette.accents[0])
   const foregroundColor = usePalette(palette.main.text)
 
   const iconMap = useTexture(iconMapSrc)

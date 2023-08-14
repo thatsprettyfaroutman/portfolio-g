@@ -3,7 +3,7 @@
 import styled from 'styled-components'
 import { palette } from '@/styles/theme'
 import ProfilePicture from '@/components/ProfilePicture'
-import { SmallMarkdown, Heading4 } from '@/components/Text'
+import { SmallMarkdown } from '@/components/Text'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -25,8 +25,18 @@ export const Shade = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: ${palette.main.background.bottom.alpha(0.7)};
   z-index: 1;
+
+  ::after {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: ${palette.main.background.bottom};
+    opacity: 0.96;
+  }
 `
 
 export const ProfilePictureTargetArea = styled.div`
@@ -54,19 +64,14 @@ export const ExpandedContent = styled.div`
   right: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   gap: calc(var(--maxCol) / 4);
   width: calc(var(--maxCol) * 4);
-  max-width: calc(100vw - var(--maxCol));
+  max-width: calc(100vw - var(--minCol) * 2);
   box-sizing: border-box;
   padding: calc(var(--maxCol) / 2);
   border-radius: 8px;
-  /* box-shadow: 0px 0px 200px 60px #000000; */
-  background: linear-gradient(
-    -135deg,
-    ${palette.accent[2].darken(4)} 10%,
-    ${palette.main.background.bottom} 90%
-  );
+
   cursor: pointer;
   user-select: none;
   z-index: 1;
@@ -75,11 +80,7 @@ export const ExpandedContent = styled.div`
     width: calc(var(--maxCol) * 2);
   }
 
-  > div > ${Heading4} {
-    text-align: center;
-  }
-
   > div > ${SmallMarkdown} {
-    margin-right: calc(var(--maxCol) / -8);
+    margin-right: calc(var(--maxCol) / -16);
   }
 `
