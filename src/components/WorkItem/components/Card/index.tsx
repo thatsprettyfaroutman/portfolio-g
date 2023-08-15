@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import useMeasure from 'react-use-measure'
 import { MEDIA } from '@/styles/media'
 import Three from '@/three'
-import VideoCard from '@/three/components/Card/components/Video'
+import VideoCard from '@/three/components/VideoCard'
 
 const CARD_PIXEL_RATIO = 2
 
