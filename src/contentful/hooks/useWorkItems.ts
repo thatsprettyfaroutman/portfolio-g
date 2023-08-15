@@ -4,7 +4,7 @@ import { TWorkItem } from '@/contentful/types'
 export default async function useWorkItems() {
   const { workCollection } = await fetchContent(`
   query WorkQuery {
-    workCollection {
+    workCollection(order:sys_publishedAt_ASC) {
       items {
         sys {
           id
