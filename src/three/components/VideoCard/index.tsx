@@ -26,16 +26,17 @@ import {
   MeshDiscardMaterial,
   // useHelper,
   useTexture,
+  useVideoTexture,
 } from '@react-three/drei'
 import { usePalette, palette } from '@/styles/theme'
 import MouseOrbiter from '@/three/components/MouseOrbiter'
 
 // @ts-ignore
-import fragmentPars from '../../shaders/pars.frag'
+import fragmentPars from './shaders/pars.frag'
 // @ts-ignore
-import fragmentMain from '../../shaders/main.frag'
+import fragmentMain from './shaders/main.frag'
 
-import paperNormal from '../../textures/paper-normal.jpg'
+import paperNormal from './textures/paper-normal.jpg'
 import { useThreeContext } from '@/three/context'
 
 extend({
@@ -53,7 +54,7 @@ const BOX_GEOMETRY = new BoxGeometry()
 const PLANE_GEOMETRY = new PlaneGeometry()
 
 export type TCardProps = {
-  map: Texture
+  src: string
   width?: number
   height?: number
   depth?: number
@@ -84,8 +85,8 @@ const useContainSize = (width: number, height: number) => {
   return { width, height }
 }
 
-export default function Card({
-  map,
+export default function VideoCard({
+  src,
   width: widthProp = 300,
   height: heightProp = 200,
   depth = 8,
@@ -106,6 +107,8 @@ export default function Card({
   const ambientLightColor = usePalette(palette.main.background.bottom)
   const backgroundColor = ambientLightColor // usePalette(palette.accents[0])
   const foregroundColor = usePalette(palette.main.text)
+
+  const map = useVideoTexture(src, { start: false })
 
   const iconMap = useTexture(iconMapSrc)
 
