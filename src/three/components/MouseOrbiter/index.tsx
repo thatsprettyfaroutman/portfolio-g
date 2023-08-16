@@ -59,7 +59,7 @@ export default function MouseOrbiter({
     },
   })
 
-  useFrame((s) => {
+  useFrame(() => {
     if (!ref.current) {
       return
     }

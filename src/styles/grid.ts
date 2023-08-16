@@ -9,6 +9,9 @@ export const gridVars = css`
   --col: clamp(var(--minCol), var(--maxCol), calc(var(--colP) * 1vw));
 `
 
+/**
+ * @deprecated
+ */
 export const templateCols = (amount?: number) => {
   let cols = `var(--cols)`
   if (amount && amount > 0) {
@@ -21,6 +24,3 @@ export const templateCols = (amount?: number) => {
     repeat(${cols}, 1fr);
   `
 }
-
-// TODO: clean up if not needed
-// export const col = (amount = 1) => css`calc(var(--col) * ${amount})`
