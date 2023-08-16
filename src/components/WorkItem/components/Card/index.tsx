@@ -3,8 +3,11 @@ import useMeasure from 'react-use-measure'
 import { MEDIA } from '@/styles/media'
 import Three from '@/three'
 import VideoCard from '@/three/components/VideoCard'
+import Sticky from '@/three/components/Sticky'
+import useCssVariable from '@/hooks/useCssVariable'
 
 const CARD_PIXEL_RATIO = 2
+const MARGIN_OFFSET = 8
 
 type TCardProps = {
   src: string
@@ -18,9 +21,9 @@ const Wrapper = styled.div<{ aspectRatio: number }>`
   position: relative;
   justify-items: start;
   box-sizing: border-box;
-  aspect-ratio: ${(p) => p.aspectRatio};
-
+  /* aspect-ratio: ${(p) => p.aspectRatio}; */
   grid-row: 2;
+  /* outline: 1px solid #0f0; */
 
   ${MEDIA.tablet} {
     grid-column: 10 / -1;
@@ -54,16 +57,19 @@ export default function Card({
 }: TCardProps) {
   const [measureRef, bounds] = useMeasure()
   const aspectRatio = width / height
+  const col = useCssVariable('--col') + MARGIN_OFFSET
 
   return (
     <Wrapper ref={measureRef} {...restProps} aspectRatio={aspectRatio}>
-      <Three keepScrollPerspective dpr={CARD_PIXEL_RATIO}>
-        <VideoCard
-          src={src}
-          width={bounds.width}
-          height={bounds.width / aspectRatio}
-          iconMapSrc={iconSrc}
-        />
+      <Three dpr={CARD_PIXEL_RATIO}>
+        <Sticky topMargin={col} bottomMargin={col}>
+          <VideoCard
+            src={src}
+            width={bounds.width}
+            height={bounds.width / aspectRatio}
+            iconMapSrc={iconSrc}
+          />
+        </Sticky>
       </Three>
     </Wrapper>
   )
