@@ -2,6 +2,7 @@ import constate from 'constate'
 import { type SpringValue } from 'react-spring'
 
 export type TUseThreeContextProps = {
+  debug?: boolean
   renderEnabled: boolean
   inView: boolean
   inViewSpring: SpringValue<number>
