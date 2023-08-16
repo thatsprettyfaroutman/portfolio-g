@@ -26,7 +26,7 @@ import Camera from './components/Camera'
 
 // TODO: remove debug stuff
 // import { Edges, MeshDiscardMaterial } from '@react-three/drei'
-// import ViewSizeDebug from './components/ViewSizeDebug'
+// import ViewSizeHelper from './components/ViewSizeHelper'
 import { useSpringValue, useInView } from 'react-spring'
 
 // Uncomment to print loading images (part 1/2)
@@ -83,12 +83,11 @@ function ThreeCanvas({ children, ...restProps }: TThreeCanvasProps) {
 
       {/* TODO: remove debug stuff */}
       {/* <mesh scale={100} rotation={[0, Math.PI * 0.25, 0]}>
-          <boxGeometry />
-          <MeshDiscardMaterial />
-          <Edges color="#0ff" />
-        </mesh>
-        */}
-      {/* <ViewSizeDebug /> */}
+        <boxGeometry />
+        <MeshDiscardMaterial />
+        <Edges color="#0ff" />
+      </mesh>
+      <ViewSizeHelper /> */}
     </Canvas>
   )
 }
@@ -101,10 +100,7 @@ export default function Three({
 }: TThreeProps) {
   const [measureRef, bounds] = useMeasure()
   const [renderRef, renderEnabled] = useInView()
-  const [inViewRef, inView] = useInView({
-    amount: 1,
-    rootMargin: '320px 0px',
-  })
+  const [inViewRef, inView] = useInView({ amount: 0.1 })
   // No need to trigger when onResize function changes
   // Also, this way no need to useCallback onResize
   const onResizeRef = useRef(onResize)

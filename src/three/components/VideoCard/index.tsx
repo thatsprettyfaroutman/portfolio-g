@@ -16,8 +16,9 @@ import {
   MathUtils,
 } from 'three'
 import { useEffect, useRef } from 'react'
-import { useThree, extend } from '@react-three/fiber'
+import { useThree, extend, useFrame } from '@react-three/fiber'
 import { a, useSpringValue } from '@react-spring/three'
+import clamp from 'ramda/src/clamp'
 import getShaderInjectors from '@/three/utils/injectShader'
 
 // TODO: create useFontsReady hook
@@ -103,7 +104,11 @@ export default function VideoCard({
 }: TCardProps) {
   const aspect = widthProp / heightProp
   const { width, height } = useContainSize(widthProp, heightProp)
-  const { inView, inViewSpring } = useThreeContext()
+  const {
+    inView,
+    inViewSpring,
+    scrollCompensatedBounds: bounds,
+  } = useThreeContext()
   const ambientLightColor = usePalette(palette.main.background.bottom)
   const backgroundColor = ambientLightColor // usePalette(palette.accents[0])
   const foregroundColor = usePalette(palette.main.text)
@@ -197,6 +202,18 @@ export default function VideoCard({
       map.source.data.pause?.()
     }
   }, [inView, map])
+
+  // TODO: move light to separate component NonStickingLight or something
+  useFrame(() => {
+    if (!lightRef.current) {
+      return
+    }
+    const scrollDeltaY = bounds.y - window.scrollY
+    const range = height * 0.5 * 0.5
+    const yTop = range + scrollDeltaY
+    const y = clamp(-range, range, yTop)
+    lightRef.current.position.y = y
+  })
 
   const cardFlip = useSpringValue(0)
   const cardFlipWobbly = useSpringValue(0, {
