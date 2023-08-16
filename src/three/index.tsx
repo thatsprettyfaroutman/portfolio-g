@@ -23,10 +23,8 @@ import {
   useThreeContext,
 } from './context'
 import Camera from './components/Camera'
-
-// TODO: remove debug stuff
-// import { Edges, MeshDiscardMaterial } from '@react-three/drei'
-// import ViewSizeHelper from './components/ViewSizeHelper'
+import { Edges, MeshDiscardMaterial } from '@react-three/drei'
+import ViewSizeHelper from './components/ViewSizeHelper'
 import { useSpringValue, useInView } from 'react-spring'
 
 // Uncomment to print loading images (part 1/2)
@@ -36,6 +34,7 @@ import { useSpringValue, useInView } from 'react-spring'
 extend({ Group })
 
 const CONTEXT_PROP_KEYS = [
+  'debug',
   'keepScrollPerspective',
   'offsetX',
   'offsetY',
@@ -49,7 +48,7 @@ type TThreeProps = {
   className?: string
 } & Pick<TUseThreeContextProps, (typeof CONTEXT_PROP_KEYS)[number]>
 
-type TThreeCanvasProps = PropsWithChildren<>
+type TThreeCanvasProps = PropsWithChildren
 
 const Wrapper = styled.div`
   width: 100%;
@@ -63,7 +62,7 @@ const Wrapper = styled.div`
 `
 
 function ThreeCanvas({ children, ...restProps }: TThreeCanvasProps) {
-  const { renderEnabled, dpr } = useThreeContext()
+  const { renderEnabled, dpr, debug } = useThreeContext()
 
   return (
     <Canvas
@@ -81,13 +80,16 @@ function ThreeCanvas({ children, ...restProps }: TThreeCanvasProps) {
       <Camera />
       {children}
 
-      {/* TODO: remove debug stuff */}
-      {/* <mesh scale={100} rotation={[0, Math.PI * 0.25, 0]}>
-        <boxGeometry />
-        <MeshDiscardMaterial />
-        <Edges color="#0ff" />
-      </mesh>
-      <ViewSizeHelper /> */}
+      {debug && (
+        <>
+          <mesh scale={100} rotation={[0, Math.PI * 0.25, 0]}>
+            <boxGeometry />
+            <MeshDiscardMaterial />
+            <Edges color="#0ff" />
+          </mesh>
+          <ViewSizeHelper />
+        </>
+      )}
     </Canvas>
   )
 }
@@ -101,8 +103,8 @@ export default function Three({
   const [measureRef, bounds] = useMeasure()
   const [renderRef, renderEnabled] = useInView()
   const [inViewRef, inView] = useInView({ amount: 0.1 })
+
   // No need to trigger when onResize function changes
-  // Also, this way no need to useCallback onResize
   const onResizeRef = useRef(onResize)
   onResizeRef.current = onResize
   useEffect(() => {
