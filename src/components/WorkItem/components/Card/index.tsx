@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import useMeasure from 'react-use-measure'
 import { MEDIA } from '@/styles/media'
-import Three from '@/three'
+import Three from '@/three/lazy'
+import useCssVariable from '@/hooks/useCssVariable'
 import VideoCard from '@/three/components/VideoCard'
 import Sticky from '@/three/components/Sticky'
-import useCssVariable from '@/hooks/useCssVariable'
+import Scene from './scene'
 
 const CARD_PIXEL_RATIO = 2
 
@@ -22,8 +23,6 @@ const Wrapper = styled.div<{ aspectRatio: number }>`
   box-sizing: border-box;
   aspect-ratio: ${(p) => p.aspectRatio};
   grid-row: 2;
-  /* TODO: rm outline */
-  /* outline: 1px solid #0f0; */
 
   ${MEDIA.tablet} {
     grid-column: 10 / -1;
@@ -63,18 +62,20 @@ export default function Card({
   return (
     <Wrapper ref={measureRef} {...restProps} aspectRatio={aspectRatio}>
       <Three dpr={CARD_PIXEL_RATIO}>
-        <Sticky
-          topMargin={col}
-          bottomMargin={col}
-          height={bounds.width / aspectRatio}
-        >
-          <VideoCard
-            src={src}
-            width={bounds.width}
+        <Scene>
+          <Sticky
+            topMargin={col}
+            bottomMargin={col}
             height={bounds.width / aspectRatio}
-            iconMapSrc={iconSrc}
-          />
-        </Sticky>
+          >
+            <VideoCard
+              src={src}
+              width={bounds.width}
+              height={bounds.width / aspectRatio}
+              iconMapSrc={iconSrc}
+            />
+          </Sticky>
+        </Scene>
       </Three>
     </Wrapper>
   )
