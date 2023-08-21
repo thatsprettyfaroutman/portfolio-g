@@ -4,51 +4,37 @@ import {
   BoxGeometry,
   PlaneGeometry,
   MeshPhysicalMaterial,
-  AmbientLight,
-  DirectionalLight,
-  // DirectionalLightHelper,
   Color,
   Texture,
   Vector2,
   RepeatWrapping,
   NearestFilter,
-  UniformsLib,
-  MathUtils,
 } from 'three'
 import { useEffect, useRef } from 'react'
-import { useThree, extend, useFrame } from '@react-three/fiber'
+import { type ThreeEvent, useThree, extend } from '@react-three/fiber'
 import { a, useSpringValue } from '@react-spring/three'
-import clamp from 'ramda/src/clamp'
 import getShaderInjectors from '@/three/utils/injectShader'
-
-// TODO: create useFontsReady hook
-// import useFontsReady from 'hooks/useFontsReady'
 import {
   MeshDiscardMaterial,
-  // useHelper,
   useTexture,
   useVideoTexture,
 } from '@react-three/drei'
 import { usePalette, palette } from '@/styles/theme'
 import MouseOrbiter from '@/three/components/MouseOrbiter'
+import { useThreeContext } from '@/three/context'
+import paperNormal from './textures/paper-normal.jpg'
 
 // @ts-ignore
 import fragmentPars from './shaders/pars.frag'
 // @ts-ignore
 import fragmentMain from './shaders/main.frag'
-
-import paperNormal from './textures/paper-normal.jpg'
-import { useThreeContext } from '@/three/context'
+import lerp from 'lerp'
 
 extend({
   Group,
   Mesh,
   MeshPhysicalMaterial,
-  DirectionalLight,
-  AmbientLight,
 })
-
-// TODO: clean up this file
 
 // Recycled Geometries
 const BOX_GEOMETRY = new BoxGeometry()
@@ -105,28 +91,27 @@ export default function VideoCard({
   const aspect = widthProp / heightProp
   const { width, height } = useContainSize(widthProp, heightProp)
   const { inView } = useThreeContext()
-  const ambientLightColor = usePalette(palette.main.background.bottom)
-  const backgroundColor = ambientLightColor // usePalette(palette.accents[0])
-  const foregroundColor = usePalette(palette.main.text)
-  const map = useVideoTexture(src, { start: false })
-  const iconMap = useTexture(iconMapSrc)
-  const hardLightMap = useTexture(paperNormal.src, (t) => {
-    const textures = Array.isArray(t) ? t : [t]
-    textures.map((t) => {
-      t.wrapS = RepeatWrapping
-      t.wrapT = RepeatWrapping
-      t.repeat.x = 4.0
-      t.repeat.y = 4.0 / aspect
-    })
-  })
 
+  //
+  // Colors
+  const backgroundColor = usePalette(palette.main.background.bottom)
+  const foregroundColor = usePalette(palette.main.text)
+
+  //
+  // Maps
+  const map = useVideoTexture(src, { start: false })
   map.minFilter = NearestFilter
   map.magFilter = NearestFilter
+  const iconMap = useTexture(iconMapSrc)
+  const roughnessMap = useTexture(paperNormal.src)
+  roughnessMap.wrapS = RepeatWrapping
+  roughnessMap.wrapT = RepeatWrapping
+  roughnessMap.repeat.x = 4.0
+  roughnessMap.repeat.y = 4.0 / aspect
 
+  //
+  // Uniforms
   const uniforms = useRef({
-    // TODO: remove unused
-    ...UniformsLib['fog'],
-    uTime: { value: 0 },
     uResolution: { value: new Vector2(width, height) },
     uAspect: { value: aspect },
     uMap: { value: map },
@@ -136,25 +121,16 @@ export default function VideoCard({
     uMapPosition: {
       value: new Vector2(mapX || 0, mapY || 0),
     },
-    uMapBorderRadius: { value: 0 },
+    uMapBorderRadius: { value: mapBorderRadius },
     uIconMap: { value: new Texture() },
     uIconMapResolution: { value: new Vector2(iconMapWidth, iconMapHeight) },
     uIconMapColorBackground: { value: new Color(backgroundColor) },
     uIconMapColorForeground: { value: new Color(foregroundColor) },
-    // uTitleMap: { value: titleMap },
     uMouse: { value: new Vector2(0) },
     uMouseHover: { value: 0 },
-    uHardLightMap: { value: hardLightMap },
   })
 
   useEffect(() => {
-    if (iconMap) {
-      uniforms.current.uIconMap.value = iconMap
-      uniforms.current.uIconMapResolution.value.x = iconMapWidth
-      uniforms.current.uIconMapResolution.value.y = iconMapHeight
-    }
-    uniforms.current.uIconMapColorBackground.value.set(backgroundColor)
-    uniforms.current.uIconMapColorForeground.value.set(foregroundColor)
     uniforms.current.uResolution.value.x = width
     uniforms.current.uResolution.value.y = height
     uniforms.current.uAspect.value = aspect
@@ -162,6 +138,13 @@ export default function VideoCard({
     uniforms.current.uMapSize.value.y = mapHeight ?? height
     uniforms.current.uMapPosition.value.x = mapX || 0
     uniforms.current.uMapPosition.value.y = mapY || 0
+    if (iconMap) {
+      uniforms.current.uIconMap.value = iconMap
+      uniforms.current.uIconMapResolution.value.x = iconMapWidth
+      uniforms.current.uIconMapResolution.value.y = iconMapHeight
+    }
+    uniforms.current.uIconMapColorBackground.value.set(backgroundColor)
+    uniforms.current.uIconMapColorForeground.value.set(foregroundColor)
     uniforms.current.uMapBorderRadius.value = mapBorderRadius
   }, [
     aspect,
@@ -179,6 +162,7 @@ export default function VideoCard({
     iconMapHeight,
   ])
 
+  //
   // Play video textures when in view
   useEffect(() => {
     if (inView) {
@@ -188,10 +172,18 @@ export default function VideoCard({
     }
   }, [inView, map])
 
+  //
+  // Card flipping animation
   const cardFlip = useSpringValue(0)
   const cardFlipWobbly = useSpringValue(0, {
     config: { friction: 30 },
   })
+  const handleCardFlip = (e: ThreeEvent<MouseEvent>) => {
+    const dir = Math.sign(e.uv!.x - 0.5) || 1
+    const next = cardFlip.goal + dir
+    cardFlip.start(next)
+    cardFlipWobbly.start(next)
+  }
 
   return (
     <group {...restProps}>
@@ -207,12 +199,7 @@ export default function VideoCard({
           geometry={PLANE_GEOMETRY}
           scale-x={width}
           scale-y={height}
-          onClick={(e) => {
-            const dir = Math.sign(e.uv!.x - 0.5) || 1
-            const next = cardFlip.goal + dir
-            cardFlip.start(next)
-            cardFlipWobbly.start(next)
-          }}
+          onClick={handleCardFlip}
           onPointerEnter={() => {
             uniforms.current.uMouseHover.value = 1
           }}
@@ -229,10 +216,7 @@ export default function VideoCard({
 
         <a.group
           // This group rotates (flips) on click
-          rotation-y={cardFlip.to((p) => MathUtils.lerp(0, Math.PI, p % 2))}
-          // position-z={cardFlipWobbly.to(
-          //   (p) => Math.sin(Math.abs(p % 1) * Math.PI) * -400
-          // )}
+          rotation-y={cardFlip.to((p) => lerp(0, Math.PI, p % 2))}
           position-z={cardFlipWobbly.to(
             (p) => Math.sin(Math.abs(p % 1) * Math.PI) * -160
           )}
@@ -242,7 +226,7 @@ export default function VideoCard({
             <meshPhysicalMaterial
               attach="material"
               map={map}
-              roughnessMap={hardLightMap}
+              roughnessMap={roughnessMap}
               onBeforeCompile={(shaderObject) => {
                 shaderObject.uniforms = {
                   ...shaderObject.uniforms,
