@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
 
 // This div is used to get computed px value of css variable
-const getMeasureDiv = (varName: string): HTMLDivElement => {
+const getMeasureDiv = (varName: string) => {
+  if (typeof window === 'undefined') {
+    return
+  }
+
   const id = `measureDiv${varName}`
-  const div = document.body.querySelector(`.${id}`)
+  const div = document.body.querySelector(`div.${id}`)
   if (div) {
     return div as HTMLDivElement
   }
@@ -14,13 +18,13 @@ const getMeasureDiv = (varName: string): HTMLDivElement => {
   newDiv.style.left = '-9999px'
   newDiv.style.width = `var(${varName})`
   newDiv.style.height = '1px'
-  document.body.prepend(newDiv)
+  document.body.appendChild(newDiv)
   return newDiv
 }
 
 const getCssVariableValue = (varName: string) => {
   const div = getMeasureDiv(varName)
-  return div.offsetWidth
+  return div?.offsetWidth || 0
 }
 
 /**
@@ -32,10 +36,16 @@ export default function useCssVariable(varName: string) {
   const [value, setValue] = useState(getCssVariableValue(varName))
 
   useEffect(() => {
+    const measureDiv = getMeasureDiv(varName)
+    if (!measureDiv) {
+      // Build time...
+      return
+    }
+
     const observer = new ResizeObserver(() => {
       setValue(getCssVariableValue(varName))
     })
-    observer.observe(document.body)
+    observer.observe(measureDiv)
 
     return () => {
       observer.disconnect()
