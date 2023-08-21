@@ -104,27 +104,12 @@ export default function VideoCard({
 }: TCardProps) {
   const aspect = widthProp / heightProp
   const { width, height } = useContainSize(widthProp, heightProp)
-  const {
-    inView,
-    inViewSpring,
-    scrollCompensatedBounds: bounds,
-  } = useThreeContext()
+  const { inView } = useThreeContext()
   const ambientLightColor = usePalette(palette.main.background.bottom)
   const backgroundColor = ambientLightColor // usePalette(palette.accents[0])
   const foregroundColor = usePalette(palette.main.text)
-
   const map = useVideoTexture(src, { start: false })
-
   const iconMap = useTexture(iconMapSrc)
-
-  const lightRef = useRef<DirectionalLight>(null)
-  // useHelper(
-  //   // @ts-ignore
-  //   lightRef,
-  //   DirectionalLightHelper,
-  //   '#0ff'
-  // )
-
   const hardLightMap = useTexture(paperNormal.src, (t) => {
     const textures = Array.isArray(t) ? t : [t]
     textures.map((t) => {
@@ -203,18 +188,6 @@ export default function VideoCard({
     }
   }, [inView, map])
 
-  // TODO: move light to separate component NonStickingLight or something
-  useFrame(() => {
-    if (!lightRef.current) {
-      return
-    }
-    const scrollDeltaY = bounds.y - window.scrollY
-    const range = height * 0.5 * 0.5
-    const yTop = range + scrollDeltaY
-    const y = clamp(-range, range, yTop)
-    lightRef.current.position.y = y
-  })
-
   const cardFlip = useSpringValue(0)
   const cardFlipWobbly = useSpringValue(0, {
     config: { friction: 30 },
@@ -222,16 +195,6 @@ export default function VideoCard({
 
   return (
     <group {...restProps}>
-      <ambientLight color={ambientLightColor} />
-      <a.directionalLight
-        ref={lightRef}
-        color="#fff"
-        position-z={600}
-        // position-y={200}
-        // @ts-ignore
-        intensity={inViewSpring.to((p) => MathUtils.lerp(0.3, 0.9, p))}
-      />
-
       <MouseOrbiter
         speed={0.1}
         hoverWidth={width + 16}
