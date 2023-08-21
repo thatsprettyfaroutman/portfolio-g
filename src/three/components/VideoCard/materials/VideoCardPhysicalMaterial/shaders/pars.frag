@@ -1,22 +1,20 @@
 uniform vec2 uResolution;
 uniform float uAspect;
-uniform vec2 uMapSize;
-uniform vec2 uMapPosition;
-uniform float uMapBorderRadius;
 
 uniform vec2 uMouse;
 uniform float uMouseHover;
+uniform bool uFlipMouseY;
 
+uniform bool uMixIcon;
 uniform sampler2D uIconMap;
 uniform vec3 uIconMapColorBackground;
 uniform vec3 uIconMapColorForeground;
 uniform vec2 uIconMapResolution;
 
-#pragma glslify: rgb2hsb = require(glsl-color)
-#pragma glslify: roundRect = require(../../../shaders/roundRect.glsl)
+uniform bool uBackside;
 
-// TODO: uniform
-bool flipY = false;
+#pragma glslify: rgb2hsb = require(glsl-color)
+#pragma glslify: roundRect = require(../../../../../shaders/roundRect.glsl)
 
 vec4 mixIcon(vec4 color, vec2 uv) {
   vec2 iconSize = uIconMapResolution / uResolution;
@@ -33,36 +31,16 @@ vec4 mixIcon(vec4 color, vec2 uv) {
   float edge = min(edgeH, edgeV);
 
   return vec4(mix(color.rgb, iconColor, edge), color.a);
+
 }
 
 vec4 getDiffuseColor(vec2 uv) {
-
-  vec2 mapSize = uMapSize / uResolution;
-  vec2 offsetUv = uv / mapSize;
-
-  if(length(uMapPosition) > 0.0) {
-    vec2 mapPosition = uMapPosition / uResolution;
-    offsetUv -= mapPosition / mapSize;
+  vec2 offsetUv = uv;
+  if(uBackside == true) {
+    offsetUv.x = 0.0;
+    offsetUv.y = 0.0;
   }
-
-  vec4 color = texture2D(map, offsetUv);
-  vec4 edgeColor = texture2D(map, vec2(0.0, 0.01));
-
-  if(offsetUv.x < 0.0 || offsetUv.x > 1.0 || offsetUv.y < 0.0 || offsetUv.y > 1.0) {
-    color = edgeColor;
-  }
-
-  if(uMapBorderRadius > 0.0) {
-    vec2 boxCenter = offsetUv - 0.5;
-    boxCenter.y /= uAspect;
-    vec2 boxSize = vec2(0.5, 0.5 / uAspect);
-    float cornerRadius = uMapBorderRadius / uResolution.x / mapSize.x;
-    float cornerDistance = roundRect(boxCenter, boxSize, cornerRadius);
-    float edge = step(0.0, cornerDistance);
-    color = mix(color, edgeColor, edge);
-  }
-
-  return color;
+  return texture2D(map, offsetUv);
 }
 
 vec4 blurDiffuseColor(vec2 uv, float radiusPx, float quality, float directions) {
@@ -85,7 +63,7 @@ vec4 blurDiffuseColor(vec2 uv, float radiusPx, float quality, float directions) 
 vec4 mixMouseBlob(vec4 color) {
   float blobRadius = 24.0 / uResolution.x * uMouseHover;
   vec2 aUv = vec2(vMapUv.x, vMapUv.y / uAspect);
-  vec2 m0 = vec2(uMouse.x, flipY ? 1.0 - uMouse.y : uMouse.y);
+  vec2 m0 = vec2(uMouse.x, uFlipMouseY ? 1.0 - uMouse.y : uMouse.y);
   vec2 m1 = vec2(m0.x, m0.y / uAspect);
   float blob = distance(aUv, m1);
   float blobEdge = 1.0 - step(blobRadius, blob);
