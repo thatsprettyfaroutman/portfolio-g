@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 import useIntro from '@/contentful/hooks/useIntro'
-import Three from '@/three'
+import Three from '@/three/lazy'
 import { Heading1 } from '@/components/Text'
 import MouseOrbiter from '@/three/components/MouseOrbiter'
 import AuroraDisc from '@/three/components/AuroraDisc'
