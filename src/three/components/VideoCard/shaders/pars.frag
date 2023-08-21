@@ -1,54 +1,22 @@
-//
-
-// TODO: clean up
-
 uniform vec2 uResolution;
 uniform float uAspect;
-
-// TODO: remove uMapAspect
-uniform float uMapAspect;
-
 uniform vec2 uMapSize;
 uniform vec2 uMapPosition;
 uniform float uMapBorderRadius;
 
 uniform vec2 uMouse;
 uniform float uMouseHover;
-uniform sampler2D uTitleMap;
-
-// TODO: remove if unused
-uniform sampler2D uHardLightMap;
 
 uniform sampler2D uIconMap;
 uniform vec3 uIconMapColorBackground;
 uniform vec3 uIconMapColorForeground;
 uniform vec2 uIconMapResolution;
 
-#pragma glslify: blendHardLight = require(glsl-blend/hard-light)
-#pragma glslify: blendOverlay = require(glsl-blend/darken)
 #pragma glslify: rgb2hsb = require(glsl-color)
-// #pragma glslify: hsb2rgb = require(glsl-color/hsb2rgb.glsl)
 #pragma glslify: roundRect = require(../../../shaders/roundRect.glsl)
 
 // TODO: uniform
 bool flipY = false;
-
-vec4 paper(vec4 color) {
-  vec4 hardLightColor = texture2D(uHardLightMap, vRoughnessMapUv);
-  return vec4(blendHardLight(color.rgb, hardLightColor.yyy, 1.0), color.a);
-}
-
-// TODO: remove if unused
-// vec4 mixOverlay(vec4 color) {
-//   vec4 color2 = texture2D(uIconMap, vMapUv);
-//   return vec4(blendHardLight(color.rgb, color2.rgb, 0.1), color.a);
-// }
-
-// vec4 mixTitle(vec4 color) {
-//   vec4 titleColor = texture2D(uTitleMap, vMapUv);
-//   vec3 mixedColor = mix(color.rgb, titleColor.rgb, titleColor.a);
-//   return vec4(mixedColor, color.a);
-// }
 
 vec4 mixIcon(vec4 color, vec2 uv) {
   vec2 iconSize = uIconMapResolution / uResolution;
@@ -68,7 +36,6 @@ vec4 mixIcon(vec4 color, vec2 uv) {
 }
 
 vec4 getDiffuseColor(vec2 uv) {
-  // Uses uniform `map`
 
   vec2 mapSize = uMapSize / uResolution;
   vec2 offsetUv = uv / mapSize;
@@ -77,16 +44,9 @@ vec4 getDiffuseColor(vec2 uv) {
     vec2 mapPosition = uMapPosition / uResolution;
     offsetUv -= mapPosition / mapSize;
   }
-  // center x
-  // offsetUv.x -= (((1.0 - mapSize.x) / (mapSize.x))) * 0.5;
-  // center y
-  // offsetUv.y -= (((1.0 - mapSize.y) / (mapSize.y))) * 0.5;
 
   vec4 color = texture2D(map, offsetUv);
-
   vec4 edgeColor = texture2D(map, vec2(0.0, 0.01));
-  // Darken if bright and brighten if dark
-  // edgeColor.rgb -= (rgb2hsb(edgeColor.rgb).z - 0.5) * 0.05;
 
   if(offsetUv.x < 0.0 || offsetUv.x > 1.0 || offsetUv.y < 0.0 || offsetUv.y > 1.0) {
     color = edgeColor;
@@ -101,13 +61,6 @@ vec4 getDiffuseColor(vec2 uv) {
     float edge = step(0.0, cornerDistance);
     color = mix(color, edgeColor, edge);
   }
-
-  // TODO: Uncomment if title graphics are used
-  // color = mixTitle(color);
-
-  // Attemt to make light colors rougher
-  // vec4 roughnessColor = texture2D(roughnessMap, vRoughnessMapUv);
-  // color.rgb = blendHardLight(color.rgb, roughnessColor.ggg);
 
   return color;
 }
