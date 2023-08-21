@@ -6,6 +6,7 @@ export type TUseThreeContextProps = {
   renderEnabled: boolean
   inView: boolean
   inViewSpring: SpringValue<number>
+  windowSize: { width: number; height: number }
   scrollCompensatedBounds: {
     x: number
     y: number
@@ -18,9 +19,7 @@ export type TUseThreeContextProps = {
   offsetY?: number
 }
 
-const useThreeContextHook = (props: TUseThreeContextProps) => {
-  return props
-}
+const useThreeContextHook = (props: TUseThreeContextProps) => props
 
 export const [ThreeContextProvider, useThreeContext] =
   constate(useThreeContextHook)

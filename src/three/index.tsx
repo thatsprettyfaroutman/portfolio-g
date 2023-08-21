@@ -25,7 +25,8 @@ import {
 import Camera from './components/Camera'
 import { Edges, MeshDiscardMaterial } from '@react-three/drei'
 import ViewSizeHelper from './components/ViewSizeHelper'
-import { useSpringValue, useInView } from 'react-spring'
+import { useSpringValue, useInView } from '@react-spring/three'
+import useWindowSize from '@/hooks/useWindowSize'
 
 // Uncomment to print loading images (part 1/2)
 // import { WebGLRenderer } from 'three'
@@ -103,6 +104,7 @@ export default function Three({
   const [measureRef, bounds] = useMeasure()
   const [renderRef, renderEnabled] = useInView()
   const [inViewRef, inView] = useInView({ amount: 0.1 })
+  const windowSize = useWindowSize()
 
   // No need to trigger when onResize function changes
   const onResizeRef = useRef(onResize)
@@ -135,6 +137,7 @@ export default function Three({
     inView,
     inViewSpring,
     scrollCompensatedBounds,
+    windowSize,
   }
 
   return (
