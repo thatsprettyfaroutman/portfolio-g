@@ -32,7 +32,7 @@ export default function Title({
   return (
     <Wrapper {...restProps}>
       <Heading2>{children}</Heading2>
-      {altTitle && <BigParagraph>{`"${altTitle}"`}</BigParagraph>}
+      {altTitle && <BigParagraph>{altTitle}</BigParagraph>}
       {(startDate || endDate) && (
         <Paragraph>
           {[startDateYear, endDateYear].filter(Boolean).join(' - ')}
