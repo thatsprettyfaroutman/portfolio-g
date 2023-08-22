@@ -1,16 +1,10 @@
-import {
-  type PropsWithChildren,
-  useRef,
-  useCallback,
-  useMemo,
-  useEffect,
-} from 'react'
+import { type PropsWithChildren, useCallback, useMemo, useEffect } from 'react'
 import { Group } from 'three'
 import { extend, useThree, useFrame } from '@react-three/fiber'
+import lerp from 'lerp'
 import clamp from 'ramda/src/clamp'
 import { easings } from '@react-spring/three'
 import { useThreeContext } from '@/three/context'
-import lerp from 'lerp'
 
 extend({ Group })
 
@@ -19,6 +13,7 @@ type TStickyProps = PropsWithChildren<{
   bottomMargin?: number
   height?: number
   stickySmoothness?: number
+  defaultAlign?: 'top'
 }>
 
 /**
@@ -29,12 +24,11 @@ export default function Sticky({
   bottomMargin = 0,
   height = 0,
   stickySmoothness = 0.5,
+  defaultAlign = 'top',
   ...restProps
 }: TStickyProps) {
-  const ref = useRef<Group>(null)
   const { camera } = useThree()
   const { scrollCompensatedBounds: bounds, windowSize } = useThreeContext()
-
   const stickyEnabled =
     bounds.height - topMargin - bottomMargin > height &&
     windowSize.height > height
@@ -91,7 +85,7 @@ export default function Sticky({
 
       // Apply easing functions
       const easedStickyAlphaStart = easings.easeOutSine(smoothStickyStartAlpha)
-      const easedStickyAlphaEnd = easings.easeInCubic(smoothStickyEndAlpha)
+      const easedStickyAlphaEnd = easings.easeInSine(smoothStickyEndAlpha)
 
       // This is used to change the sticky position of the content while scrolling. It is a value between 0 and 2.
       // 0 - stick to bottom edge
@@ -114,7 +108,7 @@ export default function Sticky({
     windowSize.height,
   ])
 
-  useFrame(() => {
+  useFrame((s) => {
     if (!stickyEnabled) {
       return
     }
@@ -132,5 +126,5 @@ export default function Sticky({
     offsetCameraView(0)
   }, [stickyEnabled, offsetCameraView])
 
-  return <group ref={ref} {...restProps} />
+  return <group {...restProps} />
 }
