@@ -6,10 +6,11 @@ import {
   MeshPhysicalMaterial,
   Vector2,
   NearestFilter,
+  Texture,
 } from 'three'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { type ThreeEvent, useThree, extend } from '@react-three/fiber'
-import { a, useSpringValue } from '@react-spring/three'
+import { a, useSpring } from '@react-spring/three'
 import {
   MeshDiscardMaterial,
   useTexture,
@@ -37,6 +38,7 @@ export type TCardProps = {
   depth?: number
   src: string
   iconMapSrc: string
+  backMap?: Texture
 }
 
 const useContainSize = (width: number, height: number) => {
@@ -61,8 +63,10 @@ export default function VideoCard({
   height: heightProp = 200,
   depth = 8,
   iconMapSrc,
+  backMap,
   ...restProps
 }: TCardProps) {
+  const [cardFlipCount, setFlipCount] = useState(0)
   const { width, height } = useContainSize(widthProp, heightProp)
   const { inView } = useThreeContext()
 
@@ -82,23 +86,22 @@ export default function VideoCard({
 
   // Play video textures when in view
   useEffect(() => {
-    if (inView) {
+    if (inView && cardFlipCount % 2 === 0) {
       map.source.data.play?.()
     } else {
       map.source.data.pause?.()
     }
-  }, [inView, map])
+  }, [inView, cardFlipCount, map])
 
   // Card flipping animation
-  const cardFlip = useSpringValue(0)
-  const cardFlipWobbly = useSpringValue(0, {
+  const { p: flipSpring } = useSpring({ p: cardFlipCount })
+  const { p: flipSpringWobbly } = useSpring({
     config: { friction: 30 },
+    p: cardFlipCount,
   })
   const handleCardFlip = (e: ThreeEvent<MouseEvent>) => {
     const dir = Math.sign(e.uv!.x - 0.5) || 1
-    const next = cardFlip.goal + dir
-    cardFlip.start(next)
-    cardFlipWobbly.start(next)
+    setFlipCount((s) => s + dir)
   }
 
   return (
@@ -132,8 +135,8 @@ export default function VideoCard({
 
         <a.group
           // This group rotates (flips) on click
-          rotation-y={cardFlip.to((p) => lerp(0, Math.PI, p % 2))}
-          position-z={cardFlipWobbly.to(
+          rotation-y={flipSpring.to((p) => lerp(0, Math.PI, p % 2))}
+          position-z={flipSpringWobbly.to(
             (p) => Math.sin(Math.abs(p % 1) * Math.PI) * -160
           )}
           scale={[width, height, depth]}
@@ -155,6 +158,7 @@ export default function VideoCard({
               width={width}
               height={height}
               mouseRef={mouseRef}
+              overlayMap={backMap}
             />
 
             {/* TODO: color edges */}

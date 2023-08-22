@@ -13,6 +13,8 @@ uniform vec2 uIconMapResolution;
 
 uniform bool uBackside;
 
+uniform sampler2D uOverlayMap;
+
 #pragma glslify: rgb2hsb = require(glsl-color)
 #pragma glslify: roundRect = require(../../../../../shaders/roundRect.glsl)
 
@@ -34,13 +36,26 @@ vec4 mixIcon(vec4 color, vec2 uv) {
 
 }
 
+vec4 mixOverlayMap(vec4 color, vec2 uv) {
+  vec4 overlayColor = texture2D(uOverlayMap, uv);
+  return mix(color, overlayColor, overlayColor.r * 0.7);
+}
+
 vec4 getDiffuseColor(vec2 uv) {
   vec2 offsetUv = uv;
+
   if(uBackside == true) {
-    offsetUv.x = 0.0;
-    offsetUv.y = 0.0;
+    offsetUv.x = 1.0 - offsetUv.x;
   }
-  return texture2D(map, offsetUv);
+
+  vec4 color = texture2D(map, offsetUv);
+
+  if(uBackside == true) {
+    vec4 edgeColor = texture2D(map, vec2(0.0));
+    color = mix(edgeColor, vec4(color.rrr, 1.0), color.g * 0.125);
+  }
+
+  return mixOverlayMap(color, uv);
 }
 
 vec4 blurDiffuseColor(vec2 uv, float radiusPx, float quality, float directions) {

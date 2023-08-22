@@ -6,12 +6,15 @@ import useCssVariable from '@/hooks/useCssVariable'
 import VideoCard from '@/three/components/VideoCard'
 import Sticky from '@/three/components/Sticky'
 import Scene from './scene'
+import FONT from '@/styles/fonts'
+import useBackMap from './hooks/useBackMap'
 
 const CARD_PIXEL_RATIO = 2
 
 type TCardProps = {
   src: string
   iconSrc: string
+  backText: string
   width?: number
   height?: number
 }
@@ -23,6 +26,7 @@ const Wrapper = styled.div<{ aspectRatio: number }>`
   box-sizing: border-box;
   aspect-ratio: ${(p) => p.aspectRatio};
   grid-row: 2;
+  font-family: ${FONT.Fasthand};
 
   ${MEDIA.tablet} {
     grid-column: 10 / -1;
@@ -51,6 +55,7 @@ const Wrapper = styled.div<{ aspectRatio: number }>`
 export default function Card({
   width = 400,
   height = 600,
+  backText,
   src,
   iconSrc,
   ...restProps
@@ -58,6 +63,13 @@ export default function Card({
   const [measureRef, bounds] = useMeasure()
   const aspectRatio = width / height
   const col = useCssVariable('--col')
+
+  const backMap = useBackMap({
+    text: backText,
+    width: width * CARD_PIXEL_RATIO,
+    height: height * CARD_PIXEL_RATIO,
+    padding: col * CARD_PIXEL_RATIO,
+  })
 
   return (
     <Wrapper ref={measureRef} {...restProps} aspectRatio={aspectRatio}>
@@ -73,6 +85,7 @@ export default function Card({
               width={bounds.width}
               height={bounds.width / aspectRatio}
               iconMapSrc={iconSrc}
+              backMap={backMap}
             />
           </Sticky>
         </Scene>

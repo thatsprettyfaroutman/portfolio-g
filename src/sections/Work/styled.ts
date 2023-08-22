@@ -6,7 +6,7 @@ import GridSection from '@/components/GridSection'
 export const Wrapper = styled(GridSection)`
   position: relative;
   grid-row-gap: calc(var(--col) * 4);
-  padding-bottom: calc(var(--col) * 4);
+  padding-bottom: calc(var(--maxCol) * 10);
 `
 
 export const WorkItems = styled.div`
