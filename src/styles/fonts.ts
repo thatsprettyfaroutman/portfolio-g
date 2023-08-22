@@ -1,4 +1,4 @@
-import { Inconsolata, Montserrat, Karla } from 'next/font/google'
+import { Inconsolata, Montserrat, Karla, Fasthand } from 'next/font/google'
 
 const fontInconsolata = Inconsolata({
   subsets: ['latin'],
@@ -12,11 +12,16 @@ const fontMontserrat = Montserrat({
   subsets: ['latin'],
   weight: ['400'],
 })
+const fontFasthand = Fasthand({
+  subsets: ['latin'],
+  weight: ['400'],
+})
 
 const FONT = {
   Inconsolata: fontInconsolata.style.fontFamily,
   Karla: fontKarla.style.fontFamily,
   Montserrat: fontMontserrat.style.fontFamily,
+  Fasthand: fontFasthand.style.fontFamily,
 }
 
 export default FONT

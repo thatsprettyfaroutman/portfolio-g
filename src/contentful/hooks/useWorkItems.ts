@@ -23,6 +23,7 @@ export default async function useWorkItems() {
         cardVideo {
           url
         }
+        cardBackText
         techsCollection(limit: 20) {
           items {
             sys {
@@ -45,7 +46,6 @@ export default async function useWorkItems() {
       }
     }
   }
-  
 `)
 
   return workCollection.items.map((work: Record<string, unknown>) => ({

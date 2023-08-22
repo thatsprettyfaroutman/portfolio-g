@@ -11,6 +11,7 @@
     "generate:types": "contentful-typescript-codegen --output src/contentful/types.generated.ts"
   },
   "devDependencies": {
+    "@types/canvas-txt": "3.0.0",
     "@types/chroma-js": "2.4.0",
     "@types/node": "20.3.1",
     "@types/ramda": "0.29.2",
@@ -31,6 +32,7 @@
     "@react-three/drei": "9.78.2",
     "@react-three/fiber": "8.13.5",
     "@react-three/postprocessing": "2.7.1",
+    "canvas-txt": "4.0.4",
     "chroma-js": "2.4.2",
     "constate": "3.3.2",
     "eslint": "8.42.0",

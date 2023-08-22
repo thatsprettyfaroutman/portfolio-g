@@ -149,6 +149,9 @@ export interface IWorkFields {
   /** Card Video */
   cardVideo: Asset
 
+  /** Card Back Text */
+  cardBackText?: string | undefined
+
   /** Tldr */
   tldr: string
 

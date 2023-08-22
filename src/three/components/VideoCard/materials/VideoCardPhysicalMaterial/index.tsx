@@ -11,6 +11,8 @@ import fragmentPars from './shaders/pars.frag'
 import fragmentMain from './shaders/main.frag'
 import { useFrame } from '@react-three/fiber'
 
+// TODO: Edge material
+
 export type TVideoCardPhysicalMaterialProps = {
   map: Texture
   width: number
@@ -24,6 +26,7 @@ export type TVideoCardPhysicalMaterialProps = {
     position: Vector2
   }>
   backside?: boolean
+  overlayMap?: Texture
 }
 
 export default function VideoCardPhysicalMaterial({
@@ -35,6 +38,7 @@ export default function VideoCardPhysicalMaterial({
   iconHeight = 40,
   mouseRef,
   backside = false,
+  overlayMap,
   ...restProps
 }: TVideoCardPhysicalMaterialProps) {
   const aspect = width / height
@@ -67,6 +71,7 @@ export default function VideoCardPhysicalMaterial({
     uMouseHover: { value: 0 },
     uFlipMouseY: { value: false },
     uBackside: { value: backside },
+    uOverlayMap: { value: overlayMap },
   })
 
   useEffect(() => {
@@ -82,6 +87,7 @@ export default function VideoCardPhysicalMaterial({
     uniforms.current.uIconMapColorBackground.value.set(backgroundColor)
     uniforms.current.uIconMapColorForeground.value.set(foregroundColor)
     uniforms.current.uBackside.value = backside
+    uniforms.current.uOverlayMap.value = overlayMap
   }, [
     aspect,
     backgroundColor,
@@ -92,6 +98,7 @@ export default function VideoCardPhysicalMaterial({
     iconWidth,
     iconHeight,
     backside,
+    overlayMap,
   ])
 
   useFrame(() => {
@@ -107,6 +114,8 @@ export default function VideoCardPhysicalMaterial({
     <meshPhysicalMaterial
       map={map}
       roughnessMap={roughnessMap}
+      bumpMap={overlayMap}
+      bumpScale={0.25}
       onBeforeCompile={(shaderObject) => {
         shaderObject.uniforms = {
           ...shaderObject.uniforms,

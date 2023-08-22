@@ -35,7 +35,11 @@ export default function WorkItem({ item, ...restProps }: TWorkItemProps) {
         {item.title}
       </Title>
       <Client>{item.client}</Client>
-      <Card src={item.cardVideo.url} iconSrc={item.client.logoMap.url} />
+      <Card
+        src={item.cardVideo.url}
+        iconSrc={item.client.logoMap.url}
+        backText={item.cardBackText ?? item.impacts[0]?.body ?? item.title}
+      />
       <Tldr>{item.tldr}</Tldr>
       <Impacts>{item.impacts}</Impacts>
       <Techs>{item.techs}</Techs>
