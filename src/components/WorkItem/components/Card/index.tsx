@@ -4,7 +4,6 @@ import { MEDIA } from '@/styles/media'
 import Three from '@/three/lazy'
 import useCssVariable from '@/hooks/useCssVariable'
 import VideoCard from '@/three/components/VideoCard'
-import Sticky from '@/three/components/Sticky'
 import Scene from './scene'
 import FONT from '@/styles/fonts'
 import useBackMap from './hooks/useBackMap'
@@ -73,13 +72,8 @@ export default function Card({
 
   return (
     <Wrapper ref={measureRef} {...restProps} aspectRatio={aspectRatio}>
-      <Three dpr={CARD_PIXEL_RATIO}>
+      <Three keepScrollPerspective dpr={CARD_PIXEL_RATIO}>
         <Scene>
-          <Sticky
-            topMargin={col}
-            bottomMargin={col}
-            height={bounds.width / aspectRatio}
-          >
             <VideoCard
               src={src}
               width={bounds.width}
@@ -87,7 +81,6 @@ export default function Card({
               iconMapSrc={iconSrc}
               backMap={backMap}
             />
-          </Sticky>
         </Scene>
       </Three>
     </Wrapper>

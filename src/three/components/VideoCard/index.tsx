@@ -1,7 +1,6 @@
 import {
   Group,
   Mesh,
-  BoxGeometry,
   PlaneGeometry,
   MeshPhysicalMaterial,
   Vector2,
@@ -17,10 +16,10 @@ import {
   useVideoTexture,
 } from '@react-three/drei'
 import lerp from 'lerp'
-import { usePalette, palette } from '@/styles/theme'
 import MouseOrbiter from '@/three/components/MouseOrbiter'
 import { useThreeContext } from '@/three/context'
 import VideoCardPhysicalMaterial from './materials/VideoCardPhysicalMaterial'
+import { VideoCardCube } from './geometries/VideoCardCube'
 
 extend({
   Group,
@@ -29,7 +28,6 @@ extend({
 })
 
 // Recycled Geometries
-const BOX_GEOMETRY = new BoxGeometry()
 const PLANE_GEOMETRY = new PlaneGeometry()
 
 export type TCardProps = {
@@ -61,7 +59,7 @@ export default function VideoCard({
   src,
   width: widthProp = 300,
   height: heightProp = 200,
-  depth = 8,
+  depth = 4,
   iconMapSrc,
   backMap,
   ...restProps
@@ -69,9 +67,6 @@ export default function VideoCard({
   const [cardFlipCount, setFlipCount] = useState(0)
   const { width, height } = useContainSize(widthProp, heightProp)
   const { inView } = useThreeContext()
-
-  // Colors
-  const edgeColor = usePalette(palette.main.background.top.brighten(3))
 
   // Maps
   const map = useVideoTexture(src, { start: false })
@@ -107,7 +102,6 @@ export default function VideoCard({
   return (
     <group {...restProps}>
       <MouseOrbiter
-        speed={0.1}
         hoverWidth={width + 16}
         hoverHeight={height + 16}
         moveAmount={16}
@@ -134,25 +128,22 @@ export default function VideoCard({
         </mesh>
 
         <a.group
-          // This group rotates (flips) on click
+          // This group flips the card on click
           rotation-y={flipSpring.to((p) => lerp(0, Math.PI, p % 2))}
           position-z={flipSpringWobbly.to(
             (p) => Math.sin(Math.abs(p % 1) * Math.PI) * -160
           )}
           scale={[width, height, depth]}
         >
-          <mesh rotation-y={Math.PI * -0.5} geometry={BOX_GEOMETRY}>
+          <VideoCardCube>
             <VideoCardPhysicalMaterial
-              attach="material-0"
               map={map}
               width={width}
               height={height}
               iconMap={iconMap}
               mouseRef={mouseRef}
             />
-
             <VideoCardPhysicalMaterial
-              attach="material-1"
               backside
               map={map}
               width={width}
@@ -160,13 +151,7 @@ export default function VideoCard({
               mouseRef={mouseRef}
               overlayMap={backMap}
             />
-
-            {/* TODO: color edges */}
-            <meshBasicMaterial attach="material-2" color={edgeColor} />
-            <meshBasicMaterial attach="material-3" color={edgeColor} />
-            <meshBasicMaterial attach="material-4" color={edgeColor} />
-            <meshBasicMaterial attach="material-5" color={edgeColor} />
-          </mesh>
+          </VideoCardCube>
         </a.group>
       </MouseOrbiter>
     </group>
