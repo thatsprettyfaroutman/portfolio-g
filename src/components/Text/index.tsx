@@ -66,7 +66,7 @@ export const Paragraph = styled.p`
   font-weight: 400;
   font-size: 17px;
   line-height: 25.5px;
-  color: ${palette.main.text.alpha(0.8)};
+  color: ${palette.main.text.alpha(0.7)};
 `
 /**
  * @deprecated
@@ -147,6 +147,11 @@ export const Markdown = styled(ReactMarkdown).attrs({
       // Allow text to bleed outside to visually balance text lines
       margin-right: calc(var(--col) / -2);
     `}
+
+  strong {
+    color: ${palette.main.text};
+    font-weight: inherit;
+  }
 `
 
 // TODO: move these custom markdowns to components, e.g. AuthorMarkdown = styled(Markdown)...

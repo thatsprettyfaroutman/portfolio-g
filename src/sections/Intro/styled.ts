@@ -1,11 +1,10 @@
 'use client'
 
 import styled from 'styled-components'
-import { MEDIA } from '@/styles/media'
 import Section from '@/components/Section'
 
 export const Wrapper = styled(Section)`
-  max-width: calc(var(--maxWidth) / 2);
+  max-width: 960px;
 `
 
 export const IntroFooter = styled.div`

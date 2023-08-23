@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   }
 `
 
-export default function Title({
+function Title({
   children,
   startDate,
   endDate,
@@ -43,3 +43,6 @@ export default function Title({
     </Wrapper>
   )
 }
+
+// Make Title usable inside styled-components
+export default styled(Title)``

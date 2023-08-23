@@ -9,11 +9,14 @@ const Wrapper = styled.div`
   grid-gap: calc(var(--maxCol) / 8);
 `
 
-export default function Tldr({ children, ...restProps }: TTldrProps) {
+function Tldr({ children, ...restProps }: TTldrProps) {
   return (
     <Wrapper {...restProps}>
-      <MiniHeading>Tldr</MiniHeading>
+      <MiniHeading>Info</MiniHeading>
       <MediumMarkdown>{children}</MediumMarkdown>
     </Wrapper>
   )
 }
+
+// Make Tldr usable inside styled-components
+export default styled(Tldr)``

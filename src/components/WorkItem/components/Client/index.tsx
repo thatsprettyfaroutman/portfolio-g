@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import styled from 'styled-components'
 import { TClient } from '@/contentful/types'
-import { MEDIA } from '@/styles/media'
 import { SmallParagraph, MiniHeading } from '@/components/Text'
 
 type TClientProps = {
@@ -24,7 +23,7 @@ const Logo = styled(Image)`
   margin: 0;
 `
 
-export default function Client({ children, ...restProps }: TClientProps) {
+function Client({ children, ...restProps }: TClientProps) {
   return (
     <Wrapper {...restProps}>
       <MiniHeading>Client</MiniHeading>
@@ -33,3 +32,6 @@ export default function Client({ children, ...restProps }: TClientProps) {
     </Wrapper>
   )
 }
+
+// Make Client usable inside styled-components
+export default styled(Client)``
