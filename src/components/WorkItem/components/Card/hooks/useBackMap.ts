@@ -18,7 +18,6 @@ export default function useBackMap({
   height,
   padding = 0,
 }: TUseBackMapProps) {
-  const col = useCssVariable('--col')
   const fontsStatus = useFontsStatus()
   const backMapCanvas = useRef<HTMLCanvasElement>()
 
@@ -44,7 +43,6 @@ export default function useBackMap({
     ctx.fillStyle = '#000'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     ctx.fillStyle = '#fff'
-    const padding = col
 
     // TODO: fix canvas-txt types
     // @ts-ignore types are wrong
@@ -61,7 +59,7 @@ export default function useBackMap({
     })
 
     return new CanvasTexture(canvas)
-  }, [text, col, height, width, fontsStatus])
+  }, [text, height, width, padding, fontsStatus])
 
   return backMap
 }

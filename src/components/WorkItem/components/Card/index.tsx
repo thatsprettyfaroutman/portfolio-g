@@ -3,7 +3,6 @@ import useMeasure from 'react-use-measure'
 import Three from '@/three/lazy'
 import useCssVariable from '@/hooks/useCssVariable'
 import VideoCard from '@/three/components/VideoCard'
-import Scene from './scene'
 import useBackMap from './hooks/useBackMap'
 
 const CARD_PIXEL_RATIO = 2
@@ -16,18 +15,14 @@ type TCardProps = {
   height?: number
 }
 
-const Wrapper = styled.div<{ aspectRatio: number }>`
-  display: grid;
+const Wrapper = styled.div`
   position: relative;
-  justify-items: start;
-  box-sizing: border-box;
-  aspect-ratio: ${(p) => p.aspectRatio};
 
   > .three {
     position: absolute;
-    top: calc(var(--col) * -1);
+    top: calc(var(--maxCol) * -1);
     right: calc(var(--col) * -1);
-    bottom: calc(var(--col) * -1);
+    bottom: calc(var(--maxCol) * -1);
     left: calc(var(--col) * -1);
     width: auto;
     height: auto;
@@ -43,28 +38,33 @@ function Card({
   ...restProps
 }: TCardProps) {
   const [measureRef, bounds] = useMeasure()
-  const aspectRatio = width / height
-  const col = useCssVariable('--col')
+  const aspect = width / height
+  const maxCol = useCssVariable('--maxCol')
+
+  const computedWidth = Math.min(width, bounds.width)
+  const computedHeight = computedWidth / aspect
 
   const backMap = useBackMap({
     text: backText,
     width: width * CARD_PIXEL_RATIO,
     height: height * CARD_PIXEL_RATIO,
-    padding: col * CARD_PIXEL_RATIO,
+    padding: maxCol * 0.5 * CARD_PIXEL_RATIO,
   })
 
   return (
-    <Wrapper ref={measureRef} {...restProps} aspectRatio={aspectRatio}>
+    <Wrapper
+      ref={measureRef}
+      {...restProps}
+      style={{ height: computedHeight, minHeight: computedHeight }}
+    >
       <Three keepScrollPerspective dpr={CARD_PIXEL_RATIO}>
-        <Scene>
-          <VideoCard
-            src={src}
-            width={bounds.width}
-            height={bounds.width / aspectRatio}
-            iconMapSrc={iconSrc}
-            backMap={backMap}
-          />
-        </Scene>
+        <VideoCard
+          src={src}
+          width={computedWidth}
+          height={computedHeight}
+          iconMapSrc={iconSrc}
+          backMap={backMap}
+        />
       </Three>
     </Wrapper>
   )

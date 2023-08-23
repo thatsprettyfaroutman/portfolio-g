@@ -16,6 +16,7 @@ import {
   useVideoTexture,
 } from '@react-three/drei'
 import lerp from 'lerp'
+import { usePalette, palette } from '@/styles/theme'
 import MouseOrbiter from '@/three/components/MouseOrbiter'
 import { useThreeContext } from '@/three/context'
 import VideoCardPhysicalMaterial from './materials/VideoCardPhysicalMaterial'
@@ -52,6 +53,7 @@ const useContainSize = (width: number, height: number) => {
       return { width: size.height * aspect, height: size.height }
     }
   }
+
   return { width, height }
 }
 
@@ -66,7 +68,8 @@ export default function VideoCard({
 }: TCardProps) {
   const [cardFlipCount, setFlipCount] = useState(0)
   const { width, height } = useContainSize(widthProp, heightProp)
-  const { inView } = useThreeContext()
+  const { inView, inViewSpring } = useThreeContext()
+  const ambientLightColor = usePalette(palette.main.background.bottom)
 
   // Maps
   const map = useVideoTexture(src, { start: false })
@@ -101,6 +104,14 @@ export default function VideoCard({
 
   return (
     <group {...restProps}>
+      <ambientLight color={ambientLightColor} />
+      <a.directionalLight
+        color="#fff"
+        position-z={600}
+        // @ts-ignore hmm, should be okay
+        intensity={inViewSpring.to((p) => lerp(0.3, 0.9, p))}
+      />
+
       <MouseOrbiter
         hoverWidth={width + 16}
         hoverHeight={height + 16}
