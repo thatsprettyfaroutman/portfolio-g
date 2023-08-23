@@ -14,13 +14,17 @@ type GLTFResult = GLTF & {
 export function VideoCardCube(
   props: JSX.IntrinsicElements['group'] & { children: JSX.Element[] }
 ) {
-  const { nodes } = useGLTF('/models/normalroundedcube.gltf') as GLTFResult
+  const { nodes } = useGLTF('/models/normalroundedcube2.gltf') as GLTFResult
   return (
     <group {...props} dispose={null} scale-y={-1}>
-      <mesh geometry={nodes.Cube_1.geometry}>{props.children[1]}</mesh>
-      <mesh geometry={nodes.Cube_2.geometry}>{props.children[0]}</mesh>
+      <mesh scale={0.5} geometry={nodes.Cube_1.geometry}>
+        {props.children[1]}
+      </mesh>
+      <mesh scale={0.5} geometry={nodes.Cube_2.geometry}>
+        {props.children[0]}
+      </mesh>
     </group>
   )
 }
 
-useGLTF.preload('/models/normalroundedcube.gltf')
+useGLTF.preload('/models/normalroundedcube2.gltf')

@@ -1,16 +1,13 @@
 'use client'
 
 import styled from 'styled-components'
-import GridSection from '@/components/GridSection'
+import Section from '@/components/Section'
 
-export const Wrapper = styled(GridSection)`
-  position: relative;
-  grid-row-gap: calc(var(--col) * 4);
-  padding-bottom: calc(var(--maxCol) * 10);
+export const Wrapper = styled(Section)`
+  padding-bottom: max(50vh, calc(var(--maxCol) * 4));
 `
 
 export const WorkItems = styled.div`
-  grid-column: 1 / -1;
   display: grid;
-  grid-gap: max(50vh, calc(var(--col) * 4));
+  grid-gap: calc(var(--maxCol) * 4);
 `

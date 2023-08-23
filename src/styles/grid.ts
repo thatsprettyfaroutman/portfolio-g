@@ -1,7 +1,7 @@
 import { css } from 'styled-components'
 
 export const gridVars = css`
-  --maxWidth: 1600px;
+  --maxWidth: 1400px;
   --cols: 20;
   --colP: calc(100 / var(--cols));
   --maxCol: calc(var(--maxWidth) / var(--cols));

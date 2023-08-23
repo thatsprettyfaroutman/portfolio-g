@@ -22,6 +22,10 @@ const Items = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: calc(var(--maxCol) / 4);
+
+  ${MEDIA.tablet} {
+    grid-gap: calc(var(--maxCol) / 2);
+  }
 `
 
 const Impact = styled.div`
@@ -45,7 +49,7 @@ const Impact = styled.div`
   }
 `
 
-export default function Impacts({ children, ...restProps }: TImpactsProps) {
+function Impacts({ children, ...restProps }: TImpactsProps) {
   const shuffledIcons = useMemo(() => {
     const random = randomSeed(children[0].body)
     return [
@@ -74,3 +78,6 @@ export default function Impacts({ children, ...restProps }: TImpactsProps) {
     </Wrapper>
   )
 }
+
+// Make Impacts usable inside styled-components
+export default styled(Impacts)``

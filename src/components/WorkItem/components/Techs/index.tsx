@@ -15,13 +15,18 @@ const Wrapper = styled.div`
 const Items = styled(BorderedGrid)`
   position: relative;
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(max(var(--col) * 4, var(--maxCol) * 2.5), 1fr)
-  );
+  grid-template-columns: 1fr;
+
+  ${MEDIA.tablet} {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  ${MEDIA.desktop} {
+    grid-template-columns: repeat(6, 1fr);
+  }
 `
 
-export default function Techs({ children, ...restProps }: TTechsProps) {
+function Techs({ children, ...restProps }: TTechsProps) {
   return (
     <Wrapper {...restProps}>
       <MiniHeading>Tech</MiniHeading>
@@ -33,3 +38,6 @@ export default function Techs({ children, ...restProps }: TTechsProps) {
     </Wrapper>
   )
 }
+
+// Make Techs usable inside styled-components
+export default styled(Techs)``
