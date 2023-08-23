@@ -7,12 +7,12 @@ import {
   Mesh,
   PlaneGeometry,
   ShaderMaterial,
-  MathUtils,
   Group,
 } from 'three'
 import { useThree, useFrame, extend } from '@react-three/fiber'
 import { MeshDiscardMaterial } from '@react-three/drei'
 import { useThreeContext } from '@/three/context'
+import lerp from 'lerp'
 
 extend({
   Group,
@@ -28,6 +28,7 @@ type TMouseOrbiterProps = {
   hoverHeight?: number
   hideCursor?: boolean
   speed?: number
+  idleRotationAmount?: number
   moveAmount?: number
   maxAngle?: number
 }
@@ -37,7 +38,7 @@ export default function MouseOrbiter({
   hoverHeight,
   hideCursor = false,
   children,
-  speed = 0.025,
+  speed = 0.25,
   moveAmount = 0,
   maxAngle = Math.PI * 0.025,
   ...restProps
@@ -65,14 +66,14 @@ export default function MouseOrbiter({
     }
 
     const { position, hover } = mouseRef.current
-    const speedSpeed = MathUtils.lerp(speed * 0.1, speed, hover.target)
-    hover.value = MathUtils.lerp(hover.value, hover.target, speed)
-    ref.current.rotation.x = MathUtils.lerp(
+    const speedSpeed = lerp(speed * 0.1, speed, hover.target)
+    hover.value = lerp(hover.value, hover.target, speed)
+    ref.current.rotation.x = lerp(
       ref.current.rotation.x,
       hover.target * position.y * -maxAngle,
       speedSpeed
     )
-    ref.current.rotation.y = MathUtils.lerp(
+    ref.current.rotation.y = lerp(
       ref.current.rotation.y,
       hover.target * position.x * (maxAngle / aspect),
       speedSpeed
