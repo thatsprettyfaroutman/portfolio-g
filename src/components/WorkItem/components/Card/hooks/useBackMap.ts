@@ -21,7 +21,7 @@ export default function useBackMap({
   const fontsStatus = useFontsStatus()
   const backMapCanvas = useRef<HTMLCanvasElement>()
 
-  // Generate texture for back text using canvas
+  // Generate b/w map for back text using canvas
   const backMap = useMemo(() => {
     if (fontsStatus !== 'loaded') {
       return
@@ -43,7 +43,6 @@ export default function useBackMap({
     ctx.fillStyle = '#000'
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     ctx.fillStyle = '#fff'
-
     // TODO: fix canvas-txt types
     // @ts-ignore types are wrong
     drawText(ctx, text, {
