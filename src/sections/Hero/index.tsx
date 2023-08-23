@@ -13,7 +13,7 @@ export default async function Hero(props: PropsWithChildren) {
   const intro = await useIntro()
 
   return (
-    <Wrapper {...props}>
+    <Wrapper {...props} tag="section">
       <Three keepScrollPerspective>
         <MouseOrbiter maxAngle={Math.PI * 0.06125}>
           <AuroraDisc />

@@ -2,8 +2,9 @@
 
 import styled from 'styled-components'
 import { palette } from '@/styles/theme'
+import FullView from '@/components/FullView'
 
-export const Wrapper = styled.section`
+export const Wrapper = styled(FullView)`
   position: relative;
   display: grid;
   height: 100vh;
