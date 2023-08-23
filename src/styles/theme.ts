@@ -11,7 +11,7 @@ const mainPalette = {
       bottom: '#000',
     },
     text: '#fff',
-    border: '#fff',
+    border: '#2c2c2c',
   },
   accents: ['#f0f', '#0ff', '#40F'],
 }

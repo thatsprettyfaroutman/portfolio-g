@@ -33,10 +33,21 @@ export const Heading3 = styled.h3`
 
 export const Heading4 = styled.h4`
   ${noMargins};
-  font-family: ${FONT.Karla};
-  font-weight: 700;
+  font-family: ${FONT.Montserrat};
+  font-weight: 400;
   font-size: 17px;
   line-height: 25.5px;
+`
+
+export const MiniHeading = styled.h5`
+  ${noMargins};
+  font-family: ${FONT.Montserrat};
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 18px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: ${palette.main.border.brighten(0.7)};
 `
 
 /**
@@ -162,7 +173,7 @@ export const MediumMarkdown = styled(Markdown).attrs((props) => ({
     p: MediumParagraph as FC,
   },
 }))`
-  grid-gap: calc(var(--maxCol) / 2);
+  grid-gap: calc(var(--maxCol) / 4);
 `
 
 /**
