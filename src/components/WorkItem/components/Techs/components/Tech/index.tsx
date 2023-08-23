@@ -14,9 +14,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   grid-gap: 0;
 
-  border: 1px solid ${palette.main.background.bottom.brighten()};
-
-  font-family: ${FONT.Inconsolata};
+  border: 1px solid ${palette.main.border};
 
   > p {
     padding: calc(var(--col) / 4) 0;

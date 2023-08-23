@@ -2,18 +2,21 @@ import Image from 'next/image'
 import styled from 'styled-components'
 import { TClient } from '@/contentful/types'
 import { MEDIA } from '@/styles/media'
-import { SmallParagraph } from '@/components/Text'
+import { SmallParagraph, MiniHeading } from '@/components/Text'
 
 type TClientProps = {
   children: TClient
 }
 
 const Wrapper = styled.div`
-  ${MEDIA.tablet} {
-    grid-column: 1 / 8;
-  }
   display: grid;
+  grid-template-columns: auto 1fr;
   grid-gap: calc(var(--maxCol) / 4);
+  align-items: end;
+
+  > ${MiniHeading} {
+    grid-column: 1 / -1;
+  }
 `
 
 const Logo = styled(Image)`
@@ -24,6 +27,7 @@ const Logo = styled(Image)`
 export default function Client({ children, ...restProps }: TClientProps) {
   return (
     <Wrapper {...restProps}>
+      <MiniHeading>Client</MiniHeading>
       <Logo src={children.logoMap.url} alt="" width={40} height={40} />
       <SmallParagraph>{children.name}</SmallParagraph>
     </Wrapper>

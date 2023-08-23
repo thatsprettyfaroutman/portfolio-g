@@ -1,11 +1,9 @@
 import styled from 'styled-components'
 import useMeasure from 'react-use-measure'
-import { MEDIA } from '@/styles/media'
 import Three from '@/three/lazy'
 import useCssVariable from '@/hooks/useCssVariable'
 import VideoCard from '@/three/components/VideoCard'
 import Scene from './scene'
-import FONT from '@/styles/fonts'
 import useBackMap from './hooks/useBackMap'
 
 const CARD_PIXEL_RATIO = 2
@@ -24,21 +22,6 @@ const Wrapper = styled.div<{ aspectRatio: number }>`
   justify-items: start;
   box-sizing: border-box;
   aspect-ratio: ${(p) => p.aspectRatio};
-  grid-row: 2;
-  font-family: ${FONT.Fasthand};
-
-  ${MEDIA.tablet} {
-    grid-column: 10 / -1;
-    grid-row: 1 / 4;
-    justify-items: end;
-    aspect-ratio: initial;
-  }
-
-  ${MEDIA.desktop} {
-    grid-column-start: 13;
-    grid-row: 1 / 6;
-    justify-items: start;
-  }
 
   > .three {
     position: absolute;
@@ -51,7 +34,7 @@ const Wrapper = styled.div<{ aspectRatio: number }>`
   }
 `
 
-export default function Card({
+function Card({
   width = 400,
   height = 600,
   backText,
@@ -74,15 +57,18 @@ export default function Card({
     <Wrapper ref={measureRef} {...restProps} aspectRatio={aspectRatio}>
       <Three keepScrollPerspective dpr={CARD_PIXEL_RATIO}>
         <Scene>
-            <VideoCard
-              src={src}
-              width={bounds.width}
-              height={bounds.width / aspectRatio}
-              iconMapSrc={iconSrc}
-              backMap={backMap}
-            />
+          <VideoCard
+            src={src}
+            width={bounds.width}
+            height={bounds.width / aspectRatio}
+            iconMapSrc={iconSrc}
+            backMap={backMap}
+          />
         </Scene>
       </Three>
     </Wrapper>
   )
 }
+
+// Make Card usable inside styled-components
+export default styled(Card)``

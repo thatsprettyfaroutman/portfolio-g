@@ -1,19 +1,19 @@
+import { type PropsWithChildren } from 'react'
 import styled from 'styled-components'
-import { MEDIA } from '@/styles/media'
-import { MediumMarkdown } from '@/components/Text'
+import { MiniHeading, MediumMarkdown } from '@/components/Text'
 
-const Tldr = styled(MediumMarkdown)`
-  ${MEDIA.tablet} {
-    grid-column: 1 / 9;
-  }
+type TTldrProps = PropsWithChildren
 
-  /* ${MEDIA.desktop} {
-    grid-column: 1 / 9;
-  } */
-
-  /* ${MEDIA.desktopWide} {
-    grid-column: 1 / 7;
-  } */
+const Wrapper = styled.div`
+  display: grid;
+  grid-gap: calc(var(--maxCol) / 8);
 `
 
-export default Tldr
+export default function Tldr({ children, ...restProps }: TTldrProps) {
+  return (
+    <Wrapper {...restProps}>
+      <MiniHeading>Tldr</MiniHeading>
+      <MediumMarkdown>{children}</MediumMarkdown>
+    </Wrapper>
+  )
+}

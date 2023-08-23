@@ -22,7 +22,7 @@ export default function useBackMap({
   const fontsStatus = useFontsStatus()
   const backMapCanvas = useRef<HTMLCanvasElement>()
 
-  // Generate texture for back text
+  // Generate texture for back text using canvas
   const backMap = useMemo(() => {
     if (fontsStatus !== 'loaded') {
       return
