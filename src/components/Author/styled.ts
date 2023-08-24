@@ -3,7 +3,7 @@
 import styled from 'styled-components'
 import { palette } from '@/styles/theme'
 import ProfilePicture from '@/components/ProfilePicture'
-import { SmallMarkdown } from '@/components/Text'
+import { Heading4, SmallMarkdown } from '@/components/Text'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -35,7 +35,7 @@ export const Shade = styled.div`
     bottom: 0;
     left: 0;
     background-color: ${palette.main.background.bottom};
-    opacity: 0.96;
+    opacity: 0.5;
   }
 `
 
@@ -64,13 +64,12 @@ export const ExpandedContent = styled.div`
   right: 0;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: center;
   gap: calc(var(--maxCol) / 4);
   width: calc(var(--maxCol) * 4);
   max-width: calc(100vw - var(--minCol) * 2);
   box-sizing: border-box;
   padding: calc(var(--maxCol) / 2);
-  border-radius: 8px;
 
   cursor: pointer;
   user-select: none;
@@ -80,7 +79,21 @@ export const ExpandedContent = styled.div`
     width: calc(var(--maxCol) * 2);
   }
 
+  > div > ${Heading4} {
+    text-align: center;
+  }
+
   > div > ${SmallMarkdown} {
     margin-right: calc(var(--maxCol) / -16);
   }
+`
+
+export const ExpandedContentBackground = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 12px;
+  background-color: ${palette.accents[2]};
 `

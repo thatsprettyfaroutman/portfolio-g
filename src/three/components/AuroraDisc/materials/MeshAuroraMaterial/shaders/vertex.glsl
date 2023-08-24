@@ -79,4 +79,6 @@ void main() {
   vNormal = normalize(cross(distorted1 - distortedPosition, distorted2 - distortedPosition));
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(distortedPosition, 1.0);
+
+  gl_PointSize = 2.0;
 }
