@@ -1,24 +1,17 @@
 import { PropsWithChildren } from 'react'
-import useIntro from '@/contentful/hooks/useIntro'
-import Three from '@/three/lazy'
+import dynamic from 'next/dynamic'
+import useIntroSection from '@/contentful/hooks/useIntroSection'
 import { Heading1 } from '@/components/Text'
-import MouseOrbiter from '@/three/components/MouseOrbiter'
-import AuroraDisc from '@/three/components/AuroraDisc'
-
 import { Wrapper } from './styled'
 
-// TODO: lazy load three stuff
+const Scene = dynamic(() => import('./ThreeScene'), { ssr: false })
 
 export default async function Hero(props: PropsWithChildren) {
-  const intro = await useIntro()
+  const intro = await useIntroSection()
 
   return (
     <Wrapper {...props} tag="section">
-      <Three keepScrollPerspective>
-        <MouseOrbiter maxAngle={Math.PI * 0.06125}>
-          <AuroraDisc />
-        </MouseOrbiter>
-      </Three>
+      <Scene />
       <Heading1>{intro.title}</Heading1>
     </Wrapper>
   )

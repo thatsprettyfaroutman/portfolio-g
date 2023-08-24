@@ -77,7 +77,7 @@ export interface IImpact extends Entry<IImpactFields> {
   }
 }
 
-export interface IIntroFields {
+export interface IIntroSectionFields {
   /** Title */
   title: string
 
@@ -88,7 +88,7 @@ export interface IIntroFields {
   author: IAuthor
 }
 
-export interface IIntro extends Entry<IIntroFields> {
+export interface IIntroSection extends Entry<IIntroSectionFields> {
   sys: {
     id: string
     type: string
@@ -97,7 +97,7 @@ export interface IIntro extends Entry<IIntroFields> {
     locale: string
     contentType: {
       sys: {
-        id: 'intro'
+        id: 'introSection'
         linkType: 'ContentType'
         type: 'Link'
       }
@@ -179,15 +179,51 @@ export interface IWork extends Entry<IWorkFields> {
   }
 }
 
+export interface IWorkSectionFields {
+  /** Title */
+  title: string
+
+  /** Body */
+  body?: string | undefined
+
+  /** Work Items */
+  workItems: IWork[]
+}
+
+export interface IWorkSection extends Entry<IWorkSectionFields> {
+  sys: {
+    id: string
+    type: string
+    createdAt: string
+    updatedAt: string
+    locale: string
+    contentType: {
+      sys: {
+        id: 'workSection'
+        linkType: 'ContentType'
+        type: 'Link'
+      }
+    }
+  }
+}
+
 export type CONTENT_TYPE =
   | 'author'
   | 'client'
   | 'impact'
-  | 'intro'
+  | 'introSection'
   | 'tech'
   | 'work'
+  | 'workSection'
 
-export type IEntry = IAuthor | IClient | IImpact | IIntro | ITech | IWork
+export type IEntry =
+  | IAuthor
+  | IClient
+  | IImpact
+  | IIntroSection
+  | ITech
+  | IWork
+  | IWorkSection
 
 export type LOCALE_CODE = 'en-US'
 

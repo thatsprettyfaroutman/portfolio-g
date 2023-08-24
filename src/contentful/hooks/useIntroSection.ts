@@ -1,10 +1,10 @@
 import { fetchContent } from '@/contentful'
-import { TAuthor, TIntroSection } from '@/contentful/types'
+import { TIntroSection } from '@/contentful/types'
 
-export default async function useIntro() {
-  const { introCollection } = await fetchContent(`
+export default async function useIntroSection() {
+  const { introSectionCollection } = await fetchContent(`
   query IntroQuery {
-    introCollection(limit:1) {
+    introSectionCollection( limit: 1 ) {
       items {
         title
         body
@@ -22,5 +22,5 @@ export default async function useIntro() {
   }
 `)
 
-  return introCollection.items[0] as TIntroSection
+  return introSectionCollection.items[0] as TIntroSection
 }

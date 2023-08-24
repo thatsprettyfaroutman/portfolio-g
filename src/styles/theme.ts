@@ -7,11 +7,11 @@ import createThemes from 'styled-palette'
 const mainPalette = {
   main: {
     background: {
-      top: chroma('#0ff').darken(5).hex(),
-      bottom: '#000',
+      top: chroma('#40F').darken(4).css(),
+      bottom: chroma('#40F').darken(6).css(),
     },
     text: '#fff',
-    border: '#2c2c2c',
+    border: chroma('#fff').alpha(0.3).css(),
   },
   accents: ['#f0f', '#0ff', '#40F'],
 }
