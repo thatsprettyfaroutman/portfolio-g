@@ -12,6 +12,7 @@ import {
   ProfilePictureTargetArea,
   CollapsedContent,
   ExpandedContent,
+  ExpandedContentBackground,
 } from './styled'
 
 // TODO: Hover follow effect
@@ -48,6 +49,7 @@ export default function Author({ children, ...restProps }: TAuthorProps) {
       >
         <ProfilePictureTargetArea ref={profilePictureDelta.toRef} />
         <AnimateChildren showing={isOpen} reverseAnimationOrder>
+          <ExpandedContentBackground className="animate" />
           <Heading4>{children.name}</Heading4>
           <SmallMarkdown>{children.bio}</SmallMarkdown>
         </AnimateChildren>

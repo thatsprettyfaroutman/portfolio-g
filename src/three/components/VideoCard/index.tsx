@@ -109,7 +109,7 @@ export default function VideoCard({
         color="#fff"
         position-z={600}
         // @ts-ignore hmm, should be okay
-        intensity={inViewSpring.to((p) => lerp(0.3, 0.9, p))}
+        intensity={inViewSpring.to((p) => lerp(0.6, 0.9, p))}
       />
       <MouseOrbiter
         hoverWidth={width + 16}

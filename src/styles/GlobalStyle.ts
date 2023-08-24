@@ -6,8 +6,8 @@ import { gridVars } from './grid'
 const GlobalStyle = createGlobalStyle`
   :root {
     ${gridVars};
-    
-    background-color: ${palette.main.background.bottom};
+
+    background-color: ${palette.main.background.top};
     color: ${palette.main.text};
     font-family: ${FONT.Montserrat};
     font-size: 16px;
