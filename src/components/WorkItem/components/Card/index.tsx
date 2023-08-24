@@ -66,9 +66,8 @@ function Card({
   const [measureRef, bounds] = useMeasure()
   const aspect = width / height
   const maxCol = useCssVariable('--maxCol')
-
   const computedWidth = Math.min(width, bounds.width)
-  const computedHeight = computedWidth / aspect
+  const computedHeight = computedWidth / aspect || height
 
   const backMap = useBackMap({
     text: backText,

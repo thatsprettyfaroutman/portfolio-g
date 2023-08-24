@@ -4,6 +4,7 @@ import { type PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import { type TWorkItem } from '@/contentful/types'
 import { MEDIA } from '@/styles/media'
+import { palette } from '@/styles/theme'
 
 import Title from './components/Title'
 import Client from './components/Client'
@@ -18,11 +19,11 @@ type TWorkItemProps = PropsWithChildren<{
 
 const Wrapper = styled.div`
   display: grid;
-  grid-gap: calc(var(--maxCol) / 2);
+  grid-gap: var(--maxCol);
   align-items: start;
 
   > ${Card} {
-    grid-row: 3;
+    grid-row: 2;
   }
 
   ${MEDIA.tablet} {
@@ -41,13 +42,13 @@ const Wrapper = styled.div`
     > ${Client} {
       grid-area: Client;
     }
-    > ${Card} {
-      grid-row: initial;
-      grid-area: Card;
-    }
     > ${Tldr} {
       grid-area: Tldr;
       max-width: calc(var(--maxCol) * 8);
+    }
+    > ${Card} {
+      grid-row: initial;
+      grid-area: Card;
     }
     > ${Impacts} {
       grid-area: Impacts;

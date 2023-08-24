@@ -14,6 +14,7 @@ export const Wrapper = styled(FullView)`
     ${palette.main.background.top},
     ${palette.main.background.bottom}
   );
+
   user-select: none;
 
   > .three {
