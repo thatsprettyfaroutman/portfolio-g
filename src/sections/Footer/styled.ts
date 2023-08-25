@@ -8,7 +8,7 @@ export const Wrapper = styled(Section)`
   padding-left: 0;
   padding-right: 0;
   max-width: none;
-  grid-gap: calc(var(--maxCol) * 4);
+  grid-gap: calc(var(--space) * 4);
 `
 
 export const ThreeWrapper = styled(FullView)`

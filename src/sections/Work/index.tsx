@@ -1,6 +1,6 @@
-import { Heading2, BigParagraph, HeadingBlock } from '@/components/Text'
+import { Heading2, BigParagraph } from '@/components/Text'
 import WorkItem from '@/components/WorkItem'
-import { Wrapper, WorkItems } from './styled'
+import { Wrapper, Head, WorkItems } from './styled'
 import useWorkSection from '@/contentful/hooks/useWorkSection'
 
 export default async function Work({ ...restProps }) {
@@ -8,10 +8,10 @@ export default async function Work({ ...restProps }) {
 
   return (
     <Wrapper {...restProps}>
-      <HeadingBlock>
+      <Head>
         <Heading2>{workSection.title}</Heading2>
         {workSection.body && <BigParagraph>{workSection.body}</BigParagraph>}
-      </HeadingBlock>
+      </Head>
       <WorkItems>
         {workSection.workItems.map((work) => (
           <WorkItem key={work.sys.id} item={work} />

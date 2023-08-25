@@ -19,7 +19,7 @@ type TCardProps = {
 
 const Wrapper = styled.div`
   display: grid;
-  grid-gap: calc(var(--maxCol) / 8);
+  grid-gap: calc(var(--space) / 8);
 
   > ${MiniHeading} {
     display: none;
@@ -38,19 +38,19 @@ const ThreeWrapper = styled.div`
 
   > .three {
     position: absolute;
-    top: calc(var(--maxCol) * -1);
-    bottom: calc(var(--maxCol) * -1);
-    left: calc(var(--col) * -1);
-    right: calc(var(--col) * -1);
+    top: calc(var(--space) * -1);
+    bottom: calc(var(--space) * -1);
+    left: calc(var(--fluidCol) * -1);
+    right: calc(var(--fluidCol) * -1);
     width: auto;
     height: auto;
 
     // Align right on tablet and desktop
     ${MEDIA.tablet} {
       left: auto;
-      right: calc(var(--col) * -1);
-      width: calc(100% + var(--col) * 2);
-      max-width: calc(400px + var(--col) * 2);
+      right: calc(var(--fluidCol) * -1);
+      width: calc(100% + var(--fluidCol) * 2);
+      max-width: calc(400px + var(--fluidCol) * 2);
     }
   }
 `
@@ -65,7 +65,7 @@ function Card({
 }: TCardProps) {
   const [measureRef, bounds] = useMeasure()
   const aspect = width / height
-  const maxCol = useCssVariable('--maxCol')
+  const maxCol = useCssVariable('--space')
   const computedWidth = Math.min(width, bounds.width)
   const computedHeight = computedWidth / aspect || height
 

@@ -1,9 +1,9 @@
 'use client'
 
 import styled from 'styled-components'
+import { palette } from '@/styles/theme'
 import Section from '@/components/Section'
 import FullView from '@/components/FullView'
-import { palette } from '@/styles/theme'
 
 export const Wrapper = styled.section``
 

@@ -16,8 +16,8 @@ const defaultChildStyleInterpolator = (p: number): Record<string, string> => ({
   opacity: p.toString(),
   transform: `perspective(1000px) translate3d(${[
     0,
-    `calc(var(--maxCol) / 8 * ${1 - p})`,
-    `calc(var(--maxCol) * -2 * ${1 - p})`,
+    `calc(var(--space) / 8 * ${1 - p})`,
+    `calc(var(--space) * -2 * ${1 - p})`,
   ].join(',')})`,
 })
 

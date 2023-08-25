@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 const Main = styled.main`
   display: grid;
-  grid-gap: calc(var(--maxCol) * 4);
+  grid-gap: calc(var(--space) * 4);
 `
 
 export default Main

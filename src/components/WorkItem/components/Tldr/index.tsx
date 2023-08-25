@@ -6,7 +6,7 @@ type TTldrProps = PropsWithChildren
 
 const Wrapper = styled.div`
   display: grid;
-  grid-gap: calc(var(--maxCol) / 8);
+  grid-gap: calc(var(--space) / 8);
 `
 
 function Tldr({ children, ...restProps }: TTldrProps) {

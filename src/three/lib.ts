@@ -13,6 +13,6 @@ export const printImage = (() => {
         img.src = c.toDataURL()
         document.body.prepend(img)
       })
-    }, 1000)
+    }, 5000)
   }
 })()
