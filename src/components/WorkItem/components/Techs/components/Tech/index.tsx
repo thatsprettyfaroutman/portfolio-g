@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   border: 1px solid ${palette.main.border};
 
   > p {
-    padding: calc(var(--col) / 4) 0;
+    padding: calc(var(--fluidCol) / 4) 0;
   }
 `
 
@@ -26,8 +26,8 @@ const Icon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: calc(var(--maxCol) / 5);
-  width: calc(var(--maxCol) / 4);
+  padding: calc(var(--space) / 5);
+  width: calc(var(--space) / 4);
 
   > img {
     display: block;

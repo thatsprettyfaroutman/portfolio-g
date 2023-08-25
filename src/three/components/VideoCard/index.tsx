@@ -66,7 +66,7 @@ export default function VideoCard({
   backMap,
   ...restProps
 }: TCardProps) {
-  const [cardFlipCount, setFlipCount] = useState(0)
+  const [flipCount, setFlipCount] = useState(0)
   const { width, height } = useContainSize(widthProp, heightProp)
   const { inView, inViewSpring } = useThreeContext()
   const ambientLightColor = usePalette(palette.main.background.bottom)
@@ -82,25 +82,31 @@ export default function VideoCard({
     position: new Vector2(0),
   })
 
+  // Card flipping animation
+  const { p: flipSpring } = useSpring({ p: flipCount })
+  const { p: flipSpringWobbly } = useSpring({
+    config: { friction: 30 },
+    p: flipCount,
+  })
+  const handleCardFlip = (e?: ThreeEvent<MouseEvent>) => {
+    const dir = (e && Math.sign(e.uv!.x - 0.5)) || 1
+    setFlipCount((s) => s + dir)
+  }
+
+  useEffect(() => {
+    if (!inView && flipCount % 2 !== 0) {
+      handleCardFlip()
+    }
+  }, [inView, flipCount, handleCardFlip])
+
   // Play video textures when in view
   useEffect(() => {
-    if (inView && cardFlipCount % 2 === 0) {
+    if (inView && flipCount % 2 === 0) {
       map.source.data.play?.()
     } else {
       map.source.data.pause?.()
     }
-  }, [inView, cardFlipCount, map])
-
-  // Card flipping animation
-  const { p: flipSpring } = useSpring({ p: cardFlipCount })
-  const { p: flipSpringWobbly } = useSpring({
-    config: { friction: 30 },
-    p: cardFlipCount,
-  })
-  const handleCardFlip = (e: ThreeEvent<MouseEvent>) => {
-    const dir = Math.sign(e.uv!.x - 0.5) || 1
-    setFlipCount((s) => s + dir)
-  }
+  }, [inView, flipCount, map])
 
   return (
     <group {...restProps}>

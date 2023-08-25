@@ -4,9 +4,9 @@ export const gridVars = css`
   --maxWidth: 1400px;
   --cols: 20;
   --colP: calc(100 / var(--cols));
-  --maxCol: calc(var(--maxWidth) / var(--cols));
+  --space: calc(var(--maxWidth) / var(--cols));
   --minCol: 30px;
-  --col: clamp(var(--minCol), var(--maxCol), calc(var(--colP) * 1vw));
+  --fluidCol: clamp(var(--minCol), var(--space), calc(var(--colP) * 1vw));
 `
 
 /**

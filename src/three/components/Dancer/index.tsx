@@ -60,7 +60,9 @@ export default function Dancer({ ...restProps }: TMeProps) {
     size: 1024 * 2.0,
   })
 
-  const ambientColor = usePalette(palette.main.background.bottom)
+  // const ambientColor = usePalette(palette.main.background.bottom)
+  const platformColor = usePalette(palette.main.background.top)
+  const ambientColor = platformColor
   const lightColor = usePalette(palette.accents[2])
 
   useFrame((s) => {
@@ -74,7 +76,7 @@ export default function Dancer({ ...restProps }: TMeProps) {
 
   return (
     <>
-      <fog attach="fog" args={[ambientColor, 4, 8]} />
+      <fog attach="fog" args={[ambientColor, 5, 10]} />
       <ambientLight color={ambientColor} intensity={1} />
       <group {...restProps}>
         <PresentationControls
@@ -90,7 +92,7 @@ export default function Dancer({ ...restProps }: TMeProps) {
                 <primitive object={model}>
                   <meshStandardMaterial
                     attach="children-0-material"
-                    color="#666"
+                    color="#600"
                     // map={diffuse}
                     {...levaProps}
                   />
@@ -104,8 +106,12 @@ export default function Dancer({ ...restProps }: TMeProps) {
               rotation-x={Math.PI * -0.5}
               position-y={-viewport.height * 0.5}
             >
-              <boxGeometry args={[20, 6, viewport.height]} />
-              <meshStandardMaterial color="#222" />
+              <boxGeometry args={[40, 4, viewport.height]} />
+              <meshStandardMaterial
+                color={platformColor}
+                emissive={platformColor}
+                emissiveIntensity={3}
+              />
             </mesh>
 
             {/* Lights */}

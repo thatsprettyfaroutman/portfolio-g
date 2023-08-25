@@ -17,10 +17,10 @@ const MeasureCol = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: var(--col);
-  height: var(--col);
+  width: var(--fluidCol);
+  height: var(--fluidCol);
   min-width: var(--minCol);
-  max-width: var(--maxCol);
+  max-width: var(--space);
   box-sizing: border-box;
   border: 1px dashed #f0f;
 `
@@ -34,7 +34,7 @@ const VerticalLines = styled.div`
   max-width: var(--maxWidth);
   grid-template-columns: auto auto;
   justify-content: space-between;
-  padding: 0 var(--col);
+  padding: 0 var(--fluidCol);
   box-sizing: border-box;
   border-left: 1px solid #0ff2;
   border-right: 1px solid #0ff2;
@@ -72,7 +72,7 @@ const HorizontalLines = styled.div`
   left: 0;
   right: 0;
   display: grid;
-  grid-auto-rows: var(--col);
+  grid-auto-rows: var(--fluidCol);
 
   > div {
     border-top: 1px solid #0ff2;

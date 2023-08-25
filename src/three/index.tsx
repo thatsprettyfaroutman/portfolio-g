@@ -5,11 +5,12 @@
 
 import {
   useEffect,
-  useRef,
   useMemo,
   ReactNode,
   CSSProperties,
   PropsWithChildren,
+  useRef,
+  useState,
 } from 'react'
 import { Group } from 'three'
 import { Canvas, extend } from '@react-three/fiber'
@@ -25,7 +26,8 @@ import {
 import Camera from './components/Camera'
 import { Edges, MeshDiscardMaterial } from '@react-three/drei'
 import ViewSizeHelper from './components/ViewSizeHelper'
-import { useSpringValue, useInView } from '@react-spring/three'
+import { useSpringValue } from '@react-spring/three'
+import { useInView } from 'react-intersection-observer'
 import useWindowSize from '@/hooks/useWindowSize'
 
 // Uncomment to print loading images (part 1/2)
@@ -45,7 +47,6 @@ const CONTEXT_PROP_KEYS = [
 ] as const
 
 type TThreeProps = {
-  onResize?: (width: number, height: number) => {}
   children?: ReactNode
   style?: CSSProperties
   className?: string
@@ -95,33 +96,38 @@ function ThreeCanvas({ children, ...restProps }: TThreeCanvasProps) {
 export default function Three({
   className,
   children,
-  onResize,
   ...restProps
 }: TThreeProps) {
-  const [measureRef, bounds] = useMeasure()
   const [renderRef, renderEnabled] = useInView()
-  const [inViewRef, inView] = useInView({ amount: 0.1 })
+  const [inViewRef, inView] = useInView({ threshold: 0.1 })
   const windowSize = useWindowSize()
+  const [mousePresent, setMousePresent] = useState(false)
 
-  // No need to trigger when onResize function changes
-  const onResizeRef = useRef(onResize)
-  onResizeRef.current = onResize
-  useEffect(() => {
-    if (typeof onResizeRef.current === 'function') {
-      onResizeRef.current(bounds.width, bounds.height)
+  // Handle bounds
+  const [measureRef, bounds] = useMeasure({ scroll: inView })
+  const lastBoundsRef = useRef({
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+  })
+
+  /**
+   * @deprecated This is a hack to compensate for scroll position which shouldn't be needed anymore
+   */
+  const scrollCompensatedBounds = useMemo(() => {
+    if (!inView) {
+      return lastBoundsRef.current
     }
-  }, [bounds.width, bounds.height])
-
-  const scrollCompensatedBounds = useMemo(
-    () => ({
+    lastBoundsRef.current = {
       x: bounds.x,
       // Non-scroll y
       y: (typeof window !== 'undefined' ? window.scrollY : 0) + bounds.y,
       width: bounds.width,
       height: bounds.height,
-    }),
-    [bounds.width, bounds.height, bounds.x, bounds.y]
-  )
+    }
+    return lastBoundsRef.current
+  }, [bounds.width, bounds.height, bounds.x, bounds.y, inView])
 
   const inViewSpring = useSpringValue(0)
   useEffect(() => {
@@ -135,10 +141,13 @@ export default function Three({
     inViewSpring,
     scrollCompensatedBounds,
     windowSize,
+    mousePresent,
   }
 
   return (
     <Wrapper
+      onPointerEnter={() => setMousePresent(true)}
+      onPointerLeave={() => setMousePresent(false)}
       className={`three ${className || ''}`}
       ref={mergeRefs([renderRef, inViewRef, measureRef])}
       {...restProps}

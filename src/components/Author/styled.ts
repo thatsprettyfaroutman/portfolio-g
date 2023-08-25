@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
     position: absolute;
     top: 0;
     right: 0;
-    width: var(--maxCol);
+    width: var(--space);
     pointer-events: none;
     transform-origin: 0 0;
     z-index: 1;
@@ -40,7 +40,7 @@ export const Shade = styled.div`
 `
 
 export const ProfilePictureTargetArea = styled.div`
-  width: var(--maxCol);
+  width: var(--space);
   aspect-ratio: 1;
 `
 
@@ -50,7 +50,7 @@ export const CollapsedContent = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: calc(var(--maxCol) / 4);
+  gap: calc(var(--space) / 4);
   box-sizing: border-box;
   border-radius: 8px;
   cursor: pointer;
@@ -65,18 +65,18 @@ export const ExpandedContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: calc(var(--maxCol) / 4);
-  width: calc(var(--maxCol) * 4);
+  gap: calc(var(--space) / 4);
+  width: calc(var(--space) * 4);
   max-width: calc(100vw - var(--minCol) * 2);
   box-sizing: border-box;
-  padding: calc(var(--maxCol) / 2);
+  padding: calc(var(--space) / 2);
 
   cursor: pointer;
   user-select: none;
   z-index: 1;
 
   > ${ProfilePictureTargetArea} {
-    width: calc(var(--maxCol) * 2);
+    width: calc(var(--space) * 2);
   }
 
   > div > ${Heading4} {
@@ -84,7 +84,7 @@ export const ExpandedContent = styled.div`
   }
 
   > div > ${SmallMarkdown} {
-    margin-right: calc(var(--maxCol) / -16);
+    margin-right: calc(var(--space) / -16);
   }
 `
 

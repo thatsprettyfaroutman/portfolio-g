@@ -19,7 +19,7 @@ type TWorkItemProps = PropsWithChildren<{
 
 const Wrapper = styled.div`
   display: grid;
-  grid-gap: var(--maxCol);
+  grid-gap: var(--space);
   align-items: start;
 
   > ${Card} {
@@ -44,7 +44,7 @@ const Wrapper = styled.div`
     }
     > ${Tldr} {
       grid-area: Tldr;
-      max-width: calc(var(--maxCol) * 8);
+      max-width: calc(var(--space) * 8);
     }
     > ${Card} {
       grid-row: initial;
@@ -52,7 +52,7 @@ const Wrapper = styled.div`
     }
     > ${Impacts} {
       grid-area: Impacts;
-      max-width: calc(var(--maxCol) * 8);
+      max-width: calc(var(--space) * 8);
     }
     > ${Techs} {
       grid-area: Techs;

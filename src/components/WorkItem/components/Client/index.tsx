@@ -10,7 +10,7 @@ type TClientProps = {
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
-  grid-gap: calc(var(--maxCol) / 4);
+  grid-gap: calc(var(--space) / 4);
   align-items: end;
 
   > ${MiniHeading} {

@@ -1,10 +1,11 @@
 'use client'
 
 import { useRef } from 'react'
-import { Group, Mesh, RingGeometry, DoubleSide } from 'three'
+import { Group, Mesh, RingGeometry, Vector2 } from 'three'
 import { useThree, useFrame, extend, ReactThreeFiber } from '@react-three/fiber'
 import { a, useSpringValue } from '@react-spring/three'
 import clamp from 'ramda/src/clamp'
+import { useThreeContext } from '@/three/context'
 import { usePalette, palette } from '@/styles/theme'
 import MeshAuroraMaterial, {
   TMeshAuroraMaterial,
@@ -48,13 +49,25 @@ export default function AuroraDisc({
   ...restProps
 }: TThingProps) {
   const { size } = useThree()
-  const padding = useCssVariable('--maxCol')
+  const padding = useCssVariable('--space')
+  const rotationRef = useRef<Group>(null)
   const materialRef = useRef<TMeshAuroraMaterial>(null)
   const radius = Math.min(size.width, size.height) * 0.5
   const scale = clamp(padding, padding * 4, radius - padding)
   const color0 = usePalette(palette.accents[0])
   const color1 = usePalette(palette.accents[1])
-  const appearSpring = useSpringValue(0, { config: { tension: 30 } })
+  const appearSpring = useSpringValue(0, { config: { tension: 20 } })
+  const mouseRef = useRef(new Vector2())
+
+  useFrame((s) => {
+    if (!rotationRef.current) {
+      return
+    }
+    const tiltAngle = Math.PI * 0.125
+    mouseRef.current.lerp(s.mouse, 0.05)
+    rotationRef.current.rotation.y = lerp(0, tiltAngle, mouseRef.current.x)
+    rotationRef.current.rotation.x = lerp(0, tiltAngle, -mouseRef.current.y)
+  })
 
   useFrame((s) => {
     if (!materialRef.current) {
@@ -71,29 +84,33 @@ export default function AuroraDisc({
       if (typeof onFirstRender === 'function') {
         onFirstRender()
       }
-      appearSpring.start(1)
+      setTimeout(() => {
+        appearSpring.start(1)
+      }, 2000)
     }
   })
 
   return (
     <group {...restProps}>
-      <a.mesh
-        rotation-x={appearSpring.to((p) => lerp(-Math.PI * 0.25, 0, p))}
-        scale-x={scale}
-        scale-y={scale}
-        scale-z={appearSpring.to((p) => lerp(1000, 100, p))}
-        geometry={RING_GEOMETRY}
-      >
-        <meshAuroraMaterial
-          ref={materialRef}
-          uColor0={color0}
-          uColor1={color1}
-          uBaseOpacity={baseOpacity}
-          key={MeshAuroraMaterial.key}
-          transparent
-          // side={DoubleSide}
-        />
-      </a.mesh>
+      <group ref={rotationRef}>
+        <a.mesh
+          rotation-x={appearSpring.to((p) => lerp(-Math.PI * 0.125, 0, p))}
+          scale-x={scale}
+          scale-y={scale}
+          scale-z={appearSpring.to((p) => lerp(1000, 100, p))}
+          geometry={RING_GEOMETRY}
+        >
+          <meshAuroraMaterial
+            ref={materialRef}
+            uColor0={color0}
+            uColor1={color1}
+            uBaseOpacity={baseOpacity}
+            key={MeshAuroraMaterial.key}
+            transparent
+            // side={DoubleSide}
+          />
+        </a.mesh>
+      </group>
     </group>
   )
 }

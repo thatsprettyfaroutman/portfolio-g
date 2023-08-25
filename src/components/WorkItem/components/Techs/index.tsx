@@ -9,7 +9,7 @@ type TTechsProps = { children: TTech[] }
 
 const Wrapper = styled.div`
   display: grid;
-  grid-gap: calc(var(--maxCol) / 4);
+  grid-gap: calc(var(--space) / 4);
 `
 
 const Items = styled(BorderedGrid)`

@@ -2,11 +2,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import randomSeed from 'math-random-seed'
 import { MEDIA } from '@/styles/media'
-import {
-  MiniHeading,
-  SmallParagraphBlock,
-  SmallParagraph,
-} from '@/components/Text'
+import { MiniHeading, SmallParagraph } from '@/components/Text'
 import { type TImpact } from '@/contentful/types'
 
 type TImpactsProps = {
@@ -15,22 +11,22 @@ type TImpactsProps = {
 
 const Wrapper = styled.div`
   display: grid;
-  grid-gap: calc(var(--maxCol) / 4);
+  grid-gap: calc(var(--space) / 4);
 `
 
 const Items = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: calc(var(--maxCol) / 4);
+  grid-gap: calc(var(--space) / 4);
 
   ${MEDIA.tablet} {
-    grid-gap: calc(var(--maxCol) / 2);
+    grid-gap: calc(var(--space) / 2);
   }
 `
 
 const Impact = styled.div`
   display: grid;
-  grid-gap: calc(var(--maxCol) / 8);
+  grid-gap: calc(var(--space) / 8);
   position: relative;
   align-content: start;
   width: 100%;
@@ -44,7 +40,7 @@ const Impact = styled.div`
     display: block;
     margin: 0;
     width: auto;
-    height: calc(var(--maxCol) / 4);
+    height: calc(var(--space) / 4);
     /* mix-blend-mode: difference; */
   }
 `
