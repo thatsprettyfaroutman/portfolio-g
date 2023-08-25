@@ -10,7 +10,11 @@ type TFullViewProps = PropsWithChildren<{
   tag?: string
 }>
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100vh;
+`
 
 export default function FullView({
   threshold = 160,

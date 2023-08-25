@@ -54,7 +54,7 @@ export default function AuroraDisc({
   const scale = clamp(padding, padding * 4, radius - padding)
   const color0 = usePalette(palette.accents[0])
   const color1 = usePalette(palette.accents[1])
-  const appearSpring = useSpringValue(0, { config: { tension: 10 } })
+  const appearSpring = useSpringValue(0, { config: { tension: 30 } })
 
   useFrame((s) => {
     if (!materialRef.current) {

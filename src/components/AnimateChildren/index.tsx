@@ -24,6 +24,7 @@ const defaultChildStyleInterpolator = (p: number): Record<string, string> => ({
 type TAnimateChildrenProps = PropsWithChildren<{
   showing?: boolean
   reverseAnimationOrder?: boolean
+  delay?: number
   trailDelay?: number
   childQuerySelector?: string
   childStyleInterpolator?: typeof defaultChildStyleInterpolator
@@ -52,6 +53,7 @@ const Wrapper = styled.div<{
 export default function AnimateChildren({
   showing = true,
   reverseAnimationOrder = false,
+  delay,
   trailDelay = 200,
   childQuerySelector = 'h1, h2, h3, h4, h5, h6, p, ul, .animate',
   childStyleInterpolator = defaultChildStyleInterpolator,
@@ -90,6 +92,7 @@ export default function AnimateChildren({
     from: { p: 0 },
     enter: { p: 1 },
     leave: { p: 0 },
+    delay,
     trail: trailDelay / (childElements.length - 1),
     onChange: ({ value }, _, child) => {
       if (!child || !child.isConnected) {

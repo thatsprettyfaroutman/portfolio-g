@@ -43,11 +43,11 @@ export default function MouseOrbiter({
   maxAngle = Math.PI * 0.025,
   ...restProps
 }: PropsWithChildren<TMouseOrbiterProps>) {
-  const { size } = useThree()
+  const { viewport } = useThree()
   const { inView } = useThreeContext()
 
-  const w = hoverWidth || size.width
-  const h = hoverHeight || size.height
+  const w = hoverWidth || viewport.width
+  const h = hoverHeight || viewport.height
   const aspect = w / h
 
   const ref = useRef<Group>(null)
@@ -110,7 +110,7 @@ export default function MouseOrbiter({
         }}
       >
         <planeGeometry
-          args={[hoverWidth || size.width, hoverHeight || size.height]}
+          args={[hoverWidth || viewport.width, hoverHeight || viewport.height]}
         />
         <MeshDiscardMaterial />
       </mesh>

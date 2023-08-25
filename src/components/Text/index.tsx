@@ -133,6 +133,10 @@ export const Markdown = styled(ReactMarkdown).attrs({
     p: Paragraph as FC,
     ul: UnorderedList as FC,
     li: styled(Paragraph).attrs({ as: 'li' })`` as FC,
+    img: styled.img`
+      width: 32px;
+      height: auto;
+    ` as FC,
   },
 })<{
   // TODO: rename endBleed

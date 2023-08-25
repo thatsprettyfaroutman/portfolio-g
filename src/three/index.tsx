@@ -39,7 +39,9 @@ const CONTEXT_PROP_KEYS = [
   'keepScrollPerspective',
   'offsetX',
   'offsetY',
+  'keepDefaultCamera',
   'dpr',
+  'shadows',
 ] as const
 
 type TThreeProps = {
@@ -54,16 +56,11 @@ type TThreeCanvasProps = PropsWithChildren
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-
-  > * {
-    border-radius: inherit;
-  }
 `
 
 function ThreeCanvas({ children, ...restProps }: TThreeCanvasProps) {
-  const { renderEnabled, dpr, debug } = useThreeContext()
+  const { renderEnabled, dpr, debug, keepDefaultCamera, shadows } =
+    useThreeContext()
 
   return (
     <Canvas
@@ -71,6 +68,7 @@ function ThreeCanvas({ children, ...restProps }: TThreeCanvasProps) {
       linear
       flat
       dpr={dpr}
+      shadows={shadows}
       // Uncomment to print loading images (part 2/2)
       // gl={(canvas) => {
       //   printImage()
@@ -78,9 +76,8 @@ function ThreeCanvas({ children, ...restProps }: TThreeCanvasProps) {
       // }}
       {...restProps}
     >
-      <Camera />
+      {!keepDefaultCamera && <Camera />}
       {children}
-
       {debug && (
         <>
           <mesh scale={100} rotation={[0, Math.PI * 0.25, 0]}>
