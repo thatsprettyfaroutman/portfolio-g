@@ -1,5 +1,5 @@
 import constate from 'constate'
-import { type SpringValue } from 'react-spring'
+import { type SpringValue } from '@react-spring/three'
 
 export type TUseThreeContextProps = {
   debug?: boolean
@@ -14,9 +14,11 @@ export type TUseThreeContextProps = {
     height: number
   }
   keepScrollPerspective?: boolean
-  dpr?: number
   offsetX?: number
   offsetY?: number
+  keepDefaultCamera?: boolean
+  dpr?: number
+  shadows?: boolean
 }
 
 const useThreeContextHook = (props: TUseThreeContextProps) => props

@@ -114,6 +114,7 @@ export default function VideoCardPhysicalMaterial({
     <meshPhysicalMaterial
       map={map}
       roughnessMap={roughnessMap}
+      roughness={1.1}
       bumpMap={overlayMap}
       bumpScale={0.25}
       onBeforeCompile={(shaderObject) => {
