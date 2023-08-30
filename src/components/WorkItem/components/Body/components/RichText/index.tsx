@@ -1,10 +1,10 @@
 import { ReactNode } from 'react'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { type Node, BLOCKS, MARKS, INLINES } from '@contentful/rich-text-types'
-import Emoji, { type TEmoji } from '@/components/Emoji'
-import ImageList, { type TImageList } from '@/components/ImageList'
+import Emoji from '@/components/Emoji'
+import ImageList from '@/components/ImageList'
 import { MediumParagraph } from '@/components/Text'
-import { TDocument } from '@/contentful/types'
+import { TDocument, TEmoji, TImageList } from '@/contentful/types'
 
 export type TRichTextProps = {
   children: TDocument
