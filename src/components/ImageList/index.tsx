@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
-import lerp from 'lerp'
+import { useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTransition, a } from 'react-spring'
@@ -7,6 +6,7 @@ import styled from 'styled-components'
 import { TImageList } from '@/contentful/types'
 import usePrefetchImage from '@/hooks/usePrefetchImage'
 import { palette } from '@/styles/theme'
+import MorphyIcon from './components/MorphyIcon'
 
 type TImageListProps = {
   children: TImageList
@@ -77,7 +77,7 @@ const Shade = styled.div`
 const Controls = styled.div`
   position: fixed;
   top: 50%;
-  height: 40px;
+  height: var(--space);
   right: 0;
   left: 0;
   transform: translateY(-50%);
@@ -86,16 +86,16 @@ const Controls = styled.div`
 
   > div {
     position: absolute;
-    width: 40px;
+    width: var(--space);
     height: 100%;
     top: 50%;
-    left: calc(var(--space) / 2);
-    background-color: #f0f;
+    left: 0;
     cursor: pointer;
+    background-color: ${palette.main.background.top};
 
     :last-child {
       left: auto;
-      right: calc(var(--space) / 2);
+      right: 0;
     }
   }
 `
@@ -109,18 +109,12 @@ function ImageList({ children, ...restProps }: TImageListProps) {
   const { prefetchImage, bindPrefetchImage } = usePrefetchImage()
 
   const openImage = children.images.items[openIndex]
-  const prevImage = children.images.items[openIndex - 1]
-  const nextImage = children.images.items[openIndex + 1]
-
-  // Prefetch next and previous images when opening an image
-  useEffect(() => {
-    if (openIndex < 0) {
-      return
-    }
-    ;[nextImage, prevImage].forEach(
-      (image) => image && prefetchImage(image.url)
-    )
-  }, [nextImage, openIndex, prefetchImage, prevImage])
+  const prevImage =
+    openIndex >= 0 ? children.images.items[openIndex - 1] : undefined
+  const nextImage =
+    openIndex >= 0 ? children.images.items[openIndex + 1] : undefined
+  prevImage && prefetchImage(prevImage.url)
+  nextImage && prefetchImage(nextImage.url)
 
   const shadeTransitions = useTransition(openIndex > -1, {
     from: { opacity: 0 },
@@ -232,8 +226,12 @@ function ImageList({ children, ...restProps }: TImageListProps) {
         return (
           showing && (
             <AControls style={style}>
-              <div onClick={handleNextImage(-1)} />
-              <div onClick={handleNextImage(1)} />
+              <div onClick={handleNextImage(-1)}>
+                <MorphyIcon icon={prevImage ? 'left' : 'leftCross'} />
+              </div>
+              <div onClick={handleNextImage(1)}>
+                <MorphyIcon icon={nextImage ? 'right' : 'rightCross'} />
+              </div>
             </AControls>
           )
         )
