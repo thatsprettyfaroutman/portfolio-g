@@ -1,9 +1,11 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import lerp from 'lerp'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTransition, a } from 'react-spring'
 import styled from 'styled-components'
 import { TImageList } from '@/contentful/types'
+import usePrefetchImage from '@/hooks/usePrefetchImage'
 import { palette } from '@/styles/theme'
 
 type TImageListProps = {
@@ -104,8 +106,21 @@ const AControls = a(Controls)
 
 function ImageList({ children, ...restProps }: TImageListProps) {
   const [openIndex, setOpenIndex] = useState(-1)
+  const { prefetchImage, bindPrefetchImage } = usePrefetchImage()
 
   const openImage = children.images.items[openIndex]
+  const prevImage = children.images.items[openIndex - 1]
+  const nextImage = children.images.items[openIndex + 1]
+
+  // Prefetch next and previous images when opening an image
+  useEffect(() => {
+    if (openIndex < 0) {
+      return
+    }
+    ;[nextImage, prevImage].forEach(
+      (image) => image && prefetchImage(image.url)
+    )
+  }, [nextImage, openIndex, prefetchImage, prevImage])
 
   const shadeTransitions = useTransition(openIndex > -1, {
     from: { opacity: 0 },
@@ -129,13 +144,10 @@ function ImageList({ children, ...restProps }: TImageListProps) {
 
   const handleNextImage = (direction: -1 | 1) => () => {
     directionRef.current = direction
-
     setOpenIndex((s) => {
-      let next = s + direction
-      if (next < 0) {
-        next = -1
-      } else if (next >= children.images.items.length) {
-        next = -1
+      const next = s + direction
+      if (next < 0 || next >= children.images.items.length) {
+        return -1
       }
       return next
     })
@@ -157,6 +169,8 @@ function ImageList({ children, ...restProps }: TImageListProps) {
               href={image.url}
               prefetch
               onClick={handleOpenImage(i)}
+              // Prefectch image when hovering
+              {...bindPrefetchImage(image.url)}
             >
               <Image
                 height={80}
@@ -172,7 +186,21 @@ function ImageList({ children, ...restProps }: TImageListProps) {
       </Items>
 
       {shadeTransitions((style, showing) => {
-        return showing && <AShade style={style} onClick={handleCloseImage} />
+        return (
+          showing && (
+            <AShade
+              style={{
+                ...style,
+
+                // Let users quickly interact with another element when this one is not fully visible (fading out)
+                pointerEvents: style.opacity.to((o) =>
+                  o < 0.9 ? 'none' : undefined
+                ),
+              }}
+              onClick={handleCloseImage}
+            />
+          )
+        )
       })}
 
       {imageTransitions(
@@ -181,13 +209,13 @@ function ImageList({ children, ...restProps }: TImageListProps) {
             <AOpenImage
               style={{
                 ...style,
-                x: style.opacity.to(
-                  (o) =>
-                    directionRef.current *
+                x: style.opacity.to((o) => {
+                  const p =
                     (1 - o) *
-                    (phase === 'enter' ? -1 : 1) *
-                    100
-                ),
+                    directionRef.current *
+                    (phase === 'enter' ? -1 : 1)
+                  return `calc(var(--space) * ${p})`
+                }),
               }}
             >
               <Image
@@ -204,7 +232,7 @@ function ImageList({ children, ...restProps }: TImageListProps) {
         return (
           showing && (
             <AControls style={style}>
-              <div onClick={handleNextImage(-1)} />{' '}
+              <div onClick={handleNextImage(-1)} />
               <div onClick={handleNextImage(1)} />
             </AControls>
           )
