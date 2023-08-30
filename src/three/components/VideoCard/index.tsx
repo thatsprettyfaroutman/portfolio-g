@@ -147,7 +147,7 @@ export default function VideoCard({
           // This group flips the card on click
           rotation-y={flipSpring.to((p) => lerp(0, Math.PI, p % 2))}
           position-z={flipSpringWobbly.to(
-            (p) => Math.sin(Math.abs(p % 1) * Math.PI) * -160
+            (p) => Math.sin(Math.abs(p % 1) * Math.PI) * 160
           )}
           scale={[width, height, depth]}
         >

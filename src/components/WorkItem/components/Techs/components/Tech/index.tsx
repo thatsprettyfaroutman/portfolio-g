@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-import FONT from '@/styles/fonts'
+import styled, { css } from 'styled-components'
 import { palette } from '@/styles/theme'
 import { SmallParagraph } from '@/components/Text'
+import chroma from 'chroma-js'
 
 type TTechProps = { name: string; iconSrc?: string }
 
@@ -36,6 +36,17 @@ const Icon = styled.div`
     height: auto;
     max-width: 16px;
     max-height: 16px;
+
+    ${(p) => {
+      // Adapt tech icon to text color when theme changes
+      const color = palette.main.text(p)
+      const isDark = chroma(color).get('lab.l') < 50
+      if (isDark) {
+        return css`
+          filter: invert(1);
+        `
+      }
+    }};
   }
 
   // Empty state icon

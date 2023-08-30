@@ -10,7 +10,7 @@ type TCameraProps = {
 }
 
 export default function Camera({
-  perspective = 800,
+  perspective = 1500,
   ...restProps
 }: TCameraProps) {
   const ref = useRef()

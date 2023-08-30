@@ -23,14 +23,63 @@ export type TAsset = {
   url: string
 }
 
+export type TEmoji = {
+  __typename: string
+  sys: {
+    id: string
+  }
+  emojiImage: {
+    sys: {
+      id: string
+    }
+    title: string
+    url: string
+    width: number
+    height: number
+  }
+}
+
+export type TImageList = {
+  __typename: string
+  sys: {
+    id: string
+  }
+  images: {
+    items: {
+      sys: {
+        id: string
+      }
+      title: string
+      url: string
+      width: number
+      height: number
+    }[]
+  }
+}
+
+export type TDocument = {
+  json: Document
+  links: {
+    entries: {
+      block: TImageList[]
+      inline: TEmoji[]
+    }
+  }
+}
+
 export type TClient = DeepReplace<IClient & IClientFields, Asset, TAsset>
 export type TTech = DeepReplace<ITech & ITechFields, Asset, TAsset>
 export type TImpact = DeepReplace<IImpact & IImpactFields, Asset, TAsset>
 export type TAuthor = DeepReplace<IAuthor & IAuthorFields, Asset, TAsset>
-export type TWorkItem = DeepReplace<IWork & IWorkFields, Asset, TAsset> & {
+export type TWorkItem = DeepReplace<
+  IWork & Omit<IWorkFields, 'body'>,
+  Asset,
+  TAsset
+> & {
   client: TClient
   techs: TTech[]
   impacts: TImpact[]
+  body: TDocument
 }
 
 export type TIntroSection = IIntroSection &

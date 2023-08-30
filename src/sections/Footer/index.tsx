@@ -7,10 +7,9 @@ const Scene = dynamic(() => import('./ThreeScene'), { ssr: false })
 export default async function Footer({ ...restProps }) {
   return (
     <Wrapper {...restProps}>
-      <Paragraph>That's all folks!</Paragraph>
-      <ThreeWrapper>
+      {/* <ThreeWrapper>
         <Scene />
-      </ThreeWrapper>
+      </ThreeWrapper> */}
     </Wrapper>
   )
 }
