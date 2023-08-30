@@ -11,6 +11,7 @@
     "generate:types": "contentful-typescript-codegen --output src/contentful/types.generated.ts"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "4.2.0",
     "@types/canvas-txt": "3.0.0",
     "@types/chroma-js": "2.4.0",
     "@types/node": "20.3.1",
@@ -29,6 +30,8 @@
     "rimraf": "5.0.1"
   },
   "dependencies": {
+    "@contentful/rich-text-react-renderer": "15.17.1",
+    "@contentful/rich-text-types": "16.2.1",
     "@react-three/drei": "9.78.2",
     "@react-three/fiber": "8.13.5",
     "@react-three/postprocessing": "2.7.1",

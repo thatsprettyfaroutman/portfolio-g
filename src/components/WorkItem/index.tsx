@@ -4,14 +4,12 @@ import { type PropsWithChildren } from 'react'
 import styled from 'styled-components'
 import { type TWorkItem } from '@/contentful/types'
 import { MEDIA } from '@/styles/media'
-import { palette } from '@/styles/theme'
-
-import Title from './components/Title'
-import Client from './components/Client'
+import Body from './components/Body'
 import Card from './components/Card'
-import Tldr from './components/Tldr'
+import Client from './components/Client'
 import Impacts from './components/Impacts'
 import Techs from './components/Techs'
+import Title from './components/Title'
 
 type TWorkItemProps = PropsWithChildren<{
   item: TWorkItem
@@ -31,7 +29,7 @@ const Wrapper = styled.div`
     grid-template-areas:
       'Title Title'
       'Client Client'
-      'Tldr Card'
+      'Body Card'
       'Impacts Card'
       'Techs Techs';
     grid-template-rows: auto auto 1fr;
@@ -42,8 +40,8 @@ const Wrapper = styled.div`
     > ${Client} {
       grid-area: Client;
     }
-    > ${Tldr} {
-      grid-area: Tldr;
+    > ${Body} {
+      grid-area: Body;
       max-width: calc(var(--space) * 8);
     }
     > ${Card} {
@@ -78,7 +76,7 @@ export default function WorkItem({ item, ...restProps }: TWorkItemProps) {
         {item.title}
       </Title>
       <Client>{item.client}</Client>
-      <Tldr>{item.tldr}</Tldr>
+      <Body>{item.body}</Body>
       <Card
         src={item.cardVideo.url}
         iconSrc={item.client.logoMap.url}

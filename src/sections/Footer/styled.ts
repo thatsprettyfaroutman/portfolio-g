@@ -13,7 +13,7 @@ export const Wrapper = styled(Section)`
 
 export const ThreeWrapper = styled(FullView)`
   position: relative;
-  max-height: 800px;
+  /* max-height: 800px; */
   max-width: 100%;
   overflow: hidden;
 `

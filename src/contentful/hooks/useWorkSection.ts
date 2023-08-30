@@ -17,7 +17,49 @@ export default async function useWorkSection() {
             altTitle
             startDate
             endDate
-            tldr
+            body {
+              json
+              links {
+               entries {
+                  block {
+                    __typename
+                    sys {
+                      id
+                    } 
+                    ... on ImageList {
+                      images: imagesCollection(limit: 5) {
+                        items {
+                          sys {
+                            id
+                          }
+                          title
+                          url(transform: { width: 2000 })
+                          width
+                          height
+                        }
+                      }
+                    }
+                  }
+                  inline {
+                    __typename
+                    sys {
+                      id
+                    }
+                     ... on Emoji {
+                      emojiImage {
+                        sys {
+                          id
+                        }
+                        title
+                        url(transform: { width: 128 })
+                        width
+                        height
+                      }
+                    }
+                  }
+                }
+              }
+            }
             client {
               name
               logoMap {

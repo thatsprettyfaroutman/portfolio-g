@@ -38,8 +38,8 @@ const ThreeWrapper = styled.div`
 
   > .three {
     position: absolute;
-    top: calc(var(--space) * -1);
-    bottom: calc(var(--space) * -1);
+    top: calc(var(--space) * -2);
+    bottom: calc(var(--space) * -2);
     left: calc(var(--fluidCol) * -1);
     right: calc(var(--fluidCol) * -1);
     width: auto;
@@ -85,7 +85,7 @@ function Card({
           minHeight: computedHeight,
         }}
       >
-        <Three keepScrollPerspective dpr={CARD_PIXEL_RATIO}>
+        <Three dpr={CARD_PIXEL_RATIO}>
           <VideoCard
             src={src}
             width={computedWidth}
