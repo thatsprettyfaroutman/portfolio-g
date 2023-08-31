@@ -1,5 +1,7 @@
-import { useState, useRef, SyntheticEvent } from 'react'
-import { useTransition } from 'react-spring'
+import { type SyntheticEvent, useState, useRef, useCallback } from 'react'
+// TODO: add drag controls
+// import { useDrag } from '@use-gesture/react'
+import { type TransitionPhase, useTransition } from 'react-spring'
 import { TImageList } from '@/contentful/types'
 import usePrefetchImage from '@/hooks/usePrefetchImage'
 
@@ -31,27 +33,40 @@ export default function useImageList({ children }: TUseImageListProps) {
     leave: { opacity: 0 },
   })
 
-  const handleOpenImage = (index: number) => (e: SyntheticEvent) => {
-    e.preventDefault()
-    directionRef.current = 0
-    setOpenIndex(index)
-  }
+  const handleOpenImage = useCallback(
+    (index: number) => (e: SyntheticEvent) => {
+      e.preventDefault()
+      directionRef.current = 0
+      setOpenIndex(index)
+    },
+    []
+  )
 
-  const handleChangeImage = (direction: -1 | 1) => () => {
-    directionRef.current = direction
-    setOpenIndex((s) => {
-      const next = s + direction
-      if (next < 0 || next >= images.length) {
-        return -1
-      }
-      return next
-    })
-  }
+  const handleChangeImage = useCallback(
+    (direction: -1 | 1) => () => {
+      directionRef.current = direction
+      setOpenIndex((s) => {
+        const next = s + direction
+        if (next < 0 || next >= images.length) {
+          return -1
+        }
+        return next
+      })
+    },
+    []
+  )
 
-  const handleCloseImage = () => {
+  const handleCloseImage = useCallback(() => {
     directionRef.current = 0
     setOpenIndex(-1)
-  }
+  }, [])
+
+  const getStyleProgress = useCallback(
+    (value: number, phase: TransitionPhase) => {
+      return (1 - value) * directionRef.current * (phase === 'enter' ? -1 : 1)
+    },
+    []
+  )
 
   return {
     bindPrefetchImage,
@@ -60,5 +75,11 @@ export default function useImageList({ children }: TUseImageListProps) {
     handleCloseImage,
     shadeTransitions,
     imageTransitions,
+    getStyleProgress,
+    isFirst: !prevImage,
+    isLast:!nextImage
+
+
+    
   }
 }
