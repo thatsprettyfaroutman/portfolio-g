@@ -25,6 +25,9 @@ function ImageList({ children, ...restProps }: TImageListProps) {
     handleCloseImage,
     shadeTransitions,
     imageTransitions,
+    getStyleProgress,
+    isFirst,
+    isLast,
   } = useImageList({
     children,
   })
@@ -81,10 +84,7 @@ function ImageList({ children, ...restProps }: TImageListProps) {
               style={{
                 ...style,
                 x: style.opacity.to((o) => {
-                  const p =
-                    (1 - o) *
-                    directionRef.current *
-                    (phase === 'enter' ? -1 : 1)
+                  const p = getStyleProgress(o, phase)
                   return `calc(var(--space) * ${p})`
                 }),
               }}
@@ -103,11 +103,11 @@ function ImageList({ children, ...restProps }: TImageListProps) {
         return (
           showing && (
             <AControls style={style}>
-              <div onClick={handleNextImage(-1)}>
-                <MorphyIcon icon={prevImage ? 'left' : 'leftCross'} />
+              <div onClick={handleChangeImage(-1)}>
+                <MorphyIcon icon={isFirst ? 'leftCross' : 'left'} />
               </div>
-              <div onClick={handleNextImage(1)}>
-                <MorphyIcon icon={nextImage ? 'right' : 'rightCross'} />
+              <div onClick={handleChangeImage(1)}>
+                <MorphyIcon icon={isLast ? 'rightCross' : 'right'} />
               </div>
             </AControls>
           )
