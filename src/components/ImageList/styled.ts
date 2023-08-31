@@ -29,6 +29,15 @@ export const Items = styled.div`
       display: block;
       margin: 0;
     }
+
+    /* Spinner */
+    > svg {
+      position: absolute;
+      bottom: calc(var(--space) / 16);
+      right: calc(var(--space) / 16);
+      width: calc(var(--space) / 4);
+      height: calc(var(--space) / 4);
+    }
   }
 `
 
@@ -49,6 +58,16 @@ export const OpenImage = styled.div`
     width: calc(100% - var(--space));
     height: calc(100% - var(--space));
     object-fit: contain;
+  }
+
+  /* Spinner */
+  > svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--space);
+    height: var(--space);
+    transform: translate(-50%, -50%);
   }
 `
 
