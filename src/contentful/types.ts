@@ -23,20 +23,22 @@ export type TAsset = {
   url: string
 }
 
+export type TRichAsset = TAsset & {
+  sys: {
+    id: string
+  }
+  title: string
+  width: number
+  height: number
+  placeholder: string
+}
+
 export type TEmoji = {
   __typename: string
   sys: {
     id: string
   }
-  emojiImage: {
-    sys: {
-      id: string
-    }
-    title: string
-    url: string
-    width: number
-    height: number
-  }
+  emojiImage: TRichAsset
 }
 
 export type TImageList = {
@@ -45,15 +47,7 @@ export type TImageList = {
     id: string
   }
   images: {
-    items: {
-      sys: {
-        id: string
-      }
-      title: string
-      url: string
-      width: number
-      height: number
-    }[]
+    items: TRichAsset[]
   }
 }
 

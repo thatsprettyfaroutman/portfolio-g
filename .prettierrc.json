@@ -1,5 +1,5 @@
 {
   "semi": false,
   "singleQuote": true,
-  "importOrder": ["^react$", "^@?\\w", "^@/(.*)$", "^./(.*)$"]
+  "importOrder": ["^react$", "^@?\\w", "^@/(.*)$", "^../(.*)$", "^./(.*)$"]
 }

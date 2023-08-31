@@ -1,7 +1,9 @@
 import { type SyntheticEvent, useState, useRef, useCallback } from 'react'
+import { useInView } from 'react-intersection-observer'
+import { mergeRefs } from 'react-merge-refs'
 // TODO: add drag controls
 // import { useDrag } from '@use-gesture/react'
-import { type TransitionPhase, useTransition } from 'react-spring'
+import { useTransition } from 'react-spring'
 import { TImageList } from '@/contentful/types'
 import usePrefetchImage from '@/hooks/usePrefetchImage'
 
@@ -10,11 +12,14 @@ type TUseImageListProps = {
 }
 
 export default function useImageList({ children }: TUseImageListProps) {
+  const wrapperRef = useRef<HTMLDivElement | null>(null)
   const images = children.images.items
-  const { prefetchImage, bindPrefetchImage } = usePrefetchImage()
+  const [inViewRef, inView] = useInView({ threshold: 0.9 })
+  const { prefetchImage } = usePrefetchImage()
   const directionRef = useRef<0 | -1 | 1>(0)
   const [openIndex, setOpenIndex] = useState(-1)
   const openImage = images[openIndex]
+
   // Prefetch previous and next images when an image is opened
   const prevImage = openIndex >= 0 ? images[openIndex - 1] : undefined
   const nextImage = openIndex >= 0 ? images[openIndex + 1] : undefined
@@ -22,16 +27,23 @@ export default function useImageList({ children }: TUseImageListProps) {
   nextImage && prefetchImage(nextImage.url)
 
   const shadeTransitions = useTransition(openIndex > -1, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
+    from: { progress: 1 },
+    enter: { progress: 0 },
+    leave: { progress: -1 },
   })
 
   const imageTransitions = useTransition(openImage, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
+    from: { progress: 1 },
+    enter: { progress: 0 },
+    leave: { progress: -1 },
   })
+
+  const scrollIntoView = useCallback(() => {
+    if (inView || !wrapperRef.current) {
+      return
+    }
+    wrapperRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }, [inView])
 
   const handleOpenImage = useCallback(
     (index: number) => (e: SyntheticEvent) => {
@@ -48,38 +60,35 @@ export default function useImageList({ children }: TUseImageListProps) {
       setOpenIndex((s) => {
         const next = s + direction
         if (next < 0 || next >= images.length) {
+          scrollIntoView()
           return -1
         }
         return next
       })
     },
-    []
+    [images.length, scrollIntoView]
   )
 
   const handleCloseImage = useCallback(() => {
     directionRef.current = 0
     setOpenIndex(-1)
-  }, [])
+    scrollIntoView()
+  }, [scrollIntoView])
 
-  const getStyleProgress = useCallback(
-    (value: number, phase: TransitionPhase) => {
-      return (1 - value) * directionRef.current * (phase === 'enter' ? -1 : 1)
-    },
+  const mixProgressDirection = useCallback(
+    (progress: number) => progress * directionRef.current,
     []
   )
 
   return {
-    bindPrefetchImage,
+    ref: mergeRefs([wrapperRef, inViewRef]),
     handleOpenImage,
     handleChangeImage,
     handleCloseImage,
     shadeTransitions,
     imageTransitions,
-    getStyleProgress,
-    isFirst: !prevImage,
-    isLast:!nextImage
-
-
-    
+    mixProgressDirection,
+    isFirstImage: !prevImage,
+    isLastImage: !nextImage,
   }
 }
