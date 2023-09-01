@@ -140,14 +140,14 @@ export default function VideoCard({
           clamp(0.05, 1, 1 - Math.abs(Math.sin(p * Math.PI)))
         )}
       >
-        <planeGeometry args={[width * 1.35, height * 1.35]} />
+        <planeGeometry args={[width * 1.25, height * 1.25]} />
         <meshStandardMaterial map={shadowMap} transparent side={DoubleSide} />
       </a.mesh>
 
       <MouseOrbiter
-        hoverWidth={width + 16}
-        hoverHeight={height + 16}
-        moveAmount={16}
+        hoverWidth={width + 20}
+        hoverHeight={height + 20}
+        moveAmount={20}
         hideCursor
       >
         <mesh
