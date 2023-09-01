@@ -28,9 +28,10 @@ type TOpenImageProps = {
 
 type TVector2 = [number, number]
 
-const BodyScrollLock = createGlobalStyle`
+const BodyTouchActionLock = createGlobalStyle`
   body {
-    overflow: hidden;
+    touch-action: none;
+    user-select: none;
   }
 `
 
@@ -53,6 +54,8 @@ const DragWrapper = styled.div`
   height: 100%;
   pointer-events: none;
   will-change: transform, opacity;
+  touch-action: none;
+  user-select: none;
 
   > img {
     position: absolute;
@@ -61,6 +64,8 @@ const DragWrapper = styled.div`
     width: calc(100% - var(--fluidSpace) * 2);
     height: calc(100% - var(--fluidSpace) * 2);
     object-fit: contain;
+    touch-action: none;
+    user-select: none;
   }
 
   ${MEDIA.tablet} {
@@ -80,6 +85,8 @@ const DragWrapper = styled.div`
     width: var(--space);
     height: var(--space);
     transform: translate(-50%, -50%);
+    touch-action: none;
+    user-select: none;
   }
 `
 
@@ -121,7 +128,8 @@ export default function OpenImage({
     })
   }
 
-  const bindDrag = useDrag(({ down, movement: [mx, my], velocity }) => {
+  const bindDrag = useDrag(({ event, down, movement: [mx, my], velocity }) => {
+    event.preventDefault()
     x.set(mx)
     y.set(my)
 
@@ -129,15 +137,44 @@ export default function OpenImage({
       const dx = Math.sign(mx)
       const dy = Math.sign(my)
       const flickVelocity = multiplyVector2([dx, dy], velocity)
-      // Moving horizontally
-      if (velocity[0] > 1 && dx !== 0) {
+
+      if (mx < -window.innerWidth * 0.5) {
+        // Moved enough horizontally (left)
         flick([mx, my], flickVelocity)
         onChangeImage(-dx)()
         return
       }
 
-      if (velocity[1] > 0 && dy !== 0) {
-        // Moving vertically
+      if (mx > window.innerWidth * 0.5) {
+        // Moved enough horizontally (right)
+        flick([mx, my], flickVelocity)
+        onChangeImage(-dx)()
+        return
+      }
+
+      if (my < -window.innerHeight * 0.25) {
+        // Moved enough vertically (up)
+        flick([mx, my], flickVelocity)
+        onCloseImage()
+        return
+      }
+
+      if (my > window.innerHeight * 0.25) {
+        // Moved enough vertically (down)
+        flick([mx, my], flickVelocity)
+        onCloseImage()
+        return
+      }
+
+      if (velocity[0] > 1 && dx !== 0) {
+        // Horizontal flick
+        flick([mx, my], flickVelocity)
+        onChangeImage(-dx)()
+        return
+      }
+
+      if (velocity[1] > 1 && dy !== 0) {
+        // Vertical flick
         flick([mx, my], flickVelocity)
         onCloseImage()
         return
@@ -167,7 +204,7 @@ export default function OpenImage({
 
   return (
     <Wrapper {...restProps} {...bindDrag()}>
-      <BodyScrollLock />
+      <BodyTouchActionLock />
       <ADragWrapper style={style}>
         {
           // Image.placeholder not behaving in a wanted way

@@ -19,7 +19,7 @@ type TCardProps = {
 
 const Wrapper = styled.div`
   display: grid;
-  grid-gap: calc(var(--space) / 8);
+  grid-gap: calc(var(--space) / 3);
 
   > ${MiniHeading} {
     display: none;
