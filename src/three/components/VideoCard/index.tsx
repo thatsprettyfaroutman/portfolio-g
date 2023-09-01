@@ -8,7 +8,6 @@ import {
 import { type ThreeEvent, useThree, extend } from '@react-three/fiber'
 import lerp from 'lerp'
 import clamp from 'ramda/src/clamp'
-import last from 'ramda/src/last'
 import {
   Group,
   Mesh,
@@ -119,13 +118,21 @@ export default function VideoCard({
   return (
     <group {...restProps}>
       <ambientLight color={ambientLightColor} intensity={0.25} />
-      <a.directionalLight
+      <directionalLight
         color={ambientLightColor}
         position-z={600}
         // @ts-ignore hmm, should be okay
         // intensity={inViewSpring.to((p) => lerp(10, 0.8, p))}
         intensity={0.8}
       />
+      {/* <ScrollFollower>
+        <spotLight
+          intensity={0.8}
+          color={ambientLightColor}
+          position-z={600}
+          position-y={200}
+        />
+      </ScrollFollower> */}
 
       <a.mesh
         // position-z={-400}

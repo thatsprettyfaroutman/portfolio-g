@@ -62,8 +62,7 @@ export const getRichTextOptions = (links: TDocument['links']) => {
 
 const RichText = ({ children }: TRichTextProps) => {
   return documentToReactComponents(
-    // TODO: fix contentful types
-    // @ts-ignore
+    // @ts-ignore Type should be correct 🤔
     children.json,
     getRichTextOptions(children.links)
   )

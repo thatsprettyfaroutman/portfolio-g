@@ -1,17 +1,14 @@
-import { Color, Texture, Vector2, RepeatWrapping } from 'three'
 import { useEffect, useRef } from 'react'
-import getShaderInjectors from '@/three/utils/injectShader'
 import { useTexture } from '@react-three/drei'
+import { useFrame } from '@react-three/fiber'
+import { Color, Texture, Vector2, RepeatWrapping } from 'three'
 import { usePalette, palette } from '@/styles/theme'
-import paperNormal from './textures/paper-normal.jpg'
-
-// @ts-ignore
-import fragmentPars from './shaders/pars.frag'
+import getShaderInjectors from '@/three/utils/injectShader'
 // @ts-ignore
 import fragmentMain from './shaders/main.frag'
-import { useFrame } from '@react-three/fiber'
-
-// TODO: Edge material
+// @ts-ignore
+import fragmentPars from './shaders/pars.frag'
+import paperNormal from './textures/paper-normal.jpg'
 
 export type TVideoCardPhysicalMaterialProps = {
   map: Texture
