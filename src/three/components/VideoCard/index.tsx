@@ -122,18 +122,17 @@ export default function VideoCard({
       <a.directionalLight
         color={ambientLightColor}
         position-z={600}
-        castShadow
         // @ts-ignore hmm, should be okay
-        intensity={inViewSpring.to((p) => lerp(10, 0.8, p))}
-        // intensity={0.8}
+        // intensity={inViewSpring.to((p) => lerp(10, 0.8, p))}
+        intensity={0.8}
       />
 
       <a.mesh
         // position-z={-400}
         position-z={to([flipSpringWobbly, inViewSpring], (flipP, inViewP) => {
           const flip = Math.sin(Math.abs(flipP % 1) * Math.PI) * -160
-          const view = (1 - inViewP) * -300
-          return flip + view - 400
+          const view = lerp(-200, -490, 1 - inViewP)
+          return view + flip
         })}
         position-y={-20}
         // rotation-y={flipSpring.to((p) => lerp(0, Math.PI, p % 2))}
@@ -141,7 +140,7 @@ export default function VideoCard({
           clamp(0.05, 1, 1 - Math.abs(Math.sin(p * Math.PI)))
         )}
       >
-        <planeGeometry args={[width * 1.45, height * 1.45]} />
+        <planeGeometry args={[width * 1.35, height * 1.35]} />
         <meshStandardMaterial map={shadowMap} transparent side={DoubleSide} />
       </a.mesh>
 
