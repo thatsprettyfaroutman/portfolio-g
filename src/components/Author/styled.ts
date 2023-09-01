@@ -1,9 +1,9 @@
 'use client'
 
 import styled from 'styled-components'
-import { palette } from '@/styles/theme'
 import ProfilePicture from '@/components/ProfilePicture'
 import { Heading4, SmallMarkdown } from '@/components/Text'
+import { palette } from '@/styles/theme'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -27,16 +27,15 @@ export const Shade = styled.div`
   left: 0;
   z-index: 1;
 
-  ::after {
+  /* ::after {
     content: ' ';
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: ${palette.main.background.bottom};
-    opacity: 0.5;
-  }
+    background-color: ${palette.shade.background.alpha(0.5)};
+  } */
 `
 
 export const ProfilePictureTargetArea = styled.div`
@@ -70,10 +69,15 @@ export const ExpandedContent = styled.div`
   max-width: calc(100vw - var(--minCol) * 2);
   box-sizing: border-box;
   padding: calc(var(--space) / 2);
+  color: ${palette.shade.text};
 
   cursor: pointer;
   user-select: none;
   z-index: 1;
+
+  * {
+    color: inherit;
+  }
 
   > ${ProfilePictureTargetArea} {
     width: calc(var(--space) * 2);
@@ -95,5 +99,5 @@ export const ExpandedContentBackground = styled.div`
   bottom: 0;
   left: 0;
   border-radius: 12px;
-  background-color: ${palette.accents[2]};
+  background-color: ${palette.shade.background};
 `
