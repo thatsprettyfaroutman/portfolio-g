@@ -14,6 +14,10 @@ const mainPalette = {
     text: '#000',
     border: chroma('#000').alpha(0.3).css(),
   },
+  shade: {
+    background: '#000',
+    text: '#fff',
+  },
   accents: ['#f0f', '#0ff', '#40F'],
 }
 

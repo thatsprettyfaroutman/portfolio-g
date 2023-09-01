@@ -1,10 +1,10 @@
-import styled from 'styled-components'
 import useMeasure from 'react-use-measure'
-import Three from '@/three/lazy'
-import { MEDIA } from '@/styles/media'
-import useCssVariable from '@/hooks/useCssVariable'
-import VideoCard from '@/three/components/VideoCard'
+import styled from 'styled-components'
 import { MiniHeading } from '@/components/Text'
+import useCssVariable from '@/hooks/useCssVariable'
+import { MEDIA } from '@/styles/media'
+import VideoCard from '@/three/components/VideoCard'
+import Three from '@/three/lazy'
 import useBackMap from './hooks/useBackMap'
 
 const CARD_PIXEL_RATIO = 2
@@ -40,17 +40,17 @@ const ThreeWrapper = styled.div`
     position: absolute;
     top: calc(var(--space) * -2);
     bottom: calc(var(--space) * -2);
-    left: calc(var(--fluidCol) * -1);
-    right: calc(var(--fluidCol) * -1);
+    left: calc(var(--fluidSpace) * -1);
+    right: calc(var(--fluidSpace) * -1);
     width: auto;
     height: auto;
 
     // Align right on tablet and desktop
     ${MEDIA.tablet} {
       left: auto;
-      right: calc(var(--fluidCol) * -1);
-      width: calc(100% + var(--fluidCol) * 2);
-      max-width: calc(400px + var(--fluidCol) * 2);
+      right: calc(var(--fluidSpace) * -1);
+      width: calc(100% + var(--fluidSpace) * 2);
+      max-width: calc(400px + var(--fluidSpace) * 2);
     }
   }
 `
@@ -85,7 +85,7 @@ function Card({
           minHeight: computedHeight,
         }}
       >
-        <Three dpr={CARD_PIXEL_RATIO}>
+        <Three dpr={CARD_PIXEL_RATIO} inViewThreshold={0.5}>
           <VideoCard
             src={src}
             width={computedWidth}

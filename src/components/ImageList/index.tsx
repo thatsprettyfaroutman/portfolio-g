@@ -2,24 +2,27 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { a } from 'react-spring'
 import styled from 'styled-components'
+import { Paragraph } from '@/components/Text'
 import { TImageList } from '@/contentful/types'
 import usePrefetchImage from '@/hooks/usePrefetchImage'
 import MorphyIcon from './components/MorphyIcon'
+import OpenImage from './components/OpenImage'
 import Spinner from './components/Spinner'
 import useImageList from './hooks/useImageList'
-import { Wrapper, Items, OpenImage, Shade, Controls } from './styled'
+import { Wrapper, Items, Shade, Controls, ImageTitle } from './styled'
 
 type TImageListProps = {
   children: TImageList
 }
 
 const AShade = a(Shade)
-const AOpenImage = a(OpenImage)
 const AControls = a(Controls)
+const AImageTitle = a(ImageTitle)
 
 function ImageList({ children, ...restProps }: TImageListProps) {
   const {
     ref,
+    openIndex,
     handleOpenImage,
     handleChangeImage,
     handleCloseImage,
@@ -57,6 +60,12 @@ function ImageList({ children, ...restProps }: TImageListProps) {
                 alt={image.title}
                 placeholder="blur"
                 blurDataURL={image.placeholder}
+                style={{
+                  transform:
+                    openIndex === i
+                      ? `translateY(calc(var(--space)/-8))`
+                      : undefined,
+                }}
               />
               {prefetchingUrl(image.url) && <Spinner />}
             </Link>
@@ -64,12 +73,12 @@ function ImageList({ children, ...restProps }: TImageListProps) {
         })}
       </Items>
 
-      {shadeTransitions(({ progress }, showing) => {
+      {shadeTransitions(({ progress, opacity }, showing) => {
         return (
           showing && (
             <AShade
               style={{
-                opacity: progress.to((p) => 1 - Math.abs(p)),
+                opacity,
                 // Let users quickly interact with another element when this one is not fully visible (fading out)
                 pointerEvents: progress.to((p) => (p < 0 ? 'none' : undefined)),
               }}
@@ -79,47 +88,30 @@ function ImageList({ children, ...restProps }: TImageListProps) {
         )
       })}
 
-      {imageTransitions(
-        ({ progress }, image) =>
+      {imageTransitions(({ progress, opacity }, image, { phase }) => {
+        return (
           image && (
-            <AOpenImage
-              style={{
-                opacity: progress.to((p) => 1 - Math.abs(p)),
-                x: progress.to((p0) => {
-                  const p = mixProgressDirection(p0)
-                  return `calc(var(--space) * ${p})`
-                }),
-              }}
+            <OpenImage
+              name={image.title}
+              key={`${image.sys.id}-${phase}`}
+              opacity={opacity}
+              openProgress={mixProgressDirection(progress)}
+              onChangeImage={handleChangeImage}
+              onCloseImage={handleCloseImage}
+              phase={phase}
             >
-              {/* 
-                Image placeholder not behaving as expected. 
-                So, using img instead.
-              */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                width={image.width}
-                height={image.height}
-                src={image.placeholder}
-                alt=""
-              />
-              <Spinner />
-              <Image
-                src={image.url}
-                width={image.width}
-                height={image.height}
-                alt={image.title}
-                loading="eager"
-              />
-            </AOpenImage>
+              {image}
+            </OpenImage>
           )
-      )}
+        )
+      })}
 
-      {shadeTransitions(({ progress }, showing) => {
+      {shadeTransitions(({ progress, opacity }, showing) => {
         return (
           showing && (
             <AControls
               style={{
-                opacity: progress.to((p) => 1 - Math.abs(p)),
+                opacity,
                 pointerEvents: progress.to((p) => (p < 0 ? 'none' : undefined)),
               }}
             >
@@ -129,7 +121,27 @@ function ImageList({ children, ...restProps }: TImageListProps) {
               <div onClick={handleChangeImage(1)}>
                 <MorphyIcon icon={isLastImage ? 'rightCross' : 'right'} />
               </div>
+              <div onClick={handleCloseImage}>
+                <MorphyIcon icon="rightCross" />
+              </div>
             </AControls>
+          )
+        )
+      })}
+
+      {imageTransitions(({ progress, opacity }, image) => {
+        return (
+          image && (
+            <AImageTitle
+              style={{
+                opacity,
+                x: mixProgressDirection(progress).to(
+                  (p) => `calc(var(--space) * ${p * 0.5})`
+                ),
+              }}
+            >
+              {image.title}
+            </AImageTitle>
           )
         )
       })}

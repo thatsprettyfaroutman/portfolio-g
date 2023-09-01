@@ -1,6 +1,7 @@
 'use client'
 
 import { type PropsWithChildren } from 'react'
+import isEmpty from 'ramda/src/isEmpty'
 import styled from 'styled-components'
 import { type TWorkItem } from '@/contentful/types'
 import { MEDIA } from '@/styles/media'
@@ -80,7 +81,11 @@ export default function WorkItem({ item, ...restProps }: TWorkItemProps) {
       <Card
         src={item.cardVideo.url}
         iconSrc={item.client.logoMap.url}
-        backText={item.cardBackText ?? item.impacts[0]?.body ?? item.title}
+        backText={
+          (isEmpty(item.cardBackText) ? null : item.cardBackText) ??
+          item.impacts[0]?.body ??
+          item.title
+        }
       />
       <Impacts>{item.impacts}</Impacts>
       <Techs>{item.techs}</Techs>

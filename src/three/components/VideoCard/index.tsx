@@ -1,3 +1,14 @@
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { a, useSpring, to } from '@react-spring/three'
+import {
+  MeshDiscardMaterial,
+  useTexture,
+  useVideoTexture,
+} from '@react-three/drei'
+import { type ThreeEvent, useThree, extend } from '@react-three/fiber'
+import lerp from 'lerp'
+import clamp from 'ramda/src/clamp'
+import last from 'ramda/src/last'
 import {
   Group,
   Mesh,
@@ -6,21 +17,14 @@ import {
   Vector2,
   NearestFilter,
   Texture,
+  DoubleSide,
 } from 'three'
-import { useEffect, useRef, useState } from 'react'
-import { type ThreeEvent, useThree, extend } from '@react-three/fiber'
-import { a, useSpring } from '@react-spring/three'
-import {
-  MeshDiscardMaterial,
-  useTexture,
-  useVideoTexture,
-} from '@react-three/drei'
-import lerp from 'lerp'
 import { usePalette, palette } from '@/styles/theme'
 import MouseOrbiter from '@/three/components/MouseOrbiter'
 import { useThreeContext } from '@/three/context'
-import VideoCardPhysicalMaterial from './materials/VideoCardPhysicalMaterial'
 import { VideoCardCube } from './geometries/VideoCardCube'
+import VideoCardPhysicalMaterial from './materials/VideoCardPhysicalMaterial'
+import shadowNormal from './textures/shadow-normal.png'
 
 extend({
   Group,
@@ -88,10 +92,10 @@ export default function VideoCard({
     config: { friction: 30 },
     p: flipCount,
   })
-  const handleCardFlip = (e?: ThreeEvent<MouseEvent>) => {
+  const handleCardFlip = useCallback((e?: ThreeEvent<MouseEvent>) => {
     const dir = (e && Math.sign(e.uv!.x - 0.5)) || 1
     setFlipCount((s) => s + dir)
-  }
+  }, [])
 
   useEffect(() => {
     if (!inView && flipCount % 2 !== 0) {
@@ -108,15 +112,39 @@ export default function VideoCard({
     }
   }, [inView, flipCount, map])
 
+  const shadowMap = useTexture(shadowNormal.src)
+
+  // console.log('VID', last(src.split('/')), 'first')
+
   return (
     <group {...restProps}>
-      <ambientLight color={ambientLightColor} />
+      <ambientLight color={ambientLightColor} intensity={0.25} />
       <a.directionalLight
-        color="#fff"
+        color={ambientLightColor}
         position-z={600}
+        castShadow
         // @ts-ignore hmm, should be okay
-        intensity={inViewSpring.to((p) => lerp(0.6, 0.9, p))}
+        intensity={inViewSpring.to((p) => lerp(10, 0.8, p))}
+        // intensity={0.8}
       />
+
+      <a.mesh
+        // position-z={-400}
+        position-z={to([flipSpringWobbly, inViewSpring], (flipP, inViewP) => {
+          const flip = Math.sin(Math.abs(flipP % 1) * Math.PI) * -160
+          const view = (1 - inViewP) * -300
+          return flip + view - 400
+        })}
+        position-y={-20}
+        // rotation-y={flipSpring.to((p) => lerp(0, Math.PI, p % 2))}
+        scale-x={flipSpring.to((p) =>
+          clamp(0.05, 1, 1 - Math.abs(Math.sin(p * Math.PI)))
+        )}
+      >
+        <planeGeometry args={[width * 1.45, height * 1.45]} />
+        <meshStandardMaterial map={shadowMap} transparent side={DoubleSide} />
+      </a.mesh>
+
       <MouseOrbiter
         hoverWidth={width + 16}
         hoverHeight={height + 16}
@@ -146,9 +174,11 @@ export default function VideoCard({
         <a.group
           // This group flips the card on click
           rotation-y={flipSpring.to((p) => lerp(0, Math.PI, p % 2))}
-          position-z={flipSpringWobbly.to(
-            (p) => Math.sin(Math.abs(p % 1) * Math.PI) * 160
-          )}
+          position-z={to([flipSpringWobbly, inViewSpring], (flipP, inViewP) => {
+            const flip = Math.sin(Math.abs(flipP % 1) * Math.PI) * 160
+            const view = (1 - inViewP) * -300
+            return flip + view
+          })}
           scale={[width, height, depth]}
         >
           <VideoCardCube>

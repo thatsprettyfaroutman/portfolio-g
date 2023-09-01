@@ -22,7 +22,7 @@ const Wrapper = styled.svg`
   }
 
   > g > path {
-    stroke: ${palette.main.text};
+    stroke: ${palette.shade.text};
   }
 `
 

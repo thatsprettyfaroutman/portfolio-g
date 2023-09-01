@@ -2,9 +2,7 @@
 
 // TODO: clean up file
 // TODO: move ThreeCanvas to own file
-
 import {
-  useEffect,
   useMemo,
   ReactNode,
   CSSProperties,
@@ -12,23 +10,23 @@ import {
   useRef,
   useState,
 } from 'react'
-import { Group } from 'three'
+import { useSpring } from '@react-spring/three'
+import { Edges, MeshDiscardMaterial } from '@react-three/drei'
 import { Canvas, extend } from '@react-three/fiber'
-import styled from 'styled-components'
 import pick from 'ramda/src/pick'
+import { useInView } from 'react-intersection-observer'
 import { mergeRefs } from 'react-merge-refs'
 import useMeasure from 'react-use-measure'
+import styled from 'styled-components'
+import { Group } from 'three'
+import useWindowSize from '@/hooks/useWindowSize'
+import Camera from './components/Camera'
+import ViewSizeHelper from './components/ViewSizeHelper'
 import {
   type TUseThreeContextProps,
   ThreeContextProvider,
   useThreeContext,
 } from './context'
-import Camera from './components/Camera'
-import { Edges, MeshDiscardMaterial } from '@react-three/drei'
-import ViewSizeHelper from './components/ViewSizeHelper'
-import { useSpringValue } from '@react-spring/three'
-import { useInView } from 'react-intersection-observer'
-import useWindowSize from '@/hooks/useWindowSize'
 
 // Uncomment to print loading images (part 1/2)
 // import { WebGLRenderer } from 'three'
@@ -50,6 +48,7 @@ type TThreeProps = {
   children?: ReactNode
   style?: CSSProperties
   className?: string
+  inViewThreshold?: number
 } & Pick<TUseThreeContextProps, (typeof CONTEXT_PROP_KEYS)[number]>
 
 type TThreeCanvasProps = PropsWithChildren
@@ -96,10 +95,14 @@ function ThreeCanvas({ children, ...restProps }: TThreeCanvasProps) {
 export default function Three({
   className,
   children,
+  inViewThreshold = 0.1,
   ...restProps
 }: TThreeProps) {
   const [renderRef, renderEnabled] = useInView()
-  const [inViewRef, inView] = useInView({ threshold: 0.1 })
+  const [inViewRef, inView] = useInView({
+    threshold: inViewThreshold,
+    rootMargin: '100% 0px 0px 0px',
+  })
   const windowSize = useWindowSize()
   const [mousePresent, setMousePresent] = useState(false)
 
@@ -129,10 +132,9 @@ export default function Three({
     return lastBoundsRef.current
   }, [bounds.width, bounds.height, bounds.x, bounds.y, inView])
 
-  const inViewSpring = useSpringValue(0)
-  useEffect(() => {
-    inViewSpring.start(inView ? 1 : 0)
-  }, [inView, inViewSpring])
+  const { inViewSpring } = useSpring({
+    inViewSpring: inView ? 1 : 0,
+  })
 
   const contextProps = {
     ...pick(CONTEXT_PROP_KEYS, restProps),
