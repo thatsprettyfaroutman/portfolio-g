@@ -50,7 +50,6 @@ export default function useBackMap({
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     ctx.fillStyle = '#fff'
 
-    // TODO: fix canvas-txt types
     // @ts-ignore types are confused
     drawText(ctx, text, {
       x: padding,

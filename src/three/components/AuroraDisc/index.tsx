@@ -1,19 +1,19 @@
 'use client'
 
 import { useRef } from 'react'
-import { Group, Mesh, RingGeometry, Vector2 } from 'three'
-import { useThree, useFrame, extend, ReactThreeFiber } from '@react-three/fiber'
 import { a, useSpringValue } from '@react-spring/three'
+import { useThree, useFrame, extend, ReactThreeFiber } from '@react-three/fiber'
+import lerp from 'lerp'
 import clamp from 'ramda/src/clamp'
-import { useThreeContext } from '@/three/context'
+import { Group, Mesh, RingGeometry, Vector2 } from 'three'
+import useCssVariable from '@/hooks/useCssVariable'
 import { usePalette, palette } from '@/styles/theme'
+import { useThreeContext } from '@/three/context'
 import MeshAuroraMaterial, {
   TMeshAuroraMaterial,
 } from './materials/MeshAuroraMaterial'
-import useCssVariable from '@/hooks/useCssVariable'
-import lerp from 'lerp'
 
-// TODO: try with sheen material and light
+// Future improvements -> try with sheen material and light
 
 const RING_GEOMETRY = new RingGeometry(0.7, 1, 360 / 2, 16)
 

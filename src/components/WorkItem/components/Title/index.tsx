@@ -1,7 +1,7 @@
 import { type PropsWithChildren, type ReactNode } from 'react'
 import styled from 'styled-components'
-import { MEDIA } from '@/styles/media'
 import { Heading2, Heading4, SmallParagraph } from '@/components/Text'
+import { MEDIA } from '@/styles/media'
 
 type TTitleProps = PropsWithChildren<{
   startDate?: string
@@ -12,8 +12,11 @@ type TTitleProps = PropsWithChildren<{
 const Wrapper = styled.div`
   display: grid;
   grid-gap: calc(var(--space) / 8);
-  grid-template-columns: auto 1fr;
   align-items: baseline;
+
+  ${MEDIA.tablet} {
+    grid-template-columns: auto 1fr;
+  }
 
   > ${Heading2} {
     grid-column: 1 / -1;

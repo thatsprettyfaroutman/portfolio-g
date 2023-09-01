@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import styled from 'styled-components'
-import { TClient } from '@/contentful/types'
 import { SmallParagraph, MiniHeading } from '@/components/Text'
+import { TClient } from '@/contentful/types'
 
 type TClientProps = {
   children: TClient
@@ -11,7 +11,8 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
   grid-gap: calc(var(--space) / 4);
-  align-items: end;
+  /* align-items: end; */
+  align-items: center;
 
   > ${MiniHeading} {
     grid-column: 1 / -1;
