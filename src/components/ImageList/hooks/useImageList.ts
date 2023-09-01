@@ -1,9 +1,8 @@
 import { type SyntheticEvent, useState, useRef, useCallback } from 'react'
+// import { useDrag } from '@use-gesture/react'
 import { useInView } from 'react-intersection-observer'
 import { mergeRefs } from 'react-merge-refs'
-// TODO: add drag controls
-// import { useDrag } from '@use-gesture/react'
-import { useTransition } from 'react-spring'
+import { SpringValue, useTransition } from 'react-spring'
 import { TImageList } from '@/contentful/types'
 import usePrefetchImage from '@/hooks/usePrefetchImage'
 
@@ -27,15 +26,16 @@ export default function useImageList({ children }: TUseImageListProps) {
   nextImage && prefetchImage(nextImage.url)
 
   const shadeTransitions = useTransition(openIndex > -1, {
-    from: { progress: 1 },
-    enter: { progress: 0 },
-    leave: { progress: -1 },
+    from: { progress: 1, opacity: 0 },
+    enter: { progress: 0, opacity: 1 },
+    leave: { progress: -1, opacity: 0 },
   })
 
   const imageTransitions = useTransition(openImage, {
-    from: { progress: 1 },
-    enter: { progress: 0 },
-    leave: { progress: -1 },
+    from: { progress: 1, opacity: 0 },
+    enter: { progress: 0, opacity: 1 },
+    leave: { progress: -1, opacity: 0 },
+    unique: true,
   })
 
   const scrollIntoView = useCallback(() => {
@@ -55,8 +55,14 @@ export default function useImageList({ children }: TUseImageListProps) {
   )
 
   const handleChangeImage = useCallback(
-    (direction: -1 | 1) => () => {
-      directionRef.current = direction
+    (direction: number) => () => {
+      const dir = Math.sign(direction)
+      directionRef.current = dir as 0 | 1 | -1
+
+      if (dir === 0) {
+        return
+      }
+
       setOpenIndex((s) => {
         const next = s + direction
         if (next < 0 || next >= images.length) {
@@ -76,12 +82,14 @@ export default function useImageList({ children }: TUseImageListProps) {
   }, [scrollIntoView])
 
   const mixProgressDirection = useCallback(
-    (progress: number) => progress * directionRef.current,
+    (progress: SpringValue<number>) =>
+      progress.to((p) => p * directionRef.current),
     []
   )
 
   return {
     ref: mergeRefs([wrapperRef, inViewRef]),
+    openIndex,
     handleOpenImage,
     handleChangeImage,
     handleCloseImage,

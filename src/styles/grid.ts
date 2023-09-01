@@ -6,7 +6,7 @@ export const gridVars = css`
   --colP: calc(100 / var(--cols));
   --space: calc(var(--maxWidth) / var(--cols));
   --minCol: 30px;
-  --fluidCol: clamp(var(--minCol), var(--space), calc(var(--colP) * 1vw));
+  --fluidSpace: clamp(var(--minCol), var(--space), calc(var(--colP) * 1vw));
 `
 
 /**

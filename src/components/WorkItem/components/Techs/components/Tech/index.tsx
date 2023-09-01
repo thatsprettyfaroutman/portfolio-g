@@ -1,7 +1,7 @@
-import styled, { css } from 'styled-components'
-import { palette } from '@/styles/theme'
-import { SmallParagraph } from '@/components/Text'
 import chroma from 'chroma-js'
+import styled, { css } from 'styled-components'
+import { SmallParagraph } from '@/components/Text'
+import { palette } from '@/styles/theme'
 
 type TTechProps = { name: string; iconSrc?: string }
 
@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   border: 1px solid ${palette.main.border};
 
   > p {
-    padding: calc(var(--fluidCol) / 4) 0;
+    padding: calc(var(--fluidSpace) / 4) 0;
   }
 `
 

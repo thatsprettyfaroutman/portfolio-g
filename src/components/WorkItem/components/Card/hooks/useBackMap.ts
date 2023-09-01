@@ -2,6 +2,7 @@
 
 import { useMemo, useRef } from 'react'
 import { drawText } from 'canvas-txt'
+import isEmpty from 'ramda/src/isEmpty'
 import { CanvasTexture } from 'three'
 import useFontsStatus from '@/hooks/useFontsStatus'
 import FONT from '@/styles/fonts'
@@ -19,6 +20,10 @@ export default function useBackMap({
   height,
   padding = 0,
 }: TUseBackMapProps) {
+  if (!text || isEmpty(text)) {
+    throw new Error('useBackMap: `text` is empty')
+  }
+
   const fontsStatus = useFontsStatus()
   const backMapCanvas = useRef<HTMLCanvasElement>()
 
@@ -45,24 +50,19 @@ export default function useBackMap({
     ctx.fillRect(0, 0, canvas.width, canvas.height)
     ctx.fillStyle = '#fff'
 
-    // Next.js doesn't like `canvas-txt`
-    // It throws an error on build time (I think), hence try/catch.
-    // But that doesn't matter. We can generate these on runtime too.
-    try {
-      // TODO: fix canvas-txt types
-      // @ts-ignore types are confused
-      drawText(ctx, text, {
-        x: padding,
-        y: padding,
-        width: canvas.width - padding * 2,
-        height: canvas.height - padding * 2,
-        font: FONT.Fasthand,
-        fontSize: 38,
-        lineHeight: 38 * 1.5,
-        vAlign: 'bottom',
-        align: 'right',
-      })
-    } catch (error) {}
+    // TODO: fix canvas-txt types
+    // @ts-ignore types are confused
+    drawText(ctx, text, {
+      x: padding,
+      y: padding,
+      width: canvas.width - padding * 2,
+      height: canvas.height - padding * 2,
+      font: FONT.Fasthand,
+      fontSize: 38,
+      lineHeight: 38 * 1.5,
+      vAlign: 'bottom',
+      align: 'right',
+    })
 
     return new CanvasTexture(canvas)
   }, [text, height, width, padding, fontsStatus])

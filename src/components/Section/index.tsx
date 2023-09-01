@@ -7,8 +7,8 @@ const Section = styled.section`
   max-width: var(--maxWidth);
   margin-left: auto;
   margin-right: auto;
-  padding-left: var(--fluidCol);
-  padding-right: var(--fluidCol);
+  padding-left: var(--fluidSpace);
+  padding-right: var(--fluidSpace);
   box-sizing: border-box;
 `
 

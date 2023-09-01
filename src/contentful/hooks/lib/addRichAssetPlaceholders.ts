@@ -38,6 +38,13 @@ export const addRichAssetPlaceholders = async <T>(
         return [key, await addRichAssetPlaceholders(value)]
       })
     )
+
+    console.log('///////////')
+    console.log('///////////')
+    console.log('///////////')
+    console.log('///////////')
+    console.log(fromPairs(resolved as []))
+
     return fromPairs(resolved as []) as T
   }
 
