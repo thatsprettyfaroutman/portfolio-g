@@ -65,8 +65,8 @@ export const ExpandedContent = styled.div`
   flex-direction: column;
   align-items: center;
   gap: calc(var(--space) / 4);
-  width: calc(var(--space) * 4);
-  max-width: calc(100vw - var(--minCol) * 2);
+  width: calc(100vw - var(--fluidSpace) * 2);
+  max-width: calc(var(--space) * 5);
   box-sizing: border-box;
   padding: calc(var(--space) / 2);
   color: ${palette.shade.text};
