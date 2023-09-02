@@ -1,10 +1,10 @@
 'use client'
 
 import { useRef, useEffect, useState, useCallback } from 'react'
-import { useSpring, useInView } from 'react-spring'
-import { mergeRefs } from 'react-merge-refs'
 import lerp from 'lerp'
-import useProfilePictureDelta from './useProfilePictureDelta'
+import { mergeRefs } from 'react-merge-refs'
+import { useSpring, useInView } from 'react-spring'
+import usePositionDelta from './usePositionDelta'
 
 const EXPANDED_CONTENT_SAFE_MARGIN = 20
 
@@ -17,7 +17,7 @@ export default function useAuthor() {
     rootMargin: `-50% 0px 0px 0px`,
   })
   const expandedContentRef = useRef<HTMLDivElement>(null)
-  const profilePictureDelta = useProfilePictureDelta()
+  const profilePictureDelta = usePositionDelta()
   const scrollRef = useRef(null as { from: number; to: number } | null)
 
   // Springs

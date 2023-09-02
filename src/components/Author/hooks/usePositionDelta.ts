@@ -3,7 +3,7 @@ import useMeasure from 'react-use-measure'
 
 const MEASURE_OPTIONS = { debounce: 120 }
 
-export default function useProfilePictureDelta() {
+export default function usePositionDelta() {
   const [fromRef, fromBounds] = useMeasure(MEASURE_OPTIONS)
   const [toRef, toBounds] = useMeasure(MEASURE_OPTIONS)
 
