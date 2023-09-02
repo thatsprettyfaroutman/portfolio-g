@@ -1,10 +1,11 @@
 'use client'
 
 import { a } from 'react-spring'
-import { TAuthor } from '@/contentful/types'
+import AnimateChildren from '@/components/AnimateChildren'
+import Magnet from '@/components/Magnet'
 import ProfilePicture from '@/components/ProfilePicture'
 import { SmallMarkdown, Paragraph, Heading4 } from '@/components/Text'
-import AnimateChildren from '@/components/AnimateChildren'
+import { TAuthor } from '@/contentful/types'
 import useAuthor from './hooks/useAuthor'
 import {
   Wrapper,
@@ -28,6 +29,7 @@ const AShade = a(Shade)
 const ACollapsedContent = a(CollapsedContent)
 const AExpandedContent = a(ExpandedContent)
 const AProfilePicture = a(ProfilePicture)
+const AProfilePictureMagnet = a(Magnet)
 
 export default function Author({ children, ...restProps }: TAuthorProps) {
   const { isOpen, toggle, style, expandedContentRef, profilePictureDelta } =
@@ -58,7 +60,19 @@ export default function Author({ children, ...restProps }: TAuthorProps) {
       {/*
          The flying profile picture. It flies between `ProfilePictureTargetAreas` based on `open`. Its positioned to the same position as `CollapsedContent.ProfilePictureTargetArea`, but it's not a child of it because it needs to be positioned relative to the entire Author component, not just the `CollapsedContent`.
       */}
-      <AProfilePicture src={children.photo.url} style={style.profilePicture} />
+      <AProfilePictureMagnet
+        disabled={isOpen}
+        onClick={toggle}
+        // style={{ x: style.profilePicture.x, y: style.profilePicture.y }}
+      >
+        <AProfilePicture
+          src={children.photo.url}
+          // style={{
+          //   scale: style.profilePicture.scale,
+          // }}
+          style={style.profilePicture}
+        />
+      </AProfilePictureMagnet>
     </Wrapper>
   )
 }

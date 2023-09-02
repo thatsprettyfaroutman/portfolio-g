@@ -14,18 +14,6 @@ export const Items = styled.div`
     position: relative;
     display: block;
 
-    /* ::before {
-      content: ' ';
-      position: absolute;
-      top: calc(var(--space) / 16);
-      left: calc(var(--space) / 16);
-      width: 100%;
-      height: 100%;
-      border: 1px solid ${palette.main.border};
-      border-top: none;
-      border-left: none;
-    } */
-
     > img {
       position: relative;
       display: block;
@@ -85,7 +73,7 @@ export const Controls = styled.div`
       right: 0;
     }
 
-    // Show last child only on mobile. It's the close button.
+    // Show last child only on mobile. (It's the close button.)
     :not(:last-child) {
       display: none;
     }

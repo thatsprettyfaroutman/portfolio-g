@@ -1,6 +1,7 @@
 'use client'
 
 import styled from 'styled-components'
+import { Wrapper as MagnetWrapper } from '@/components/Magnet'
 import ProfilePicture from '@/components/ProfilePicture'
 import { Heading4, SmallMarkdown } from '@/components/Text'
 import { palette } from '@/styles/theme'
@@ -8,14 +9,19 @@ import { palette } from '@/styles/theme'
 export const Wrapper = styled.div`
   position: relative;
 
-  > ${ProfilePicture} {
+  ${MagnetWrapper} {
     position: absolute;
     top: 0;
     right: 0;
+    z-index: 1;
+  }
+
+  ${ProfilePicture} {
     width: var(--space);
+    box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
+      ${palette.main.text.alpha(0.15)};
     pointer-events: none;
     transform-origin: 0 0;
-    z-index: 1;
   }
 `
 
@@ -98,6 +104,8 @@ export const ExpandedContentBackground = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  border-radius: 12px;
+  border-radius: 4px;
   background-color: ${palette.shade.background};
+  box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
+    ${palette.main.text.alpha(0.15)};
 `
