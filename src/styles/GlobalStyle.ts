@@ -1,7 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 import FONT from './fonts'
-import { palette } from './theme'
 import { gridVars } from './grid'
+import { palette } from './theme'
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -16,6 +16,13 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     margin: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6, p, li, a, strong {
+    ::selection {
+    background-color: ${palette.accents[0].brighten(2)};
+    color: ${palette.main.background.bottom};
+    text-shadow: 0 2px 0 ${palette.accents[0]};
   }
 
 `
