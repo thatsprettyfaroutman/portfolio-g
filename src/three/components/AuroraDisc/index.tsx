@@ -8,12 +8,9 @@ import clamp from 'ramda/src/clamp'
 import { Group, Mesh, RingGeometry, Vector2 } from 'three'
 import useCssVariable from '@/hooks/useCssVariable'
 import { usePalette, palette } from '@/styles/theme'
-import { useThreeContext } from '@/three/context'
 import MeshAuroraMaterial, {
   TMeshAuroraMaterial,
 } from './materials/MeshAuroraMaterial'
-
-// Future improvements -> try with sheen material and light
 
 const RING_GEOMETRY = new RingGeometry(0.7, 1, 360 / 2, 16)
 
@@ -107,7 +104,6 @@ export default function AuroraDisc({
             uBaseOpacity={baseOpacity}
             key={MeshAuroraMaterial.key}
             transparent
-            // side={DoubleSide}
           />
         </a.mesh>
       </group>

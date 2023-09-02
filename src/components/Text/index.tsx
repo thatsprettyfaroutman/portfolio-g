@@ -1,8 +1,8 @@
 'use client'
 
 import { FC } from 'react'
-import styled, { css } from 'styled-components'
 import ReactMarkdown from 'react-markdown'
+import styled, { css } from 'styled-components'
 import FONT from '@/styles/fonts'
 import { palette } from '@/styles/theme'
 
@@ -56,7 +56,7 @@ export const Paragraph = styled.p`
   font-weight: 400;
   font-size: 17px;
   line-height: 25.5px;
-  color: ${palette.main.text.alpha(0.7)};
+  color: ${palette.main.text.alpha(0.9)};
 
   > strong {
     color: ${palette.main.text};
