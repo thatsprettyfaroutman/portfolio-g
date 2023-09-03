@@ -31,9 +31,10 @@ const MagnetArea = styled.span`
   position: absolute;
   display: block;
   top: calc(var(--space) * -1);
-  right: calc(var(--space) * -1);
+  right: calc(var(--fluidSpace) * -1);
   bottom: calc(var(--space) * -1);
-  left: calc(var(--space) * -1);
+  left: calc(var(--fluidSpace) * -1);
+  -webkit-tap-highlight-color: transparent;
 `
 
 export default function Magnet({

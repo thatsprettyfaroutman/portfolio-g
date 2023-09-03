@@ -1,9 +1,9 @@
 'use client'
 
 import styled from 'styled-components'
-import { palette } from '@/styles/theme'
-import Section from '@/components/Section'
 import FullView from '@/components/FullView'
+import Section from '@/components/Section'
+import { palette } from '@/styles/theme'
 
 export const Wrapper = styled.section``
 
@@ -15,7 +15,7 @@ export const Hero = styled(FullView)`
   place-items: center;
   background: linear-gradient(
     ${palette.main.background.top},
-    ${palette.main.background.bottom}
+    ${palette.main.background.top.alpha(0)}
   );
 
   user-select: none;

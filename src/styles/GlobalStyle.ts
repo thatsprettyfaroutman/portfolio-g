@@ -16,6 +16,9 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     margin: 0;
+    background-image: url(/paper.png);
+    background-size: ${512 / 4}px;
+    background-blend-mode: overlay;
   }
 
   h1, h2, h3, h4, h5, h6, p, li, a, strong {
