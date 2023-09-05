@@ -9,13 +9,17 @@ export const Wrapper = styled.footer`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: var(--space);
+  background-color: ${palette.footer.background};
+  color: ${palette.footer.text};
+  padding: calc(var(--space) * 1.5);
   gap: calc(var(--space) / 2);
   max-width: none;
-  border-top: 1px solid ${palette.main.border.alpha(0.3)};
 
   > ${MiniHeading} {
-    color: ${palette.main.text.alpha(0.5)};
+    color: ${palette.footer.text.alpha(0.5)};
     letter-spacing: 0.25em;
+    user-select: none;
   }
 `
+
+export const socialMediaLinksVariant = palette.footer
