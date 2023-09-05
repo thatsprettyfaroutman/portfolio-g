@@ -20,7 +20,7 @@ const Wrapper = styled(Link)<{ stealthMode: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: calc(var(--space) / 64) calc(var(--space) / 4);
+  padding: 0 calc(var(--space) / 4);
   gap: calc(var(--space) / 8);
   color: ${palette.main.text};
   transform: translate3d(0, 0px, 0);
@@ -31,19 +31,20 @@ const Wrapper = styled(Link)<{ stealthMode: boolean }>`
   ::before {
     content: ' ';
     position: absolute;
-    top: 0;
+    top: -1px;
     right: 0;
     bottom: 0;
     left: 0;
     border-radius: calc(var(--space) / 4);
     border: 1px solid transparent;
-    border-bottom-width: 1px;
+    border-bottom-width: 4px;
     background-color: ${palette.main.background};
 
     ${(p) =>
       !p.stealthMode &&
       css`
         border-color: ${palette.main.text};
+        border-bottom-width: 1px;
       `};
   }
 
@@ -54,10 +55,10 @@ const Wrapper = styled(Link)<{ stealthMode: boolean }>`
   }
 
   :hover {
-    transform: translate3d(0, -2px, 0);
+    transform: translate3d(0, -1.5px, 0);
 
     ::before {
-      bottom: -3px;
+      bottom: -4px;
       border-color: ${palette.main.text};
       border-bottom-width: 4px;
       background-color: ${palette.main.backgroundAlt};
