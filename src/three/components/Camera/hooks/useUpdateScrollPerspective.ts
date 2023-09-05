@@ -1,16 +1,14 @@
-import { useThree, useFrame } from '@react-three/fiber'
 import { useEffect, useCallback } from 'react'
+import { useThree, useFrame } from '@react-three/fiber'
 import { useThreeContext } from '@/three/context'
 
 export default function useUpdateScrollPerspective() {
-  const { camera } = useThree()
+  const { camera, viewport } = useThree()
 
-  const {
-    keepScrollPerspective,
-    offsetX,
-    offsetY,
-    scrollCompensatedBounds: bounds,
-  } = useThreeContext()
+  const { keepScrollPerspective, offsetX, offsetY, scrollCompensatedBounds } =
+    useThreeContext()
+
+  const bounds = scrollCompensatedBounds || viewport
 
   const updateCamera = useCallback(
     (width = 0, height = 0, offsetX = 0, offsetY = 0, scrollY = 0) => {

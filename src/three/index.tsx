@@ -20,17 +20,13 @@ import useMeasure from 'react-use-measure'
 import styled from 'styled-components'
 import { Group } from 'three'
 import useWindowSize from '@/hooks/useWindowSize'
-import Camera from './components/Camera'
-import ViewSizeHelper from './components/ViewSizeHelper'
+import Camera from '@/three/components/Camera'
+import ViewSizeHelper from '@/three/components/ViewSizeHelper'
 import {
   type TUseThreeContextProps,
   ThreeContextProvider,
   useThreeContext,
-} from './context'
-
-// Uncomment to print loading images (part 1/2)
-// import { WebGLRenderer } from 'three'
-// import { printImage } from './lib'
+} from '@/three/context'
 
 extend({ Group })
 
@@ -71,11 +67,6 @@ function ThreeCanvas({ children, ...restProps }: TThreeCanvasProps) {
       flat
       dpr={dpr}
       shadows={shadows}
-      // Uncomment to print loading images (part 2/2)
-      // gl={(canvas) => {
-      //   printImage()
-      //   return new WebGLRenderer({ canvas, preserveDrawingBuffer: true })
-      // }}
       {...restProps}
     >
       {!keepDefaultCamera && <Camera />}

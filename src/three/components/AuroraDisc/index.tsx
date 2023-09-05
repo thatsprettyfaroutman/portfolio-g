@@ -1,8 +1,14 @@
 'use client'
 
 import { useRef } from 'react'
-import { a, useSpringValue } from '@react-spring/three'
-import { useThree, useFrame, extend, ReactThreeFiber } from '@react-three/fiber'
+import { a, useSpringValue, easings } from '@react-spring/three'
+import {
+  useThree,
+  useFrame,
+  extend,
+  ReactThreeFiber,
+  GroupProps,
+} from '@react-three/fiber'
 import lerp from 'lerp'
 import clamp from 'ramda/src/clamp'
 import { Group, Mesh, RingGeometry } from 'three'
@@ -12,15 +18,16 @@ import MeshAuroraMaterial, {
   TMeshAuroraMaterial,
 } from './materials/MeshAuroraMaterial'
 
-// const PHI = 1.618
 const DEG = Math.PI / 180
-
-// const RING_GEOMETRY = new RingGeometry(1 / PHI, 1, 360 / 2, 16)
 const RING_GEOMETRY = new RingGeometry(0.7, 1, 360 / 2, 16 * 2)
 
-type TThingProps = {
+type TThingProps = GroupProps & {
   opacity?: TMeshAuroraMaterial['uOpacity']
   baseOpacity?: TMeshAuroraMaterial['uBaseOpacity']
+  geometry?: RingGeometry
+  timeScale?: number
+  disableAppearAnimation?: boolean
+  appearDelay?: number
   onFirstRender?: () => void
 }
 
@@ -46,7 +53,10 @@ declare global {
 export default function AuroraDisc({
   baseOpacity,
   opacity = 1,
-  // TODO: remove onFirstRender
+  geometry = RING_GEOMETRY,
+  timeScale = 1,
+  appearDelay = 1000,
+  disableAppearAnimation,
   onFirstRender,
   ...restProps
 }: TThingProps) {
@@ -58,26 +68,29 @@ export default function AuroraDisc({
   const scale = clamp(padding, padding * 4, radius - padding)
   const color0 = usePalette(palette.accents[0])
   const color1 = usePalette(palette.accents[1])
-  const appearSpring = useSpringValue(0, { config: { tension: 20 } })
-
-  useFrame((s) => {
-    if (!rotationRef.current) {
-      return
-    }
-    const tiltAngle = 15 * DEG
-    const t = s.clock.getElapsedTime()
-    rotationRef.current.rotation.x = Math.sin(t * 0.1) * tiltAngle
+  const appearSpring = useSpringValue(0, {
+    config: { tension: 20 },
   })
-
-  useFrame((s) => {
-    if (!materialRef.current) {
-      return
-    }
-    materialRef.current.uTime = s.clock.getElapsedTime()
-    materialRef.current.uOpacity = appearSpring.get() * opacity
-  })
-
   const firstRender = useRef(true)
+
+  useFrame((s) => {
+    const t = s.clock.getElapsedTime() * timeScale
+
+    if (rotationRef.current) {
+      const tiltAngle = 15 * DEG
+      rotationRef.current.rotation.x = Math.sin(t * 0.1) * tiltAngle
+    }
+
+    if (materialRef.current) {
+      materialRef.current.uTime = t
+      if (!disableAppearAnimation) {
+        materialRef.current.uOpacity = easings.easeInCubic(
+          lerp(0, opacity, appearSpring.get())
+        )
+      }
+    }
+  })
+
   useFrame(() => {
     if (firstRender.current) {
       firstRender.current = false
@@ -86,7 +99,7 @@ export default function AuroraDisc({
       }
       setTimeout(() => {
         appearSpring.start(1)
-      }, 2000)
+      }, appearDelay)
     }
   })
 
@@ -94,17 +107,24 @@ export default function AuroraDisc({
     <group {...restProps}>
       <group ref={rotationRef}>
         <a.mesh
-          rotation-x={appearSpring.to((p) => lerp(-Math.PI * 0.125, 0, p))}
+          rotation-x={
+            !disableAppearAnimation &&
+            appearSpring.to((p) => lerp(-45 * DEG, 0, p))
+          }
           scale-x={scale}
           scale-y={scale}
-          scale-z={appearSpring.to((p) => lerp(1000, 100, p))}
-          geometry={RING_GEOMETRY}
+          scale-z={
+            !disableAppearAnimation &&
+            appearSpring.to((p) => lerp(1000, 100, p))
+          }
+          geometry={geometry}
         >
           <meshAuroraMaterial
             ref={materialRef}
             key={MeshAuroraMaterial.key}
             uColor0={color0}
             uColor1={color1}
+            opacity={opacity}
             uBaseOpacity={baseOpacity}
             transparent
           />
