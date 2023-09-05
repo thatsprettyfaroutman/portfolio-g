@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import throttle from 'lodash.throttle'
 import styled from 'styled-components'
@@ -22,8 +22,9 @@ const Wrapper = styled.div`
   height: 64px;
 `
 
-const useFavicons = () =>
-  useMemo(() => {
+const useFavicons = () => {
+  const [favicons, setFavicons] = useState<HTMLLinkElement[]>([])
+  useEffect(() => {
     if (typeof document === 'undefined') {
       return []
     }
@@ -38,22 +39,27 @@ const useFavicons = () =>
     favicons.push(favicon, appleFavicon)
 
     // Remove existing favicons
-    const existingFavicons = head.getElementsByTagName('link')
-    for (let i = existingFavicons.length; --i >= 0; ) {
-      const rel = existingFavicons[i].getAttribute('rel')
-      if (!rel) {
-        continue
-      }
-      if (/\bicon\b/i.test(rel)) {
-        head.removeChild(existingFavicons[i])
-      }
-    }
+    // const existingFavicons = head.getElementsByTagName('link')
+    // for (let i = existingFavicons.length; --i >= 0; ) {
+    //   const rel = existingFavicons[i].getAttribute('rel')
+    //   if (!rel) {
+    //     continue
+    //   }
+    //   if (/\bicon\b/i.test(rel)) {
+    //     head.removeChild(existingFavicons[i])
+    //   }
+    // }
 
     // Add new ones
     favicons.forEach((el) => head.appendChild(el))
+    setFavicons(favicons)
 
-    return favicons
+    return () => {
+      favicons.forEach((el) => head.removeChild(el))
+    }
   }, [])
+  return favicons
+}
 
 const useUpdateFavicons = (favicons: HTMLLinkElement[]) =>
   useMemo(
@@ -61,7 +67,7 @@ const useUpdateFavicons = (favicons: HTMLLinkElement[]) =>
       throttle((canvas: HTMLCanvasElement) => {
         const src = canvas.toDataURL()
         for (let i = favicons.length; --i >= 0; ) {
-          favicons[i].href = src
+          favicons[i].setAttribute('href', src)
         }
       }, FPS),
     [favicons]

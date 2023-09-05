@@ -1,8 +1,7 @@
 import dynamic from 'next/dynamic'
 import SocialMediaLinks from '@/asyncComponents/SocialMediaLinks'
 import AnimatedText from '@/components/AnimatedText'
-import Header from '@/components/Header'
-import { Heading1, BigMarkdown, MiniHeading } from '@/components/Text'
+import { Heading1, BigMarkdown } from '@/components/Text'
 import useIntroSection from '@/contentful/hooks/useIntroSection'
 import { Wrapper, Hero, TextContent, IntroFooter } from './styled'
 
@@ -14,9 +13,6 @@ export default async function IntroSection({ ...restProps }) {
 
   return (
     <Wrapper {...restProps}>
-      <Header>
-        <SocialMediaLinks stealthMode />
-      </Header>
       <Hero>
         <Scene />
         <Heading1>

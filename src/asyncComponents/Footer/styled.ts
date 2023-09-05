@@ -11,7 +11,7 @@ export const Wrapper = styled.footer`
   align-items: center;
   background-color: ${palette.footer.background};
   color: ${palette.footer.text};
-  padding: calc(var(--space) * 1.5);
+  padding: calc(var(--space) * 1.5) var(--fluidSpace);
   gap: calc(var(--space) / 2);
   max-width: none;
 

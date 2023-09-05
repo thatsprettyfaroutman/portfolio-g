@@ -5,6 +5,7 @@ import Link from 'next/link'
 import styled, { css } from 'styled-components'
 import FONT from '@/styles/fonts'
 import { type TPaletteColor } from '@/styles/theme'
+import { noProp } from '@/styles/utils'
 
 export type TSocialMediaLinkStyledProps = {
   variant: {
@@ -14,7 +15,9 @@ export type TSocialMediaLinkStyledProps = {
   stealthMode: boolean
 }
 
-export const Wrapper = styled(Link)<{
+export const Wrapper = styled(Link).withConfig(
+  noProp(['stealthMode', 'variant'])
+)<{
   variant: {
     background: TPaletteColor
     text: TPaletteColor

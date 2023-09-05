@@ -3,6 +3,7 @@
 import styled from 'styled-components'
 import GradedFullHeight from '@/components/GradedFullHeight'
 import Section from '@/components/Section'
+import { MEDIA } from '@/styles/media'
 import { palette } from '@/styles/theme'
 
 export const Wrapper = styled.section``
@@ -13,11 +14,6 @@ export const Hero = styled(GradedFullHeight)`
   height: 100vh;
   min-height: 600px;
   place-items: center;
-  /* background: linear-gradient(
-    ${palette.main.backgroundAlt},
-    ${palette.main.backgroundAlt.alpha(0)}
-  ); */
-
   user-select: none;
 
   > .three {
@@ -34,11 +30,21 @@ export const TextContent = styled(Section).attrs({ as: 'div' })`
 `
 
 export const IntroFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  display: grid;
+  grid-gap: calc(var(--space) / 2);
+  justify-items: center;
 
   > :last-child {
-    margin-left: auto;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  ${MEDIA.tablet} {
+    grid-template-columns: auto auto;
+    justify-items: start;
+
+    > :last-child {
+      grid-row: initial;
+    }
   }
 `
