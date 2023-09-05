@@ -1,7 +1,7 @@
 import { createCanvas, loadImage } from 'canvas'
 import fromPairs from 'ramda/src/fromPairs'
 import toPairs from 'ramda/src/toPairs'
-import { TRichAsset } from '../../types'
+import { TRichAsset } from '../types'
 
 const PLACEHOLDER_WIDTH = 20
 
