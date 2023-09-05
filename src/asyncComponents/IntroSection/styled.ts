@@ -4,9 +4,11 @@ import styled from 'styled-components'
 import GradedFullHeight from '@/components/GradedFullHeight'
 import Section from '@/components/Section'
 import { MEDIA } from '@/styles/media'
-import { palette } from '@/styles/theme'
 
-export const Wrapper = styled.section``
+export const Wrapper = styled.section`
+  display: grid;
+  grid-gap: var(--space);
+`
 
 export const Hero = styled(GradedFullHeight)`
   position: relative;
@@ -25,14 +27,16 @@ export const Hero = styled(GradedFullHeight)`
   }
 `
 
-export const TextContent = styled(Section).attrs({ as: 'div' })`
+export const IntroContent = styled(Section).attrs({ as: 'div' })`
   max-width: 960px;
+  grid-gap: var(--space);
 `
 
 export const IntroFooter = styled.div`
   display: grid;
   grid-gap: calc(var(--space) / 2);
   justify-items: center;
+  min-height: var(--space);
 
   > :last-child {
     grid-row: 1;

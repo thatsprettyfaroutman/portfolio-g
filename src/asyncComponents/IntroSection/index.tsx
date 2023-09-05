@@ -1,15 +1,16 @@
 import dynamic from 'next/dynamic'
+import Brands from '@/asyncComponents/Brands'
 import SocialMediaLinks from '@/asyncComponents/SocialMediaLinks'
 import AnimatedText from '@/components/AnimatedText'
+import Author from '@/components/Author/lazy'
 import { Heading1, BigMarkdown } from '@/components/Text'
 import useIntroSection from '@/contentful/hooks/useIntroSection'
-import { Wrapper, Hero, TextContent, IntroFooter } from './styled'
+import { Wrapper, Hero, IntroContent, IntroFooter } from './styled'
 
 const Scene = dynamic(() => import('./ThreeScene'), { ssr: false })
-const Author = dynamic(() => import('@/components/Author'), { ssr: false })
 
 export default async function IntroSection({ ...restProps }) {
-  const intro = await useIntroSection()
+  const introSection = await useIntroSection()
 
   return (
     <Wrapper {...restProps}>
@@ -17,18 +18,20 @@ export default async function IntroSection({ ...restProps }) {
         <Scene />
         <Heading1>
           <AnimatedText delay={1000} trailDelay={800}>
-            {intro.title}
+            {introSection.title}
           </AnimatedText>
         </Heading1>
       </Hero>
 
-      <TextContent>
-        <BigMarkdown>{intro.body}</BigMarkdown>
+      <IntroContent>
+        <BigMarkdown>{introSection.body}</BigMarkdown>
         <IntroFooter>
           <SocialMediaLinks />
-          <Author>{intro.author}</Author>
+          <Author>{introSection.author}</Author>
         </IntroFooter>
-      </TextContent>
+      </IntroContent>
+
+      <Brands />
     </Wrapper>
   )
 }

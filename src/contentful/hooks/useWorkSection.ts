@@ -9,7 +9,7 @@ export default async function useWorkSection() {
         items {
           title
           body
-          workItemsCollection(limit: 10) {
+          workItems: workItemsCollection(limit: 10) {
             items {
               sys {
                 id
@@ -76,7 +76,7 @@ export default async function useWorkSection() {
                 url
               }
               cardBackText
-              techsCollection(limit: 20) {
+              techs: techsCollection(limit: 20) {
                 items {
                   sys {
                     id
@@ -87,7 +87,7 @@ export default async function useWorkSection() {
                   }
                 }
               }
-              impactsCollection(limit: 10) {
+              impacts: impactsCollection(limit: 10) {
                 items {
                   sys {
                     id
@@ -103,14 +103,14 @@ export default async function useWorkSection() {
   `)
 
   const workSection = workSectionCollection.items[0]
-  workSection.workItems = workSection.workItemsCollection.items.map(
+  workSection.workItems = workSection.workItems.items.map(
     (work: Record<string, unknown>) => ({
       ...work,
       client: work.client,
       // @ts-ignore
-      techs: work.techsCollection?.items || [],
+      techs: work.techs.items || [],
       // @ts-ignore
-      impacts: work.impactsCollection?.items || [],
+      impacts: work.impacts.items || [],
     })
   )
 

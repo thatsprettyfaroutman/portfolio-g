@@ -84,7 +84,10 @@ export type TSocialMediaLink = DeepReplace<
 >
 
 export type TIntroSection = IIntroSection &
-  IIntroSectionFields & { author: TAuthor }
+  Omit<IIntroSectionFields, 'brands'> & {
+    author: TAuthor
+    brands: TRichAsset[]
+  }
 
 export type TWorkSection = Omit<
   IWorkSection & IWorkSectionFields,

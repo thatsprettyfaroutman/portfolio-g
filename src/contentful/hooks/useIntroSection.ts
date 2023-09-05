@@ -19,12 +19,27 @@ export default async function useIntroSection() {
               height
             }
           }
+          brandsTitle
+          brands: brandsCollection(limit: 8) {
+            items {
+              sys {
+                id
+              }
+              title
+              url
+              width
+              height
+            }
+          }
         }
       }
     }
   `)
 
-  return addRichAssetPlaceholders<TIntroSection>(
-    introSectionCollection.items[0]
-  )
+  const introSection = introSectionCollection.items[0]
+
+  return addRichAssetPlaceholders<TIntroSection>({
+    ...introSection,
+    brands: introSection.brands.items,
+  })
 }

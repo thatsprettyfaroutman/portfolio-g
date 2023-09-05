@@ -137,6 +137,12 @@ export interface IIntroSectionFields {
 
   /** Author */
   author: IAuthor
+
+  /** Brands Title */
+  brandsTitle: string
+
+  /** Brands */
+  brands?: Asset[] | undefined
 }
 
 export interface IIntroSection extends Entry<IIntroSectionFields> {
