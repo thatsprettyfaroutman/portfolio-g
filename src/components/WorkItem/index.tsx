@@ -80,7 +80,6 @@ export default function WorkItem({ item, ...restProps }: TWorkItemProps) {
       <Body>{item.body}</Body>
       <Card
         src={item.cardVideo.url}
-        iconSrc={item.client.logoMap.url}
         backText={
           (isEmpty(item.cardBackText) ? null : item.cardBackText) ??
           item.impacts[0]?.body ??

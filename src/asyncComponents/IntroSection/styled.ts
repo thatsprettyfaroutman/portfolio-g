@@ -1,22 +1,22 @@
 'use client'
 
 import styled from 'styled-components'
-import FullView from '@/components/FullView'
+import GradedFullHeight from '@/components/GradedFullHeight'
 import Section from '@/components/Section'
 import { palette } from '@/styles/theme'
 
 export const Wrapper = styled.section``
 
-export const Hero = styled(FullView)`
+export const Hero = styled(GradedFullHeight)`
   position: relative;
   display: grid;
   height: 100vh;
   min-height: 600px;
   place-items: center;
-  background: linear-gradient(
-    ${palette.main.background.top},
-    ${palette.main.background.top.alpha(0)}
-  );
+  /* background: linear-gradient(
+    ${palette.main.backgroundAlt},
+    ${palette.main.backgroundAlt.alpha(0)}
+  ); */
 
   user-select: none;
 
@@ -35,6 +35,8 @@ export const TextContent = styled(Section).attrs({ as: 'div' })`
 
 export const IntroFooter = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   > :last-child {
     margin-left: auto;

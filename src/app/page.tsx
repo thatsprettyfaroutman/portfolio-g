@@ -1,13 +1,13 @@
+import Footer from '@/asyncComponents/Footer'
+import IntroSection from '@/asyncComponents/IntroSection'
+import WorkSection from '@/asyncComponents/WorkSection'
 import Main from '@/components/Main'
-import Intro from '@/sections/Intro'
-import Work from '@/sections/Work'
-import Footer from '@/sections/Footer'
 
 export default async function Home() {
   return (
     <Main>
-      <Intro />
-      <Work />
+      <IntroSection />
+      <WorkSection />
       <Footer />
     </Main>
   )

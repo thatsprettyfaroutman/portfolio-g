@@ -4,6 +4,7 @@ import { FC } from 'react'
 import ReactMarkdown from 'react-markdown'
 import styled, { css } from 'styled-components'
 import FONT from '@/styles/fonts'
+import { MEDIA } from '@/styles/media'
 import { palette } from '@/styles/theme'
 
 // TODO: clean up deprecated styles
@@ -47,7 +48,7 @@ export const MiniHeading = styled.h5`
   line-height: 18px;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: ${palette.main.border.brighten(0.7)};
+  color: ${palette.main.border};
 `
 
 export const Paragraph = styled.p`
@@ -56,6 +57,7 @@ export const Paragraph = styled.p`
   font-weight: 400;
   font-size: 17px;
   line-height: 25.5px;
+  line-height: 28px;
   color: ${palette.main.text.alpha(0.9)};
 
   > strong {
@@ -90,10 +92,13 @@ export const MediumParagraph = styled(Paragraph)`
   line-height: 36px;
 `
 
-export const BigParagraph = styled(Paragraph)`
+export const BigParagraph = styled(MediumParagraph)`
   font-family: ${FONT.Montserrat};
-  font-size: 24px;
-  line-height: 36px;
+
+  ${MEDIA.tablet} {
+    font-size: 24px;
+    line-height: 38px;
+  }
 `
 
 export const Markdown = styled(ReactMarkdown).attrs({
@@ -114,20 +119,7 @@ export const Markdown = styled(ReactMarkdown).attrs({
   grid-gap: calc(var(--space) / 4);
 `
 
-// TODO: move these custom markdowns to components, e.g. AuthorMarkdown = styled(Markdown)...
-/**
- * @deprecated
- */
-export const SmallMarkdown = styled(Markdown).attrs((props) => ({
-  components: {
-    ...props.components,
-    p: SmallParagraph as FC,
-    h1: Heading4 as FC,
-    h2: Heading4 as FC,
-    h3: Heading4 as FC,
-    li: SmallListItem as FC,
-  },
-}))``
+// TODO: move these custom markdowns to components, e.g. AuthorMarkdown = styled
 
 /**
  * @deprecated

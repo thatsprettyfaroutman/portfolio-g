@@ -1,9 +1,9 @@
 import { Heading2, BigParagraph } from '@/components/Text'
 import WorkItem from '@/components/WorkItem'
-import { Wrapper, Head, WorkItems } from './styled'
 import useWorkSection from '@/contentful/hooks/useWorkSection'
+import { Wrapper, Head, WorkItems } from './styled'
 
-export default async function Work({ ...restProps }) {
+export default async function WorkSection({ ...restProps }) {
   const workSection = await useWorkSection()
 
   return (

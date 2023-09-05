@@ -7,7 +7,7 @@ extend({ Fog })
 export default function CameraFog({ near = 0, far = 0, ...restProps }) {
   const { camera } = useThree()
   const cameraDistance = Math.abs(camera.position.z)
-  const fogColor = usePalette(palette.main.background.bottom)
+  const fogColor = usePalette(palette.main.background)
 
   return (
     <fog

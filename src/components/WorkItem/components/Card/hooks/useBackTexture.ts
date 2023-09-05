@@ -3,32 +3,31 @@
 import { useMemo, useRef } from 'react'
 import { drawText } from 'canvas-txt'
 import isEmpty from 'ramda/src/isEmpty'
-import { CanvasTexture } from 'three'
 import useFontsStatus from '@/hooks/useFontsStatus'
 import FONT from '@/styles/fonts'
 
-type TUseBackMapProps = {
+type TUseBackTextureProps = {
   text: string
   width: number
   height: number
   padding?: number
 }
 
-export default function useBackMap({
+export default function useBackTexture({
   text,
   width,
   height,
   padding = 0,
-}: TUseBackMapProps) {
+}: TUseBackTextureProps) {
   if (!text || isEmpty(text)) {
-    throw new Error('useBackMap: `text` is empty')
+    throw new Error('useBackTexture: `text` is empty')
   }
 
   const fontsStatus = useFontsStatus()
   const backMapCanvas = useRef<HTMLCanvasElement>()
 
   // Generate b/w map for back text using canvas
-  const backMap = useMemo(() => {
+  const backTexture = useMemo(() => {
     if (fontsStatus !== 'loaded') {
       return
     }
@@ -63,8 +62,8 @@ export default function useBackMap({
       align: 'right',
     })
 
-    return new CanvasTexture(canvas)
+    return canvas
   }, [text, height, width, padding, fontsStatus])
 
-  return backMap
+  return backTexture
 }

@@ -156,6 +156,34 @@ export interface IIntroSection extends Entry<IIntroSectionFields> {
   }
 }
 
+export interface ISocialMediaLinkFields {
+  /** Name */
+  name: string
+
+  /** Icon */
+  icon: Asset
+
+  /** href */
+  href: string
+}
+
+export interface ISocialMediaLink extends Entry<ISocialMediaLinkFields> {
+  sys: {
+    id: string
+    type: string
+    createdAt: string
+    updatedAt: string
+    locale: string
+    contentType: {
+      sys: {
+        id: 'socialMediaLink'
+        linkType: 'ContentType'
+        type: 'Link'
+      }
+    }
+  }
+}
+
 export interface ITechFields {
   /** Name */
   name: string
@@ -265,6 +293,7 @@ export type CONTENT_TYPE =
   | 'imageList'
   | 'impact'
   | 'introSection'
+  | 'socialMediaLink'
   | 'tech'
   | 'work'
   | 'workSection'
@@ -276,6 +305,7 @@ export type IEntry =
   | IImageList
   | IImpact
   | IIntroSection
+  | ISocialMediaLink
   | ITech
   | IWork
   | IWorkSection

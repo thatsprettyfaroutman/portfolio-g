@@ -5,7 +5,7 @@ import { TRichAsset } from '../../types'
 
 const PLACEHOLDER_WIDTH = 20
 
-const isRichAsset = (data: unknown): data is TRichAsset => {
+const isRichAssetPlaceholderable = (data: unknown): data is TRichAsset => {
   // @ts-ignore
   return !!(data?.url && data?.width && data?.height)
 }
@@ -16,10 +16,10 @@ const getWidthUrl = (url: string) => {
 }
 
 // Populate TRichAsset with `placeholder` images
-export const addRichAssetPlaceholders = async <T>(
+export default async function addRichAssetPlaceholders<T>(
   data: Array<TRichAsset> | Record<string, TRichAsset> | TRichAsset
-): Promise<T> => {
-  if (isRichAsset(data)) {
+): Promise<T> {
+  if (isRichAssetPlaceholderable(data)) {
     const image = await loadImage(getWidthUrl(data.url))
     const canvas = createCanvas(image.width, image.height)
     const context = canvas.getContext('2d')
@@ -28,23 +28,18 @@ export const addRichAssetPlaceholders = async <T>(
   }
 
   if (Array.isArray(data)) {
-    return Promise.all(data.map((x) => addRichAssetPlaceholders(x))) as T
+    return Promise.all(
+      data.map((value) => addRichAssetPlaceholders<T>(value))
+    ) as Promise<T>
   }
 
   if (typeof data === 'object') {
     const entries = toPairs(data as any)
     const resolved = await Promise.all(
       entries.map(async ([key, value]) => {
-        return [key, await addRichAssetPlaceholders(value)]
+        return [key, await addRichAssetPlaceholders<T>(value)]
       })
     )
-
-    console.log('///////////')
-    console.log('///////////')
-    console.log('///////////')
-    console.log('///////////')
-    console.log(fromPairs(resolved as []))
-
     return fromPairs(resolved as []) as T
   }
 

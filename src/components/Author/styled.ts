@@ -1,9 +1,11 @@
 'use client'
 
+import { FC } from 'react'
 import styled from 'styled-components'
 import { Wrapper as MagnetWrapper } from '@/components/Magnet'
 import ProfilePicture from '@/components/ProfilePicture'
-import { Heading4, SmallMarkdown } from '@/components/Text'
+import { Heading4, Markdown, SmallListItem, Paragraph } from '@/components/Text'
+import { MEDIA } from '@/styles/media'
 import { palette } from '@/styles/theme'
 
 export const Wrapper = styled.div`
@@ -15,14 +17,6 @@ export const Wrapper = styled.div`
     right: 0;
     z-index: 1;
   }
-
-  ${ProfilePicture} {
-    width: var(--space);
-    box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
-      ${palette.main.text.alpha(0.15)};
-    pointer-events: none;
-    transform-origin: 0 0;
-  }
 `
 
 export const Shade = styled.div`
@@ -33,20 +27,31 @@ export const Shade = styled.div`
   left: 0;
   z-index: 1;
 
-  /* ::after {
+  ::after {
     content: ' ';
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: ${palette.shade.background.alpha(0.5)};
-  } */
+    background-color: ${palette.shade.background};
+  }
+
+  ${MEDIA.tablet} {
+    ::after {
+      content: none;
+    }
+  }
 `
 
 export const ProfilePictureTargetArea = styled.div`
   width: var(--space);
   aspect-ratio: 1;
+`
+
+export const CustomProfilePicture = styled(ProfilePicture)`
+  width: var(--space);
+  pointer-events: none;
 `
 
 export const CollapsedContent = styled.div`
@@ -70,12 +75,12 @@ export const ExpandedContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: calc(var(--space) / 4);
+  gap: calc(var(--space) / 2);
   width: calc(100vw - var(--fluidSpace) * 2);
-  max-width: calc(var(--space) * 5);
   box-sizing: border-box;
   padding: calc(var(--space) / 2);
-  color: ${palette.shade.text};
+  padding-bottom: var(--space);
+  color: ${palette.panel.text};
 
   cursor: pointer;
   user-select: none;
@@ -86,15 +91,15 @@ export const ExpandedContent = styled.div`
   }
 
   > ${ProfilePictureTargetArea} {
-    width: calc(var(--space) * 2);
+    width: calc(var(--space) * 3);
   }
 
   > div > ${Heading4} {
     text-align: center;
   }
 
-  > div > ${SmallMarkdown} {
-    margin-right: calc(var(--space) / -16);
+  ${MEDIA.tablet} {
+    max-width: calc(var(--space) * 5);
   }
 `
 
@@ -104,8 +109,28 @@ export const ExpandedContentBackground = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  border-radius: 4px;
-  background-color: ${palette.shade.background};
-  box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
-    ${palette.main.text.alpha(0.15)};
+  border-radius: 8px;
+
+  ${MEDIA.tablet} {
+    background: linear-gradient(
+      135deg,
+      ${palette.panel.background},
+      ${palette.panel.backgroundAlt}
+    );
+    box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
+      ${palette.main.text.alpha(0.15)};
+  }
+`
+
+export const Body = styled(Markdown).attrs((props) => ({
+  components: {
+    ...props.components,
+    p: Paragraph as FC,
+    h1: Heading4 as FC,
+    h2: Heading4 as FC,
+    h3: Heading4 as FC,
+    li: SmallListItem as FC,
+  },
+}))`
+  margin-right: calc(var(--space) / -16);
 `

@@ -1,18 +1,16 @@
 import { type SyntheticEvent, useState, useRef, useCallback } from 'react'
-// import { useDrag } from '@use-gesture/react'
 import { useInView } from 'react-intersection-observer'
 import { mergeRefs } from 'react-merge-refs'
-import { SpringValue, useTransition } from 'react-spring'
+import { SpringValue, useSpring, useTransition } from 'react-spring'
 import { TImageList } from '@/contentful/types'
 import usePrefetchImage from '@/hooks/usePrefetchImage'
 
 type TUseImageListProps = {
-  children: TImageList
+  images: TImageList['images']['items']
 }
 
-export default function useImageList({ children }: TUseImageListProps) {
+export default function useImageList({ images }: TUseImageListProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null)
-  const images = children.images.items
   const [inViewRef, inView] = useInView({ threshold: 0.9 })
   const { prefetchImage } = usePrefetchImage()
   const directionRef = useRef<0 | -1 | 1>(0)
@@ -24,6 +22,10 @@ export default function useImageList({ children }: TUseImageListProps) {
   const nextImage = openIndex >= 0 ? images[openIndex + 1] : undefined
   prevImage && prefetchImage(prevImage.url)
   nextImage && prefetchImage(nextImage.url)
+
+  const { showProgress } = useSpring({
+    showProgress: openIndex > -1 ? 1 : 0,
+  })
 
   const shadeTransitions = useTransition(openIndex > -1, {
     from: { progress: 1, opacity: 0 },
@@ -42,7 +44,10 @@ export default function useImageList({ children }: TUseImageListProps) {
     if (inView || !wrapperRef.current) {
       return
     }
-    wrapperRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    wrapperRef.current.scrollIntoView({
+      // behavior: 'smooth',
+      block: 'center',
+    })
   }, [inView])
 
   const handleOpenImage = useCallback(
@@ -94,6 +99,7 @@ export default function useImageList({ children }: TUseImageListProps) {
     handleChangeImage,
     handleCloseImage,
     shadeTransitions,
+    showProgress,
     imageTransitions,
     mixProgressDirection,
     isFirstImage: !prevImage,

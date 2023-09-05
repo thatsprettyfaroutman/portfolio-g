@@ -7,8 +7,8 @@ import {
   useEffect,
   useState,
 } from 'react'
-import styled from 'styled-components'
 import { useTransition } from 'react-spring'
+import styled from 'styled-components'
 
 // A drop in component that animates all the children of a component with a trailing spring and without the need for _context_.
 

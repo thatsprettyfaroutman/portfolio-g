@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   grid-gap: 0;
 
-  border: 1px solid ${palette.main.border};
+  border: 1px solid ${palette.main.border.alpha(0.3)};
 
   > p {
     padding: calc(var(--fluidSpace) / 4) 0;

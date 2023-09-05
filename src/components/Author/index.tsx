@@ -3,17 +3,18 @@
 import { a } from 'react-spring'
 import AnimateChildren from '@/components/AnimateChildren'
 import Magnet from '@/components/Magnet'
-import ProfilePicture from '@/components/ProfilePicture'
-import { SmallMarkdown, Paragraph, Heading4 } from '@/components/Text'
+import { Paragraph, Heading4 } from '@/components/Text'
 import { TAuthor } from '@/contentful/types'
 import useAuthor from './hooks/useAuthor'
 import {
   Wrapper,
   Shade,
   ProfilePictureTargetArea,
+  CustomProfilePicture,
   CollapsedContent,
   ExpandedContent,
   ExpandedContentBackground,
+  Body,
 } from './styled'
 
 // TODO: Hover follow effect
@@ -28,7 +29,6 @@ type TAuthorProps = {
 const AShade = a(Shade)
 const ACollapsedContent = a(CollapsedContent)
 const AExpandedContent = a(ExpandedContent)
-const AProfilePicture = a(ProfilePicture)
 const AProfilePictureMagnet = a(Magnet)
 
 export default function Author({ children, ...restProps }: TAuthorProps) {
@@ -50,26 +50,20 @@ export default function Author({ children, ...restProps }: TAuthorProps) {
         style={style.expandedContent}
       >
         <ProfilePictureTargetArea ref={profilePictureDelta.toRef} />
-        <AnimateChildren showing={isOpen} reverseAnimationOrder>
+        <AnimateChildren showing={isOpen}>
           <ExpandedContentBackground className="animate" />
           <Heading4>{children.name}</Heading4>
-          <SmallMarkdown>{children.bio}</SmallMarkdown>
+          <Body>{children.bio}</Body>
         </AnimateChildren>
       </AExpandedContent>
 
       {/*
          The flying profile picture. It flies between `ProfilePictureTargetAreas` based on `open`. Its positioned to the same position as `CollapsedContent.ProfilePictureTargetArea`, but it's not a child of it because it needs to be positioned relative to the entire Author component, not just the `CollapsedContent`.
       */}
-      <AProfilePictureMagnet
-        disabled={isOpen}
-        onClick={toggle}
-        // style={{ x: style.profilePicture.x, y: style.profilePicture.y }}
-      >
-        <AProfilePicture
-          src={children.photo.url}
-          // style={{
-          //   scale: style.profilePicture.scale,
-          // }}
+      <AProfilePictureMagnet disabled={isOpen} onClick={toggle}>
+        <CustomProfilePicture
+          photo={children.photo}
+          // @ts-ignore
           style={style.profilePicture}
         />
       </AProfilePictureMagnet>

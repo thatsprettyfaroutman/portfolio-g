@@ -16,6 +16,7 @@ uniform float uTime;
 float noisify(vec3 point, float z2, float d) {
   float x = (point.x + 0.31) * d; // + z2;
   float y = (point.y - 1.73) * d; // + z2;
+
   return pnoise(vec3(x, y, point.z), vec3(2.0));
 }
 
@@ -24,6 +25,7 @@ vec3 distort(vec3 position) {
   float d = length(position.xy) * 0.25;
   float z = position.z + t;
   float z2 = position.z + t * 0.3;
+
   float theta = noisify(vec3(position.xy, z), z2, d) * PI * 4.0;
 
   // Original nudge

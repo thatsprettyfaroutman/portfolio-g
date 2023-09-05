@@ -5,14 +5,18 @@ import { a, useSpringValue } from '@react-spring/three'
 import { useThree, useFrame, extend, ReactThreeFiber } from '@react-three/fiber'
 import lerp from 'lerp'
 import clamp from 'ramda/src/clamp'
-import { Group, Mesh, RingGeometry, Vector2 } from 'three'
+import { Group, Mesh, RingGeometry } from 'three'
 import useCssVariable from '@/hooks/useCssVariable'
 import { usePalette, palette } from '@/styles/theme'
 import MeshAuroraMaterial, {
   TMeshAuroraMaterial,
 } from './materials/MeshAuroraMaterial'
 
-const RING_GEOMETRY = new RingGeometry(0.7, 1, 360 / 2, 16)
+// const PHI = 1.618
+const DEG = Math.PI / 180
+
+// const RING_GEOMETRY = new RingGeometry(1 / PHI, 1, 360 / 2, 16)
+const RING_GEOMETRY = new RingGeometry(0.7, 1, 360 / 2, 16 * 2)
 
 type TThingProps = {
   opacity?: TMeshAuroraMaterial['uOpacity']
@@ -42,6 +46,7 @@ declare global {
 export default function AuroraDisc({
   baseOpacity,
   opacity = 1,
+  // TODO: remove onFirstRender
   onFirstRender,
   ...restProps
 }: TThingProps) {
@@ -54,16 +59,14 @@ export default function AuroraDisc({
   const color0 = usePalette(palette.accents[0])
   const color1 = usePalette(palette.accents[1])
   const appearSpring = useSpringValue(0, { config: { tension: 20 } })
-  const mouseRef = useRef(new Vector2())
 
   useFrame((s) => {
     if (!rotationRef.current) {
       return
     }
-    const tiltAngle = Math.PI * 0.125
-    mouseRef.current.lerp(s.mouse, 0.05)
-    rotationRef.current.rotation.y = lerp(0, tiltAngle, mouseRef.current.x)
-    rotationRef.current.rotation.x = lerp(0, tiltAngle, -mouseRef.current.y)
+    const tiltAngle = 15 * DEG
+    const t = s.clock.getElapsedTime()
+    rotationRef.current.rotation.x = Math.sin(t * 0.1) * tiltAngle
   })
 
   useFrame((s) => {
@@ -99,10 +102,10 @@ export default function AuroraDisc({
         >
           <meshAuroraMaterial
             ref={materialRef}
+            key={MeshAuroraMaterial.key}
             uColor0={color0}
             uColor1={color1}
             uBaseOpacity={baseOpacity}
-            key={MeshAuroraMaterial.key}
             transparent
           />
         </a.mesh>

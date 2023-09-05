@@ -10,10 +10,9 @@ import {
   PresentationControls,
 } from '@react-three/drei'
 import { type GroupProps, useThree, useFrame } from '@react-three/fiber'
-import { Group } from 'three'
 import range from 'ramda/src/range'
+import { Group } from 'three'
 import { palette, usePalette } from '@/styles/theme'
-import chroma from 'chroma-js'
 
 const MODEL = '/models/me-swinging.fbx'
 
@@ -60,8 +59,8 @@ export default function Dancer({ ...restProps }: TMeProps) {
     size: 1024 * 2.0,
   })
 
-  // const ambientColor = usePalette(palette.main.background.bottom)
-  const platformColor = usePalette(palette.main.background.top)
+  // const ambientColor = usePalette(palette.main.background)
+  const platformColor = usePalette(palette.main.backgroundAlt)
   const ambientColor = platformColor
   const lightColor = usePalette(palette.accents[2])
 

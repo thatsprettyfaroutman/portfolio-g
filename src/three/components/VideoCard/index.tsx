@@ -15,7 +15,6 @@ import {
   MeshPhysicalMaterial,
   Vector2,
   NearestFilter,
-  Texture,
   DoubleSide,
 } from 'three'
 import { usePalette, palette } from '@/styles/theme'
@@ -39,8 +38,7 @@ export type TCardProps = {
   height?: number
   depth?: number
   src: string
-  iconMapSrc: string
-  backMap?: Texture
+  backTexture?: HTMLCanvasElement
 }
 
 const useContainSize = (width: number, height: number) => {
@@ -65,25 +63,22 @@ export default function VideoCard({
   width: widthProp = 300,
   height: heightProp = 200,
   depth = 4,
-  iconMapSrc,
-  backMap,
+  backTexture,
   ...restProps
 }: TCardProps) {
   const [flipCount, setFlipCount] = useState(0)
   const { width, height } = useContainSize(widthProp, heightProp)
   const { inView, inViewSpring } = useThreeContext()
-  const ambientLightColor = usePalette(palette.main.background.bottom)
+  const ambientLightColor = usePalette(palette.main.background)
+  const mouseRef = useRef({
+    hover: 0,
+    position: new Vector2(0),
+  })
 
   // Maps
   const map = useVideoTexture(src, { start: false })
   map.minFilter = NearestFilter
   map.magFilter = NearestFilter
-  const iconMap = useTexture(iconMapSrc)
-
-  const mouseRef = useRef({
-    hover: 0,
-    position: new Vector2(0),
-  })
 
   // Card flipping animation
   const { p: flipSpring } = useSpring({ p: flipCount })
@@ -113,36 +108,23 @@ export default function VideoCard({
 
   const shadowMap = useTexture(shadowNormal.src)
 
-  // console.log('VID', last(src.split('/')), 'first')
-
   return (
     <group {...restProps}>
       <ambientLight color={ambientLightColor} intensity={0.25} />
       <directionalLight
         color={ambientLightColor}
         position-z={600}
-        // @ts-ignore hmm, should be okay
-        // intensity={inViewSpring.to((p) => lerp(10, 0.8, p))}
         intensity={0.8}
       />
-      {/* <ScrollFollower>
-        <spotLight
-          intensity={0.8}
-          color={ambientLightColor}
-          position-z={600}
-          position-y={200}
-        />
-      </ScrollFollower> */}
 
+      {/* Shadow mesh */}
       <a.mesh
-        // position-z={-400}
         position-z={to([flipSpringWobbly, inViewSpring], (flipP, inViewP) => {
           const flip = Math.sin(Math.abs(flipP % 1) * Math.PI) * -160
           const view = lerp(-200, -490, 1 - inViewP)
           return view + flip
         })}
         position-y={-20}
-        // rotation-y={flipSpring.to((p) => lerp(0, Math.PI, p % 2))}
         scale-x={flipSpring.to((p) =>
           clamp(0.05, 1, 1 - Math.abs(Math.sin(p * Math.PI)))
         )}
@@ -151,6 +133,7 @@ export default function VideoCard({
         <meshStandardMaterial map={shadowMap} transparent side={DoubleSide} />
       </a.mesh>
 
+      {/* Card */}
       <MouseOrbiter
         hoverWidth={width + 20}
         hoverHeight={height + 20}
@@ -192,7 +175,6 @@ export default function VideoCard({
               map={map}
               width={width}
               height={height}
-              iconMap={iconMap}
               mouseRef={mouseRef}
             />
             <VideoCardPhysicalMaterial
@@ -201,7 +183,7 @@ export default function VideoCard({
               width={width}
               height={height}
               mouseRef={mouseRef}
-              overlayMap={backMap}
+              overlayTexture={backTexture}
             />
           </VideoCardCube>
         </a.group>

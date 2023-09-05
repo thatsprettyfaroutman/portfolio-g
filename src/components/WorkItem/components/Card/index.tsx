@@ -1,17 +1,20 @@
+import dynamic from 'next/dynamic'
 import useMeasure from 'react-use-measure'
 import styled from 'styled-components'
 import { MiniHeading } from '@/components/Text'
 import useCssVariable from '@/hooks/useCssVariable'
 import { MEDIA } from '@/styles/media'
-import VideoCard from '@/three/components/VideoCard'
 import Three from '@/three/lazy'
-import useBackMap from './hooks/useBackMap'
+import useBackTexture from './hooks/useBackTexture'
+
+const VideoCard = dynamic(() => import('@/three/components/VideoCard'), {
+  ssr: false,
+})
 
 const CARD_PIXEL_RATIO = 2
 
 type TCardProps = {
   src: string
-  iconSrc: string
   backText: string
   width?: number
   height?: number
@@ -39,9 +42,9 @@ const ThreeWrapper = styled.div`
   > .three {
     position: absolute;
     top: calc(var(--space) * -2);
+    right: calc(var(--fluidSpace) * -1);
     bottom: calc(var(--space) * -2);
     left: calc(var(--fluidSpace) * -1);
-    right: calc(var(--fluidSpace) * -1);
     width: auto;
     height: auto;
 
@@ -60,7 +63,6 @@ function Card({
   height = 600,
   backText,
   src,
-  iconSrc,
   ...restProps
 }: TCardProps) {
   const [measureRef, bounds] = useMeasure()
@@ -69,7 +71,7 @@ function Card({
   const computedWidth = Math.min(width, bounds.width)
   const computedHeight = computedWidth / aspect || height
 
-  const backMap = useBackMap({
+  const backTexture = useBackTexture({
     text: backText,
     width: width * CARD_PIXEL_RATIO,
     height: height * CARD_PIXEL_RATIO,
@@ -90,8 +92,7 @@ function Card({
             src={src}
             width={computedWidth}
             height={computedHeight}
-            iconMapSrc={iconSrc}
-            backMap={backMap}
+            backTexture={backTexture}
           />
         </Three>
       </ThreeWrapper>

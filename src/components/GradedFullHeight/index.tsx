@@ -4,7 +4,7 @@ import { type PropsWithChildren, type CSSProperties, useRef } from 'react'
 import styled from 'styled-components'
 import useWindowSize from '@/hooks/useWindowSize'
 
-type TFullViewProps = PropsWithChildren<{
+type TGradedFullHeightProps = PropsWithChildren<{
   threshold?: number
   style?: CSSProperties
   tag?: string
@@ -16,11 +16,11 @@ const Wrapper = styled.div`
   height: 100vh;
 `
 
-export default function FullView({
-  threshold = 160,
+export default function GradedFullHeight({
+  threshold = 320,
   tag,
   ...restProps
-}: TFullViewProps) {
+}: TGradedFullHeightProps) {
   const { height } = useWindowSize()
 
   const lastHeightRef = useRef(0)

@@ -18,6 +18,10 @@ uniform sampler2D uOverlayMap;
 #pragma glslify: rgb2hsb = require(glsl-color)
 #pragma glslify: roundRect = require(../../../../../shaders/roundRect.glsl)
 
+vec4 getBackgroundColor() {
+  return texture2D(map, vec2(0.0));
+}
+
 vec4 mixIcon(vec4 color, vec2 uv) {
   vec2 iconSize = uIconMapResolution / uResolution;
 
@@ -25,12 +29,16 @@ vec4 mixIcon(vec4 color, vec2 uv) {
   // Offset icon to bottom right
   iconUv.x -= (uResolution.x - uIconMapResolution.x) / uIconMapResolution.x;
 
-  vec4 iconMap = texture2D(uIconMap, iconUv);
-  vec3 iconColor = mix(uIconMapColorBackground, uIconMapColorForeground, 1.0 - iconMap.r);
-
   float edgeH = min(step(0.0, 1.0 - iconUv.x), step(0.0, iconUv.x));
   float edgeV = min(step(0.0, 1.0 - iconUv.y), step(0.0, iconUv.y));
   float edge = min(edgeH, edgeV);
+
+  if(edge < 1.0) {
+    return color;
+  }
+
+  vec4 iconMap = texture2D(uIconMap, iconUv);
+  vec3 iconColor = mix(uIconMapColorBackground, uIconMapColorForeground, 1.0 - iconMap.r);
 
   return vec4(mix(color.rgb, iconColor, edge), color.a);
 

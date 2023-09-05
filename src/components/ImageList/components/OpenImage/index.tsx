@@ -1,5 +1,6 @@
 import { type CSSProperties, useState, useRef, useEffect } from 'react'
 import { useDrag } from '@use-gesture/react'
+import lerp from 'lerp'
 import Image from 'next/image'
 import {
   type SpringValue,
@@ -16,10 +17,10 @@ import { MEDIA } from '@/styles/media'
 import Spinner from '../Spinner'
 
 type TOpenImageProps = {
-  name?: string
   children: TRichAsset
   style?: CSSProperties
-  openProgress: SpringValue<number> | Interpolation<number, number>
+  xProgress: SpringValue<number> | Interpolation<number, number>
+  showProgress: SpringValue<number> | Interpolation<number, number>
   opacity: SpringValue<number> | Interpolation<number, number>
   onChangeImage: (direction: number) => () => void
   onCloseImage: () => void
@@ -76,17 +77,23 @@ const DragWrapper = styled.div`
       height: calc(100% - var(--space) * 2);
     }
   }
+`
 
-  /* Spinner */
-  > svg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: var(--space);
-    height: var(--space);
-    transform: translate(-50%, -50%);
-    touch-action: none;
-    user-select: none;
+const CustomSpinner = styled(Spinner)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--space);
+  height: var(--space);
+  transform: translate(-50%, -50%);
+  touch-action: none;
+  user-select: none;
+
+  > svg > path {
+    // Adjust stroke width to match navigation icons
+    // (spinnerWidth / --space) x 2
+    // Since, css-calc doesn't work with stroke-width (I suppose)
+    stroke-width: ${(20 / 70) * 2}px;
   }
 `
 
@@ -99,17 +106,17 @@ const multiplyVector2 = (v0: TVector2, v1: TVector2): TVector2 => [
 ]
 
 export default function OpenImage({
-  name,
   children,
   opacity,
-  openProgress,
+  xProgress,
+  showProgress,
   onChangeImage,
   onCloseImage,
   phase,
   ...restProps
 }: TOpenImageProps) {
   const space = useCssVariable('--space')
-  const [loaded, setLoaded] = useState(false)
+  const [loading, setLoading] = useState(true)
   const x = useSpringValue(0)
   const y = useSpringValue(0)
 
@@ -188,11 +195,12 @@ export default function OpenImage({
 
   const style = {
     opacity,
-    x: to([openProgress, x], (p, x) => p * space + x),
+    x: to([xProgress, x], (p, x) => p * space + x),
     y,
+    scale: showProgress.to((p) => lerp(0.95, 1, p)),
   }
 
-  // Handle the case when the swipes to next image and quickly swipes back
+  // Handle the case where user swipes to next image and quickly swipes back
   const didLeave = useRef(false)
   useEffect(() => {
     if (didLeave.current) {
@@ -200,15 +208,15 @@ export default function OpenImage({
       y.start(0, { config: { velocity: 0, decay: false } })
     }
     didLeave.current = phase === 'leave'
-  }, [name, phase, x, y])
+  }, [phase, x, y])
 
   return (
     <Wrapper {...restProps} {...bindDrag()}>
       <BodyTouchActionLock />
       <ADragWrapper style={style}>
         {
-          // Image.placeholder not behaving in a wanted way
-          // (it doesn't use width and height)
+          // Image.placeholder doesn't use width and height in expected way
+          // Using img instead
           // eslint-disable-next-line @next/next/no-img-element
           <img
             width={children.width}
@@ -217,7 +225,7 @@ export default function OpenImage({
             alt=""
           />
         }
-        {!loaded && <Spinner />}
+        {loading && <CustomSpinner />}
         <Image
           src={children.url}
           width={children.width}
@@ -225,7 +233,7 @@ export default function OpenImage({
           alt={children.title}
           loading="eager"
           onLoad={() => {
-            setLoaded(true)
+            setLoading(false)
           }}
         />
       </ADragWrapper>

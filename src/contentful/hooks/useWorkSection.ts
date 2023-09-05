@@ -1,6 +1,6 @@
 import { fetchContent } from '@/contentful'
 import { TWorkSection } from '@/contentful/types'
-import { addRichAssetPlaceholders } from './lib/addRichAssetPlaceholders'
+import addRichAssetPlaceholders from '../lib/addRichAssetPlaceholders'
 
 export default async function useWorkSection() {
   const { workSectionCollection } = await fetchContent(/* GraphQL */ `

@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useTexture } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { Color, Texture, Vector2, RepeatWrapping } from 'three'
+import { Color, Texture, Vector2, RepeatWrapping, CanvasTexture } from 'three'
 import { usePalette, palette } from '@/styles/theme'
 import getShaderInjectors from '@/three/utils/injectShader'
 // @ts-ignore
@@ -23,7 +23,7 @@ export type TVideoCardPhysicalMaterialProps = {
     position: Vector2
   }>
   backside?: boolean
-  overlayMap?: Texture
+  overlayTexture?: HTMLCanvasElement
 }
 
 export default function VideoCardPhysicalMaterial({
@@ -35,15 +35,15 @@ export default function VideoCardPhysicalMaterial({
   iconHeight = 40,
   mouseRef,
   backside = false,
-  overlayMap,
+  overlayTexture,
   ...restProps
 }: TVideoCardPhysicalMaterialProps) {
   const aspect = width / height
 
   //
   // Colors
-  const backgroundColor = usePalette(palette.main.background.bottom)
-  const foregroundColor = usePalette(palette.main.text)
+  const iconBackgroundColor = usePalette(palette.shade.background)
+  const iconForegroundColor = usePalette(palette.shade.text)
 
   //
   // Maps
@@ -53,6 +53,11 @@ export default function VideoCardPhysicalMaterial({
   roughnessMap.repeat.x = 4.0
   roughnessMap.repeat.y = 4.0 / aspect
 
+  const overlayMap = useMemo(
+    () => (overlayTexture ? new CanvasTexture(overlayTexture) : new Texture()),
+    [overlayTexture]
+  )
+
   //
   // Uniforms
   const uniforms = useRef({
@@ -61,10 +66,10 @@ export default function VideoCardPhysicalMaterial({
     uMap: { value: map },
     uIconMap: { value: new Texture() },
     uIconMapResolution: { value: new Vector2(iconWidth, iconHeight) },
-    uIconMapColorBackground: { value: new Color(backgroundColor) },
-    uIconMapColorForeground: { value: new Color(foregroundColor) },
+    uIconMapColorBackground: { value: new Color(iconBackgroundColor) },
+    uIconMapColorForeground: { value: new Color(iconForegroundColor) },
     uMixIcon: { value: !!iconMap },
-    uMouse: { value: new Vector2(0) },
+    uMouse: { value: new Vector2() },
     uMouseHover: { value: 0 },
     uFlipMouseY: { value: false },
     uBackside: { value: backside },
@@ -81,17 +86,17 @@ export default function VideoCardPhysicalMaterial({
       uniforms.current.uIconMapResolution.value.x = iconWidth
       uniforms.current.uIconMapResolution.value.y = iconHeight
     }
-    uniforms.current.uIconMapColorBackground.value.set(backgroundColor)
-    uniforms.current.uIconMapColorForeground.value.set(foregroundColor)
+    uniforms.current.uIconMapColorBackground.value.set(iconBackgroundColor)
+    uniforms.current.uIconMapColorForeground.value.set(iconForegroundColor)
     uniforms.current.uBackside.value = backside
     uniforms.current.uOverlayMap.value = overlayMap
   }, [
     aspect,
-    backgroundColor,
+    iconBackgroundColor,
     width,
     height,
     iconMap,
-    foregroundColor,
+    iconForegroundColor,
     iconWidth,
     iconHeight,
     backside,

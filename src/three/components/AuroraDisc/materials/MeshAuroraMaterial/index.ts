@@ -1,10 +1,9 @@
-import { Color, ShaderMaterial } from 'three'
 import { shaderMaterial } from '@react-three/drei'
-
-// @ts-ignore
-import vertexShader from './shaders/vertex.glsl'
+import { Color, ShaderMaterial, Vector2 } from 'three'
 // @ts-ignore
 import fragmentShader from './shaders/fragment.glsl'
+// @ts-ignore
+import vertexShader from './shaders/vertex.glsl'
 
 const MATERIAL_UNIFORM_DEFAULTS = {
   uTime: 0,

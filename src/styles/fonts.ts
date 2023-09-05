@@ -14,7 +14,7 @@ const fontKarla = Karla({
 })
 const fontMontserrat = Montserrat({
   subsets: ['latin'],
-  weight: ['400'],
+  weight: ['400', '700'],
 })
 
 const FONT = {
