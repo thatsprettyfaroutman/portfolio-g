@@ -5,6 +5,7 @@ import { Canvas, useFrame } from '@react-three/fiber'
 import throttle from 'lodash.throttle'
 import styled from 'styled-components'
 import { RingGeometry, WebGLRenderer } from 'three'
+import useWindowSize from '@/hooks/useWindowSize'
 import AuroraDisc from '@/three/components/AuroraDisc'
 import Camera from '@/three/components/Camera'
 
@@ -76,6 +77,12 @@ const FaviconPrinter = () => {
 }
 
 export default function Favicon(props: TFaviconProps) {
+  const { width } = useWindowSize()
+  if (width < 768) {
+    // Don't animate favicon on mobile devices
+    return null
+  }
+
   return (
     <Wrapper {...props}>
       <Canvas
