@@ -1,9 +1,9 @@
-import { useMemo } from 'react'
+import Image from 'next/image'
 import styled from 'styled-components'
-import randomSeed from 'math-random-seed'
-import { MEDIA } from '@/styles/media'
 import { MiniHeading, SmallParagraph } from '@/components/Text'
 import { type TImpact } from '@/contentful/types'
+import { MEDIA } from '@/styles/media'
+import useGetIcon from './hooks/useGetIcon'
 
 type TImpactsProps = {
   children: TImpact[]
@@ -39,37 +39,32 @@ const Impact = styled.div`
   > img {
     display: block;
     margin: 0;
-    width: auto;
-    height: calc(var(--space) / 4);
     /* mix-blend-mode: difference; */
   }
 `
 
 function Impacts({ children, ...restProps }: TImpactsProps) {
-  const shuffledIcons = useMemo(() => {
-    const random = randomSeed(children[0].body)
-    return [
-      '/praise/clap.png',
-      '/praise/duck.png',
-      '/praise/hands.png',
-      '/praise/icecream.png',
-      '/praise/party.png',
-    ].sort(() => (random() > 0.5 ? 1 : -1))
-    // We only want to shuffle this list once, so no need for deps
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const getIcon = useGetIcon(children[0].body)
 
   return (
     <Wrapper {...restProps}>
       <MiniHeading>Impacts</MiniHeading>
       <Items>
-        {children.map((impact, i) => (
-          <Impact key={i}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={shuffledIcons[i % shuffledIcons.length]} alt="" />
-            <SmallParagraph key={i}>{impact.body}</SmallParagraph>
-          </Impact>
-        ))}
+        {children.map((impact, i) => {
+          const icon = getIcon(i)
+          const aspectRatio = icon.width / icon.height
+          return (
+            <Impact key={impact.sys.id}>
+              <Image
+                src={icon.src}
+                width={20 * aspectRatio}
+                height={20}
+                alt=""
+              />
+              <SmallParagraph key={i}>{impact.body}</SmallParagraph>
+            </Impact>
+          )
+        })}
       </Items>
     </Wrapper>
   )
