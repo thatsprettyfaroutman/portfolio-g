@@ -19,7 +19,7 @@ const MODEL = '/models/me-swinging.fbx'
 type TMeProps = GroupProps & {}
 
 export default function Dancer({ ...restProps }: TMeProps) {
-  const { viewport } = useThree()
+  const { viewport, camera } = useThree()
   const levaProps = { roughness: 0.98, metalness: 0.1 }
   const ref = useRef<Group>(null)
   const rotateGroupRef = useRef<Group>(null)
@@ -28,7 +28,6 @@ export default function Dancer({ ...restProps }: TMeProps) {
     model.children[0].castShadow = true
     model.children[0].receiveShadow = true
   }
-
   const { actions } = useAnimations(model.animations, ref)
   const currentActionIndexRef = useRef(-1)
   const toggleAnimation = useCallback(() => {
@@ -59,10 +58,11 @@ export default function Dancer({ ...restProps }: TMeProps) {
     size: 1024 * 2.0,
   })
 
-  // const ambientColor = usePalette(palette.main.background)
-  const platformColor = usePalette(palette.main.backgroundAlt)
-  const ambientColor = platformColor
+  const ambientColor = usePalette(palette.shade.background)
   const lightColor = usePalette(palette.accents[2])
+
+  camera.position.z = 10
+  camera.position.y = 0
 
   useFrame((s) => {
     if (!rotateGroupRef.current) {
@@ -91,7 +91,7 @@ export default function Dancer({ ...restProps }: TMeProps) {
                 <primitive object={model}>
                   <meshStandardMaterial
                     attach="children-0-material"
-                    color="#600"
+                    color="#000"
                     // map={diffuse}
                     {...levaProps}
                   />
@@ -107,8 +107,8 @@ export default function Dancer({ ...restProps }: TMeProps) {
             >
               <boxGeometry args={[40, 4, viewport.height]} />
               <meshStandardMaterial
-                color={platformColor}
-                emissive={platformColor}
+                color="#f0f"
+                emissive="#202"
                 emissiveIntensity={3}
               />
             </mesh>
