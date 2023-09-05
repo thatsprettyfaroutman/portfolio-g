@@ -26,7 +26,7 @@ const useFavicons = () => {
   const [favicons, setFavicons] = useState<HTMLLinkElement[]>([])
   useEffect(() => {
     if (typeof document === 'undefined') {
-      return []
+      return
     }
 
     const favicons: HTMLLinkElement[] = []
@@ -38,18 +38,6 @@ const useFavicons = () => {
     appleFavicon.rel = 'apple-touch-icon'
     favicons.push(favicon, appleFavicon)
 
-    // Remove existing favicons
-    // const existingFavicons = head.getElementsByTagName('link')
-    // for (let i = existingFavicons.length; --i >= 0; ) {
-    //   const rel = existingFavicons[i].getAttribute('rel')
-    //   if (!rel) {
-    //     continue
-    //   }
-    //   if (/\bicon\b/i.test(rel)) {
-    //     head.removeChild(existingFavicons[i])
-    //   }
-    // }
-
     // Add new ones
     favicons.forEach((el) => head.appendChild(el))
     setFavicons(favicons)
@@ -58,6 +46,7 @@ const useFavicons = () => {
       favicons.forEach((el) => head.removeChild(el))
     }
   }, [])
+
   return favicons
 }
 
