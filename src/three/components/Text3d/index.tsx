@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
-import { extend } from '@react-three/fiber'
-import { FontLoader, TextGeometry } from 'three-stdlib'
-import { Mesh, MeshStandardMaterial } from 'three'
-import FontJson from './GhostMontserrat.json'
 import { Center } from '@react-three/drei'
+import { extend } from '@react-three/fiber'
+import { Mesh, MeshStandardMaterial } from 'three'
+import { FontLoader, TextGeometry } from 'three-stdlib'
+import FontJson from './montserratviljamidev.json'
 
 extend({ Mesh, MeshStandardMaterial })
 const fl = new FontLoader()
@@ -27,15 +27,19 @@ export default function Text3d({
       new TextGeometry(children, {
         font,
         size: 1,
-        height: 1,
+        height: 0.5,
       }),
     [children]
   )
 
   return (
     <Center {...restProps}>
-      <mesh geometry={geometry}>
-        <meshStandardMaterial color={color} />
+      <mesh geometry={geometry} castShadow receiveShadow>
+        <meshStandardMaterial
+          color={color}
+          emissive={color}
+          emissiveIntensity={0.01}
+        />
       </mesh>
     </Center>
   )

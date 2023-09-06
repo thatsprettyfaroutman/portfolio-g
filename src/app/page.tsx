@@ -7,14 +7,11 @@ import { Global } from './styled'
 
 export default async function Home() {
   return (
-    <Main>
+    <>
       <Global />
-      <Favicon />
-      <GradedFullHeight>
-        <Three keepDefaultCamera>
-          <Dancer />
-        </Three>
-      </GradedFullHeight>
-    </Main>
+      <Three keepDefaultCamera>
+        <Dancer />
+      </Three>
+    </>
   )
 }

@@ -37,7 +37,6 @@ const CONTEXT_PROP_KEYS = [
   'offsetY',
   'keepDefaultCamera',
   'dpr',
-  'shadows',
 ] as const
 
 type TThreeProps = {
@@ -57,8 +56,7 @@ const Wrapper = styled.div`
 `
 
 function ThreeCanvas({ children, ...restProps }: TThreeCanvasProps) {
-  const { renderEnabled, dpr, debug, keepDefaultCamera, shadows } =
-    useThreeContext()
+  const { renderEnabled, dpr, debug, keepDefaultCamera } = useThreeContext()
 
   return (
     <Canvas
@@ -66,7 +64,6 @@ function ThreeCanvas({ children, ...restProps }: TThreeCanvasProps) {
       linear
       flat
       dpr={dpr}
-      shadows={shadows}
       {...restProps}
     >
       {!keepDefaultCamera && <Camera />}
