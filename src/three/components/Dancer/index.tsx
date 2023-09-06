@@ -75,7 +75,7 @@ export default function Dancer({ ...restProps }: TMeProps) {
     const t = s.clock.getElapsedTime()
     rotateGroupRef.current.rotation.y = t * 0.25
 
-    s.camera.position.y = Math.sin(t * 0.1) * 2
+    s.camera.position.y = Math.sin(t * 0.1) * 2 + 2
     s.camera.position.x = Math.cos(t * 0.07) * 4
     s.camera.lookAt(0, 0, 0)
   })

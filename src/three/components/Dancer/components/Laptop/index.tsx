@@ -41,7 +41,6 @@ export default function Laptop(props: JSX.IntrinsicElements['group']) {
           material={materials.cassis}
         />
         <mesh
-          castShadow
           receiveShadow
           geometry={nodes.Cube145_1.geometry}
           material={materials.trackpad}
@@ -52,12 +51,7 @@ export default function Laptop(props: JSX.IntrinsicElements['group']) {
         rotation={[1.121, 0.184, 2.78]}
         scale={[1, 0.02, 0.711]}
       >
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.Cube144.geometry}
-          material={materials.screen}
-        />
+        <mesh geometry={nodes.Cube144.geometry} material={materials.screen} />
         <mesh
           castShadow
           receiveShadow
@@ -66,7 +60,6 @@ export default function Laptop(props: JSX.IntrinsicElements['group']) {
         />
       </group>
       <mesh
-        castShadow
         receiveShadow
         geometry={nodes.Cube608.geometry}
         material={materials.keys}
