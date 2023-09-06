@@ -1,4 +1,4 @@
-import { type SyntheticEvent, useState } from 'react'
+import { type SyntheticEvent } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { a, useSpring } from 'react-spring'
@@ -45,27 +45,16 @@ export default function Thumb({
   open = false,
   ...restProps
 }: TThumbProps) {
-  const [hovering, setHovering] = useState(false)
   const space = useCssVariable('--space')
   const aspectRatio = image.width / image.height
   const spring = useSpring({
     config: { clamp: true },
-    y: hovering ? -space / 8 : 0,
     scale: open ? 1.25 : 1,
   })
   const { bindPrefetchImage, prefetchingUrl } = usePrefetchImage()
-  const prefetchBinds = bindPrefetchImage(image.url)
-  const binds = {
-    ...prefetchBinds,
-    onMouseEnter: () => {
-      setHovering(true)
-      prefetchBinds.onMouseEnter()
-    },
-    onMouseLeave: () => setHovering(false),
-  }
 
   return (
-    <AWrapper style={spring} {...binds} {...restProps}>
+    <AWrapper style={spring} {...bindPrefetchImage(image.url)} {...restProps}>
       <Image
         height={80}
         width={80 * aspectRatio}
