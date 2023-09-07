@@ -1,6 +1,7 @@
 'use client'
 
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+import Arrow from '@/components/Arrow'
 import GradedFullHeight from '@/components/GradedFullHeight'
 import Section from '@/components/Section'
 import { MEDIA } from '@/styles/media'
@@ -24,6 +25,12 @@ export const Hero = styled(GradedFullHeight)`
     right: 0;
     bottom: 0;
     left: 0;
+  }
+
+  > ${Arrow} {
+    position: absolute;
+    left: 50%;
+    bottom: var(--space);
   }
 `
 

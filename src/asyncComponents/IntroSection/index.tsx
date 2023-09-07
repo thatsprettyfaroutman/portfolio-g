@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic'
 import Brands from '@/asyncComponents/Brands'
 import SocialMediaLinks from '@/asyncComponents/SocialMediaLinks'
 import AnimatedText from '@/components/AnimatedText'
+import Arrow from '@/components/Arrow/lazy'
 import Author from '@/components/Author/lazy'
 import { Heading1, BigMarkdown } from '@/components/Text'
 import useIntroSection from '@/contentful/hooks/useIntroSection'
@@ -21,6 +22,7 @@ export default async function IntroSection({ ...restProps }) {
             {introSection.title}
           </AnimatedText>
         </Heading1>
+        <Arrow />
       </Hero>
 
       <IntroContent>
