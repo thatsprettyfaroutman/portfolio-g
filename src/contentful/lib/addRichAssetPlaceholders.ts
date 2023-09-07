@@ -3,7 +3,7 @@ import fromPairs from 'ramda/src/fromPairs'
 import toPairs from 'ramda/src/toPairs'
 import { TRichAsset } from '../types'
 
-const PLACEHOLDER_WIDTH = 20
+const PLACEHOLDER_WIDTH = 40
 
 const isRichAssetPlaceholderable = (data: unknown): data is TRichAsset => {
   // @ts-ignore
