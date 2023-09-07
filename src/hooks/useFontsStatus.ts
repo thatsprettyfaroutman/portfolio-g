@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
 
+/**
+ *
+ * @deprecated doesn't work
+ */
 export default function useFontsStatus() {
   const [fontStatus, setFontStatus] = useState<
     'not available' | 'loading' | 'loaded'
@@ -7,7 +11,9 @@ export default function useFontsStatus() {
 
   useEffect(() => {
     setFontStatus('loading')
-    document.fonts.ready.then(() => setFontStatus('loaded'))
+    document.fonts.ready.then(() => {
+      setFontStatus('loaded')
+    })
   }, [])
 
   return fontStatus

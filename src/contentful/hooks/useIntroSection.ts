@@ -1,6 +1,5 @@
 import { fetchContent } from '@/contentful'
 import { TIntroSection } from '@/contentful/types'
-import addRichAssetPlaceholders from '../lib/addRichAssetPlaceholders'
 
 export default async function useIntroSection() {
   const { introSectionCollection } = await fetchContent(/* GraphQL */ `
@@ -38,8 +37,8 @@ export default async function useIntroSection() {
 
   const introSection = introSectionCollection.items[0]
 
-  return addRichAssetPlaceholders<TIntroSection>({
+  return {
     ...introSection,
     brands: introSection.brands.items,
-  })
+  } as TIntroSection
 }

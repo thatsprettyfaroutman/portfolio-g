@@ -4,6 +4,7 @@ import toPairs from 'ramda/src/toPairs'
 import { TRichAsset } from '../types'
 
 const PLACEHOLDER_WIDTH = 40
+const COLOR_ONLY = true
 
 const isRichAssetPlaceholderable = (data: unknown): data is TRichAsset => {
   // @ts-ignore
@@ -24,6 +25,13 @@ export default async function addRichAssetPlaceholders<T>(
     const canvas = createCanvas(image.width, image.height)
     const context = canvas.getContext('2d')
     context.drawImage(image, 0, 0)
+
+    if (COLOR_ONLY) {
+      const color = context.getImageData(0, 0, 1, 1).data
+      context.fillStyle = `rgb(${color[0]}, ${color[1]}, ${color[2]})`
+      context.fillRect(0, 0, canvas.width, canvas.height)
+    }
+
     return { ...data, placeholder: canvas.toDataURL() } as T
   }
 

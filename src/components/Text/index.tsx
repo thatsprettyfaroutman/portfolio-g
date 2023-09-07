@@ -59,6 +59,7 @@ export const Paragraph = styled.p`
   line-height: 25.5px;
   line-height: 28px;
   color: ${palette.main.text.alpha(0.9)};
+  letter-spacing: 0.5px;
 
   > strong {
     color: ${palette.main.text};
@@ -90,6 +91,7 @@ export const MediumParagraph = styled(Paragraph)`
   font-family: ${FONT.Montserrat};
   font-size: 18px;
   line-height: 36px;
+  letter-spacing: initial;
 `
 
 export const BigParagraph = styled(MediumParagraph)`

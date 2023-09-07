@@ -21,6 +21,7 @@ import { usePalette, palette } from '@/styles/theme'
 import MouseOrbiter from '@/three/components/MouseOrbiter'
 import { useThreeContext } from '@/three/context'
 import { VideoCardCube } from './geometries/VideoCardCube'
+import useBackMap from './hooks/useBackMap'
 import VideoCardPhysicalMaterial from './materials/VideoCardPhysicalMaterial'
 import shadowNormal from './textures/shadow-normal.png'
 
@@ -38,7 +39,7 @@ export type TCardProps = {
   height?: number
   depth?: number
   src: string
-  backTexture?: HTMLCanvasElement
+  backText?: string
 }
 
 const useContainSize = (width: number, height: number) => {
@@ -63,12 +64,12 @@ export default function VideoCard({
   width: widthProp = 300,
   height: heightProp = 200,
   depth = 4,
-  backTexture,
+  backText,
   ...restProps
 }: TCardProps) {
   const [flipCount, setFlipCount] = useState(0)
   const { width, height } = useContainSize(widthProp, heightProp)
-  const { inView, inViewSpring } = useThreeContext()
+  const { inView, inViewSpring, mousePresent } = useThreeContext()
   const ambientLightColor = usePalette(palette.main.background)
   const mouseRef = useRef({
     hover: 0,
@@ -79,6 +80,16 @@ export default function VideoCard({
   const map = useVideoTexture(src, { start: false })
   map.minFilter = NearestFilter
   map.magFilter = NearestFilter
+
+  const backMap = useBackMap(
+    {
+      text: backText,
+      width,
+      height,
+      padding: 40,
+    },
+    [inView, mousePresent]
+  )
 
   // Card flipping animation
   const { p: flipSpring } = useSpring({ p: flipCount })
@@ -183,7 +194,7 @@ export default function VideoCard({
               width={width}
               height={height}
               mouseRef={mouseRef}
-              overlayTexture={backTexture}
+              overlayMap={backMap}
             />
           </VideoCardCube>
         </a.group>

@@ -2,10 +2,9 @@ import dynamic from 'next/dynamic'
 import useMeasure from 'react-use-measure'
 import styled from 'styled-components'
 import { MiniHeading } from '@/components/Text'
-import useCssVariable from '@/hooks/useCssVariable'
+import FONT from '@/styles/fonts'
 import { MEDIA } from '@/styles/media'
 import Three from '@/three/lazy'
-import useBackTexture from './hooks/useBackTexture'
 
 const VideoCard = dynamic(() => import('@/three/components/VideoCard'), {
   ssr: false,
@@ -23,6 +22,7 @@ type TCardProps = {
 const Wrapper = styled.div`
   display: grid;
   grid-gap: calc(var(--space) / 3);
+  font-family: ${FONT.Fasthand};
 
   > ${MiniHeading} {
     display: none;
@@ -67,20 +67,12 @@ function Card({
 }: TCardProps) {
   const [measureRef, bounds] = useMeasure()
   const aspect = width / height
-  const maxCol = useCssVariable('--space')
   const computedWidth = Math.min(width, bounds.width)
   const computedHeight = computedWidth / aspect || height
 
-  const backTexture = useBackTexture({
-    text: backText,
-    width: width * CARD_PIXEL_RATIO,
-    height: height * CARD_PIXEL_RATIO,
-    padding: maxCol * 0.5 * CARD_PIXEL_RATIO,
-  })
-
   return (
     <Wrapper ref={measureRef} {...restProps}>
-      <MiniHeading>Card</MiniHeading>
+      <MiniHeading>Flip Card</MiniHeading>
       <ThreeWrapper
         style={{
           height: computedHeight,
@@ -92,7 +84,7 @@ function Card({
             src={src}
             width={computedWidth}
             height={computedHeight}
-            backTexture={backTexture}
+            backText={backText}
           />
         </Three>
       </ThreeWrapper>

@@ -50,9 +50,9 @@ const Wrapper = styled.div`
 const DragWrapper = styled.div`
   position: absolute;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   pointer-events: none;
   will-change: transform, opacity;
   touch-action: none;
@@ -67,6 +67,7 @@ const DragWrapper = styled.div`
     object-fit: contain;
     touch-action: none;
     user-select: none;
+    pointer-events: none;
   }
 
   ${MEDIA.tablet} {
@@ -215,7 +216,7 @@ export default function OpenImage({
       <BodyTouchActionLock />
       <ADragWrapper style={style}>
         {
-          // Image.placeholder doesn't use width and height in expected way
+          // Image.placeholder doesn't use the width or height in expected way
           // Using img instead
           // eslint-disable-next-line @next/next/no-img-element
           <img

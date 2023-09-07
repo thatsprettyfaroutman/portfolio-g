@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useTexture } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { Color, Texture, Vector2, RepeatWrapping, CanvasTexture } from 'three'
+import { Color, Texture, Vector2, RepeatWrapping } from 'three'
 import { usePalette, palette } from '@/styles/theme'
 import getShaderInjectors from '@/three/utils/injectShader'
 // @ts-ignore
@@ -23,7 +23,7 @@ export type TVideoCardPhysicalMaterialProps = {
     position: Vector2
   }>
   backside?: boolean
-  overlayTexture?: HTMLCanvasElement
+  overlayMap?: Texture
 }
 
 export default function VideoCardPhysicalMaterial({
@@ -35,7 +35,7 @@ export default function VideoCardPhysicalMaterial({
   iconHeight = 40,
   mouseRef,
   backside = false,
-  overlayTexture,
+  overlayMap,
   ...restProps
 }: TVideoCardPhysicalMaterialProps) {
   const aspect = width / height
@@ -52,11 +52,6 @@ export default function VideoCardPhysicalMaterial({
   roughnessMap.wrapT = RepeatWrapping
   roughnessMap.repeat.x = 4.0
   roughnessMap.repeat.y = 4.0 / aspect
-
-  const overlayMap = useMemo(
-    () => (overlayTexture ? new CanvasTexture(overlayTexture) : new Texture()),
-    [overlayTexture]
-  )
 
   //
   // Uniforms
