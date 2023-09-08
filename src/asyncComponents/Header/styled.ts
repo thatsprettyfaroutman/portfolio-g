@@ -29,6 +29,7 @@ export const Wrapper = styled.header`
     justify-content: space-between;
     > :first-child {
       min-width: initial;
+      margin-left: calc(var(--space) / 4);
     }
   }
 `
