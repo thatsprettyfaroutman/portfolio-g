@@ -16,6 +16,8 @@ import useCssVariable from '@/hooks/useCssVariable'
 import { MEDIA } from '@/styles/media'
 import Spinner from '../Spinner'
 
+const INITIAL_SCALE = 0.9
+
 type TOpenImageProps = {
   children: TRichAsset
   style?: CSSProperties
@@ -120,6 +122,11 @@ export default function OpenImage({
   const [loading, setLoading] = useState(true)
   const x = useSpringValue(0)
   const y = useSpringValue(0)
+  const loadingScale = useSpringValue(loading ? INITIAL_SCALE : 1)
+
+  useEffect(() => {
+    loadingScale.start(loading ? INITIAL_SCALE : 1)
+  }, [loading, loadingScale])
 
   const flick = ([mx, my]: TVector2, [vx, vy]: TVector2) => {
     x.start(mx, {
@@ -198,7 +205,10 @@ export default function OpenImage({
     opacity,
     x: to([xProgress, x], (p, x) => p * space + x),
     y,
-    scale: showProgress.to((p) => lerp(0.95, 1, p)),
+    scale: to(
+      [showProgress, loadingScale],
+      (p, scale) => lerp(0.95, 1, p) * scale
+    ),
   }
 
   // Handle the case where user swipes to next image and quickly swipes back
@@ -226,7 +236,6 @@ export default function OpenImage({
             alt=""
           />
         }
-        {loading && <CustomSpinner />}
         <Image
           src={children.url}
           width={children.width}
@@ -237,6 +246,7 @@ export default function OpenImage({
             setLoading(false)
           }}
         />
+        {loading && <CustomSpinner />}
       </ADragWrapper>
     </Wrapper>
   )

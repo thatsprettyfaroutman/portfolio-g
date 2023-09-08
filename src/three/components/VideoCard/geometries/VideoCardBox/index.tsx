@@ -1,20 +1,20 @@
-import React from 'react'
+import { type JSX } from 'react'
 import { useGLTF } from '@react-three/drei'
-import * as THREE from 'three'
+import { type Mesh } from 'three'
 import { GLTF } from 'three-stdlib'
 
 type GLTFResult = GLTF & {
   nodes: {
-    Cube_1: THREE.Mesh
-    Cube_2: THREE.Mesh
+    Cube_1: Mesh
+    Cube_2: Mesh
   }
   materials: {}
 }
 
-export function VideoCardCube(
+export function VideoCardBox(
   props: JSX.IntrinsicElements['group'] & { children: JSX.Element[] }
 ) {
-  const { nodes } = useGLTF('/models/normalroundedcube2.gltf') as GLTFResult
+  const { nodes } = useGLTF('/models/roundedBox.gltf') as GLTFResult
   return (
     <group {...props} dispose={null} scale-y={-1}>
       <mesh scale={0.5} geometry={nodes.Cube_1.geometry}>
@@ -27,4 +27,4 @@ export function VideoCardCube(
   )
 }
 
-useGLTF.preload('/models/normalroundedcube2.gltf')
+useGLTF.preload('/models/roundedBox.gltf')

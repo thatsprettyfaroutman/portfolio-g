@@ -14,10 +14,9 @@ import {
   CollapsedContent,
   ExpandedContent,
   ExpandedContentBackground,
-  Body,
+  CustomMarkdown,
 } from './styled'
 
-// TODO: Hover follow effect
 // TODO: 3d card that pops fluidly
 // TODO: click to close, or X-button
 
@@ -29,7 +28,6 @@ type TAuthorProps = {
 const AShade = a(Shade)
 const ACollapsedContent = a(CollapsedContent)
 const AExpandedContent = a(ExpandedContent)
-const AProfilePictureMagnet = a(Magnet)
 
 export default function Author({ children, ...restProps }: TAuthorProps) {
   const { isOpen, toggle, style, expandedContentRef, profilePictureDelta } =
@@ -39,8 +37,8 @@ export default function Author({ children, ...restProps }: TAuthorProps) {
     <Wrapper {...restProps}>
       <AShade style={style.shade} onClick={toggle} />
 
-      <ACollapsedContent onClick={toggle} style={style.collapsedContent}>
-        <Paragraph>{children.name.split(' ')[0]}</Paragraph>
+      <ACollapsedContent style={style.collapsedContent}>
+        <Paragraph onClick={toggle}>{children.name.split(' ')[0]}</Paragraph>
         <ProfilePictureTargetArea ref={profilePictureDelta.fromRef} />
       </ACollapsedContent>
 
@@ -53,20 +51,27 @@ export default function Author({ children, ...restProps }: TAuthorProps) {
         <AnimateChildren showing={isOpen}>
           <ExpandedContentBackground className="animate" />
           <Heading4>{children.name}</Heading4>
-          <Body>{children.bio}</Body>
+          <CustomMarkdown>{children.bio}</CustomMarkdown>
         </AnimateChildren>
       </AExpandedContent>
 
       {/*
          The flying profile picture. It flies between `ProfilePictureTargetAreas` based on `open`. Its positioned to the same position as `CollapsedContent.ProfilePictureTargetArea`, but it's not a child of it because it needs to be positioned relative to the entire Author component, not just the `CollapsedContent`.
       */}
-      <AProfilePictureMagnet disabled={isOpen} onClick={toggle}>
+      <Magnet
+        disabled={isOpen}
+        onClick={toggle}
+        style={{
+          left: style.profilePicture.offset.x,
+          top: style.profilePicture.offset.y,
+        }}
+      >
         <CustomProfilePicture
           photo={children.photo}
           // @ts-ignore
           style={style.profilePicture}
         />
-      </AProfilePictureMagnet>
+      </Magnet>
     </Wrapper>
   )
 }

@@ -20,7 +20,7 @@ import {
 import { usePalette, palette } from '@/styles/theme'
 import MouseOrbiter from '@/three/components/MouseOrbiter'
 import { useThreeContext } from '@/three/context'
-import { VideoCardCube } from './geometries/VideoCardCube'
+import { VideoCardBox } from './geometries/VideoCardBox'
 import useBackMap from './hooks/useBackMap'
 import VideoCardPhysicalMaterial from './materials/VideoCardPhysicalMaterial'
 import shadowNormal from './textures/shadow-normal.png'
@@ -125,7 +125,7 @@ export default function VideoCard({
       <directionalLight
         color={ambientLightColor}
         position-z={600}
-        intensity={0.8}
+        intensity={0.82}
       />
 
       {/* Shadow mesh */}
@@ -181,7 +181,7 @@ export default function VideoCard({
           })}
           scale={[width, height, depth]}
         >
-          <VideoCardCube>
+          <VideoCardBox>
             <VideoCardPhysicalMaterial
               map={map}
               width={width}
@@ -196,7 +196,7 @@ export default function VideoCard({
               mouseRef={mouseRef}
               overlayMap={backMap}
             />
-          </VideoCardCube>
+          </VideoCardBox>
         </a.group>
       </MouseOrbiter>
     </group>

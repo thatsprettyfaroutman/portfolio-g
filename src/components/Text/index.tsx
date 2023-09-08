@@ -35,8 +35,8 @@ export const Heading3 = styled.h3`
 export const Heading4 = styled.h4`
   ${noMargins};
   font-family: ${FONT.Montserrat};
-  font-weight: 400;
-  font-size: 17px;
+  font-weight: 500;
+  font-size: 18px;
   line-height: 25.5px;
 `
 
@@ -56,14 +56,22 @@ export const Paragraph = styled.p`
   font-family: ${FONT.Karla};
   font-weight: 400;
   font-size: 17px;
-  line-height: 25.5px;
   line-height: 28px;
-  color: ${palette.main.text.alpha(0.9)};
+  color: ${palette.main.text.alpha(0.8)};
   letter-spacing: 0.5px;
 
   > strong {
     color: ${palette.main.text};
-    font-weight: inherit;
+    font-weight: 500;
+  }
+
+  > a {
+    color: ${palette.accents[2]};
+    text-decoration: none;
+
+    :visited {
+      color: ${palette.accents[0]};
+    }
   }
 `
 
@@ -90,9 +98,11 @@ export const SmallListItem = styled(SmallParagraph).attrs({ as: 'li' })``
 export const MediumParagraph = styled(Paragraph)`
   font-family: ${FONT.Montserrat};
   font-size: 18px;
-  line-height: 36px;
+  line-height: 32px;
   letter-spacing: initial;
 `
+
+export const MediumListItem = styled(MediumParagraph).attrs({ as: 'li' })``
 
 export const BigParagraph = styled(MediumParagraph)`
   font-family: ${FONT.Montserrat};
@@ -133,17 +143,4 @@ export const MediumMarkdown = styled(Markdown).attrs((props) => ({
   },
 }))`
   grid-gap: calc(var(--space) / 4);
-`
-
-/**
- * @deprecated
- */
-export const BigMarkdown = styled(Markdown).attrs((props) => ({
-  components: {
-    ...props.components,
-    p: BigParagraph as FC,
-    h2: Heading4 as FC,
-  },
-}))`
-  grid-gap: calc(var(--space) / 2);
 `

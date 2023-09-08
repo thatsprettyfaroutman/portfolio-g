@@ -29,7 +29,6 @@ type TDepthImageProps = {
   src: string
   depthSrc: string
   detail?: number
-  onClick?: () => void
   vAlign?: 'middle' | 'top' | 'bottom'
 }
 
@@ -37,7 +36,6 @@ export default function DepthImage({
   src,
   depthSrc,
   detail = 128,
-  onClick,
   vAlign = 'middle',
   ...restProps
 }: TDepthImageProps) {
@@ -66,7 +64,7 @@ export default function DepthImage({
     uMouseHover: { value: 0 },
   })
 
-  const [{ depth, offsetY }, setControls] = useControls(() => ({
+  const [{ depth, offsetY }] = useControls(() => ({
     depth: { value: -800, min: -1600, max: 1600 },
     depthBend: {
       value: 0,

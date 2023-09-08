@@ -1,5 +1,5 @@
 import { shaderMaterial } from '@react-three/drei'
-import { Color, ShaderMaterial, Vector2 } from 'three'
+import { Color, ShaderMaterial } from 'three'
 // @ts-ignore
 import fragmentShader from './shaders/fragment.glsl'
 // @ts-ignore

@@ -19,7 +19,7 @@ import Laptop from './components/Laptop'
 import Mug from './components/Mug'
 
 const DEG = Math.PI / 180
-const MODEL = '/models/me-swinging.fbx'
+const MODEL = '/models/swinging.fbx'
 
 type TMeProps = GroupProps & {}
 

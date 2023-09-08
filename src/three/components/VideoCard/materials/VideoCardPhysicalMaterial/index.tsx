@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { type MutableRefObject, useEffect, useRef } from 'react'
 import { useTexture } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { Color, Texture, Vector2, RepeatWrapping } from 'three'
@@ -18,7 +18,7 @@ export type TVideoCardPhysicalMaterialProps = {
   iconWidth?: number
   iconHeight?: number
   attach?: string
-  mouseRef?: React.MutableRefObject<{
+  mouseRef?: MutableRefObject<{
     hover: number
     position: Vector2
   }>

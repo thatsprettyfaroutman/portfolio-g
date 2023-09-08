@@ -10,11 +10,12 @@ import { palette } from '@/styles/theme'
 
 export const Wrapper = styled.div`
   position: relative;
+  width: 100%;
 
   ${MagnetWrapper} {
     position: absolute;
     top: 0;
-    right: 0;
+    left: 0;
     z-index: 1;
   }
 `
@@ -63,9 +64,16 @@ export const CollapsedContent = styled.div`
   gap: calc(var(--space) / 4);
   box-sizing: border-box;
   border-radius: 8px;
-  cursor: pointer;
   user-select: none;
   z-index: 1;
+
+  > ${Paragraph} {
+    cursor: pointer;
+  }
+
+  ${MEDIA.tablet} {
+    justify-content: end;
+  }
 `
 
 export const ExpandedContent = styled.div`
@@ -122,7 +130,7 @@ export const ExpandedContentBackground = styled.div`
   }
 `
 
-export const Body = styled(Markdown).attrs((props) => ({
+export const CustomMarkdown = styled(Markdown).attrs((props) => ({
   components: {
     ...props.components,
     p: Paragraph as FC,
@@ -132,5 +140,28 @@ export const Body = styled(Markdown).attrs((props) => ({
     li: SmallListItem as FC,
   },
 }))`
-  margin-right: calc(var(--space) / -16);
+  margin-right: calc(var(--space) / -8);
+  gap: calc(var(--space) / 2);
+
+  strong {
+    color: ${palette.panel.text};
+  }
+
+  ul {
+    display: grid;
+    grid-gap: calc(var(--space) / 8);
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li {
+      list-style: none;
+    }
+
+    li > em {
+      font-style: normal;
+      font-size: 12px;
+      color: ${palette.panel.text.alpha(0.7)};
+    }
+  }
 `

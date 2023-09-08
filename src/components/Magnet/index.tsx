@@ -30,9 +30,9 @@ export const Wrapper = styled.span`
 const MagnetArea = styled.span`
   position: absolute;
   display: block;
-  top: calc(var(--space) * -1);
+  top: calc(var(--space) * -0.75);
   right: calc(var(--fluidSpace) * -1);
-  bottom: calc(var(--space) * -1);
+  bottom: calc(var(--space) * -0.75);
   left: calc(var(--fluidSpace) * -1);
   -webkit-tap-highlight-color: transparent;
 `

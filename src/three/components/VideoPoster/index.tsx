@@ -1,8 +1,11 @@
 import { useEffect, useRef } from 'react'
-import { NearestFilter, Vector2 } from 'three'
 import { useVideoTexture } from '@react-three/drei'
+import { NearestFilter, Vector2 } from 'three'
 import { useThreeContext } from '@/three/context'
-import getShaderInjectors from '@/three/utils/injectShader'
+
+// TODO: add poster shader effect
+
+// import getShaderInjectors from '@/three/utils/injectShader'
 
 type TVideoPosterProps = {
   width?: number
@@ -15,7 +18,7 @@ export default function VideoPoster({
   height = 600,
   src,
 }: TVideoPosterProps) {
-  const { inView, inViewSpring } = useThreeContext()
+  const { inView } = useThreeContext()
 
   const map = useVideoTexture(src, { start: false })
   map.minFilter = NearestFilter
@@ -47,11 +50,11 @@ export default function VideoPoster({
               ...uniforms.current,
             }
 
-            console.log(shaderObject.fragmentShader)
-            console.log(shaderObject.vertexShader)
+            // console.log(shaderObject.fragmentShader)
+            // console.log(shaderObject.vertexShader)
 
             // Inject fragment shader code to specific positions
-            const { fragment } = getShaderInjectors(shaderObject)
+            // const { fragment } = getShaderInjectors(shaderObject)
             // fragment('#include <clipping_planes_pars_fragment>', fragmentPars)
             // fragment('#include <map_fragment>', fragmentMain)
           }}

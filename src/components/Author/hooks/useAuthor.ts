@@ -125,6 +125,7 @@ export default function useAuthor() {
     x: progressX.to(profilePictureDelta.getX),
     y: progressY.to(profilePictureDelta.getY),
     scale: progressX.to(profilePictureDelta.getScale),
+    offset: profilePictureDelta.offset,
   }
 
   return {

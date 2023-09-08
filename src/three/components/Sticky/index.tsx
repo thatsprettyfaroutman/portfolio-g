@@ -1,9 +1,9 @@
 import { type PropsWithChildren, useCallback, useMemo, useEffect } from 'react'
-import { Group } from 'three'
+import { easings } from '@react-spring/three'
 import { extend, useThree, useFrame } from '@react-three/fiber'
 import lerp from 'lerp'
 import clamp from 'ramda/src/clamp'
-import { easings } from '@react-spring/three'
+import { Group } from 'three'
 import { useThreeContext } from '@/three/context'
 
 extend({ Group })
@@ -13,7 +13,6 @@ type TStickyProps = PropsWithChildren<{
   bottomMargin?: number
   height?: number
   stickySmoothness?: number
-  defaultAlign?: 'top'
 }>
 
 /**
@@ -24,7 +23,6 @@ export default function Sticky({
   bottomMargin = 0,
   height = 0,
   stickySmoothness = 0.5,
-  defaultAlign = 'top',
   ...restProps
 }: TStickyProps) {
   const { camera } = useThree()
@@ -108,7 +106,7 @@ export default function Sticky({
     windowSize.height,
   ])
 
-  useFrame((s) => {
+  useFrame(() => {
     if (!stickyEnabled) {
       return
     }

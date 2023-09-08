@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { a, useSpring } from 'react-spring'
 import styled from 'styled-components'
 import { type TRichAsset } from '@/contentful/types'
-import useCssVariable from '@/hooks/useCssVariable'
 import usePrefetchImage from '@/hooks/usePrefetchImage'
 import { palette } from '@/styles/theme'
 import Spinner from '../Spinner'
@@ -45,14 +44,11 @@ export default function Thumb({
   open = false,
   ...restProps
 }: TThumbProps) {
-  const space = useCssVariable('--space')
   const aspectRatio = image.width / image.height
   const spring = useSpring({
-    config: { clamp: true },
     scale: open ? 1.25 : 1,
   })
   const { bindPrefetchImage, prefetchingUrl } = usePrefetchImage()
-
   return (
     <AWrapper style={spring} {...bindPrefetchImage(image.url)} {...restProps}>
       <Image
@@ -61,8 +57,10 @@ export default function Thumb({
         loading="lazy"
         src={image.url}
         alt={image.title}
-        placeholder="blur"
-        blurDataURL={image.placeholder}
+        placeholder="empty"
+        style={{
+          backgroundImage: `url(${image.placeholder})`,
+        }}
       />
       {prefetchingUrl(image.url) && <CustomSpinner />}
     </AWrapper>

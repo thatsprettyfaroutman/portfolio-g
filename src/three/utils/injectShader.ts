@@ -1,10 +1,12 @@
+import { type Shader } from 'three'
+
 type TInjectCodeTemplate = (
   codeStrings: TemplateStringsArray,
   ...interpolations: string[]
 ) => string
 
 const createInjectShader = (
-  shader: THREE.Shader,
+  shader: Shader,
   shaderName: 'vertexShader' | 'fragmentShader'
 ) =>
   ((position: string, code?: string) => {
@@ -31,7 +33,7 @@ const createInjectShader = (
     (position: string, code: string): string
   }
 
-const getShaderInjectors = (shader: THREE.Shader) => {
+const getShaderInjectors = (shader: Shader) => {
   const vertex = createInjectShader(shader, 'vertexShader')
   const fragment = createInjectShader(shader, 'fragmentShader')
   return { vertex, fragment }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { a, useSpringValue, config } from 'react-spring'
 import styled, { keyframes } from 'styled-components'
 import { palette } from '@/styles/theme'
@@ -16,8 +16,8 @@ const Wrapper = styled.div`
       0%, 100% {
         transform: translate3d(0, 0, 0);
       }
-      40% {
-        transform: translate3d(0, calc(var(--space) / 4), 0);
+      45% {
+        transform: translate3d(0, calc(var(--space) / 8), 0);
       }
     `};
     animation-iteration-count: infinite;
@@ -33,11 +33,24 @@ const Wrapper = styled.div`
 const AWrapper = a(Wrapper)
 
 function Arrow(props: TArrowProps) {
+  const [didScroll, setDidScroll] = useState(false)
   const opacity = useSpringValue(0)
 
   useEffect(() => {
     opacity.start(1, { delay: 4000, config: config.molasses })
   }, [opacity])
+
+  useEffect(() => {
+    if (didScroll) {
+      return
+    }
+    const scroll = () => {
+      setDidScroll(true)
+      opacity.start(0, { config: config.default })
+    }
+    window.addEventListener('scroll', scroll)
+    return () => window.removeEventListener('scroll', scroll)
+  }, [didScroll, opacity])
 
   return (
     <AWrapper {...props} style={{ opacity }}>

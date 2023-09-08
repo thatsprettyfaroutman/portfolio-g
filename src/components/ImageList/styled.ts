@@ -61,8 +61,8 @@ export const Controls = styled.div`
 
   > div {
     position: absolute;
-    width: var(--space);
-    height: var(--space);
+    width: calc(var(--space) / 1.5);
+    height: calc(var(--space) / 1.5);
     top: 0;
     left: 0;
     transform: translateY(-50%);
@@ -70,7 +70,7 @@ export const Controls = styled.div`
 
     :not(:first-child) {
       left: auto;
-      right: 0;
+      right: calc(var(--fluidSpace) / 2);
     }
 
     // Show last child only on mobile. (It's the close button.)
@@ -80,8 +80,13 @@ export const Controls = styled.div`
 
     // On tablet and bigger show arrows and hide the close button.
     ${MEDIA.tablet} {
+      width: var(--space);
+      height: var(--space);
       :not(:last-child) {
         display: block;
+      }
+      :not(:first-child) {
+        right: 0;
       }
       :last-child {
         display: none;
