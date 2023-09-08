@@ -8,6 +8,8 @@ import usePrefetchImage from '@/hooks/usePrefetchImage'
 import { palette } from '@/styles/theme'
 import Spinner from '../Spinner'
 
+const THUMB_HEIGHT = 80
+
 type TThumbProps = {
   href: string
   image: TRichAsset
@@ -49,19 +51,26 @@ export default function Thumb({
     scale: open ? 1.25 : 1,
   })
   const { bindPrefetchImage, prefetchingUrl } = usePrefetchImage()
+
+  const imageProps = {
+    width: THUMB_HEIGHT * aspectRatio,
+    height: THUMB_HEIGHT,
+    src: image.url,
+    alt: image.title,
+    style: {
+      backgroundImage: image.placeholder && `url(${image.placeholder})`,
+    },
+  }
+
   return (
     <AWrapper style={spring} {...bindPrefetchImage(image.url)} {...restProps}>
-      <Image
-        height={80}
-        width={80 * aspectRatio}
-        loading="lazy"
-        src={image.url}
-        alt={image.title}
-        placeholder="empty"
-        style={{
-          backgroundImage: `url(${image.placeholder})`,
-        }}
-      />
+      {image.contentType.includes('image') ? (
+        // eslint-disable-next-line jsx-a11y/alt-text
+        <Image {...imageProps} loading="lazy" placeholder="empty" />
+      ) : (
+        // eslint-disable-next-line jsx-a11y/alt-text
+        <img {...imageProps} src={image.poster} />
+      )}
       {prefetchingUrl(image.url) && <CustomSpinner />}
     </AWrapper>
   )

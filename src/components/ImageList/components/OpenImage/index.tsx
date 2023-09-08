@@ -60,7 +60,8 @@ const DragWrapper = styled.div`
   touch-action: none;
   user-select: none;
 
-  > img {
+  > img,
+  > video {
     position: absolute;
     top: var(--fluidSpace);
     left: var(--fluidSpace);
@@ -73,7 +74,8 @@ const DragWrapper = styled.div`
   }
 
   ${MEDIA.tablet} {
-    > img {
+    > img,
+    > video {
       top: var(--space);
       left: var(--space);
       width: calc(100% - var(--space) * 2);
@@ -221,11 +223,17 @@ export default function OpenImage({
     didLeave.current = phase === 'leave'
   }, [phase, x, y])
 
+  useEffect(() => {
+    if (children.contentType.includes('video')) {
+      setLoading(false)
+    }
+  }, [children.contentType])
+
   return (
     <Wrapper {...restProps} {...bindDrag()}>
       <BodyTouchActionLock />
       <ADragWrapper style={style}>
-        {
+        {children.placeholder && (
           // Image.placeholder doesn't use the width or height in expected way
           // Using img instead
           // eslint-disable-next-line @next/next/no-img-element
@@ -235,17 +243,28 @@ export default function OpenImage({
             src={children.placeholder}
             alt=""
           />
-        }
-        <Image
-          src={children.url}
-          width={children.width}
-          height={children.height}
-          alt={children.title}
-          loading="eager"
-          onLoad={() => {
-            setLoading(false)
-          }}
-        />
+        )}
+        {children.contentType.includes('image') ? (
+          <Image
+            src={children.url}
+            width={children.width}
+            height={children.height}
+            alt={children.title}
+            loading="eager"
+            onLoad={() => {
+              setLoading(false)
+            }}
+          />
+        ) : (
+          <video
+            src={children.url}
+            muted
+            autoPlay
+            loop
+            playsInline
+            controls={false}
+          />
+        )}
         {loading && <CustomSpinner />}
       </ADragWrapper>
     </Wrapper>

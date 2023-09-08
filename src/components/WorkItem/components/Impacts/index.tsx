@@ -48,7 +48,7 @@ function Impacts({ children, ...restProps }: TImpactsProps) {
 
   return (
     <Wrapper {...restProps}>
-      <MiniHeading>Impacts</MiniHeading>
+      <MiniHeading>Wins</MiniHeading>
       <Items>
         {children.map((impact, i) => {
           const icon = getIcon(i)

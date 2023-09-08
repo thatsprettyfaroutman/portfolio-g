@@ -42,6 +42,8 @@ export default async function useWorkSection() {
                             )
                             width
                             height
+                            contentType
+                            description
                           }
                         }
                       }

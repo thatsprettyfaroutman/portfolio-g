@@ -7,8 +7,13 @@ const PLACEHOLDER_WIDTH = 40
 const COLOR_ONLY = true
 
 const isRichAssetPlaceholderable = (data: unknown): data is TRichAsset => {
-  // @ts-ignore
-  return !!(data?.url && data?.width && data?.height)
+  return !!(
+    data &&
+    // @ts-ignore
+    data?.url &&
+    // @ts-ignore
+    data?.contentType
+  )
 }
 
 const getWidthUrl = (url: string) => {
@@ -21,7 +26,21 @@ export default async function addRichAssetPlaceholders<T>(
   data: Array<TRichAsset> | Record<string, TRichAsset> | TRichAsset
 ): Promise<T> {
   if (isRichAssetPlaceholderable(data)) {
-    const image = await loadImage(getWidthUrl(data.url))
+    // @ts-ignore
+    const { description, ...rawAsset } = data
+
+    // TODO: Create video posters from video data instead of using the description field. With ffmpeg for example.
+    if (rawAsset.contentType.includes('video') && !description.trim()) {
+      console.warn('Video asset needs DataUrl in the description field')
+      return null as T
+    }
+
+    const url = rawAsset.contentType.includes('video')
+      ? // @ts-ignore
+        description
+      : getWidthUrl(rawAsset.url)
+
+    const image = await loadImage(url)
     const canvas = createCanvas(image.width, image.height)
     const context = canvas.getContext('2d')
     context.drawImage(image, 0, 0)
@@ -32,13 +51,23 @@ export default async function addRichAssetPlaceholders<T>(
       context.fillRect(0, 0, canvas.width, canvas.height)
     }
 
-    return { ...data, placeholder: canvas.toDataURL() } as T
+    const asset = {
+      ...rawAsset,
+      placeholder: canvas.toDataURL(),
+    }
+
+    if (data.contentType.includes('video')) {
+      asset.poster = description
+    }
+
+    return asset as T
   }
 
   if (Array.isArray(data)) {
-    return Promise.all(
+    const resolved = await Promise.all(
       data.map((value) => addRichAssetPlaceholders<T>(value))
-    ) as Promise<T>
+    )
+    return resolved.filter(Boolean) as T
   }
 
   if (typeof data === 'object') {
@@ -48,7 +77,7 @@ export default async function addRichAssetPlaceholders<T>(
         return [key, await addRichAssetPlaceholders<T>(value)]
       })
     )
-    return fromPairs(resolved as []) as T
+    return fromPairs(resolved.filter(([_, value]) => Boolean(value)) as []) as T
   }
 
   return data as T

@@ -25,6 +25,7 @@ export type TAsset = {
   url: string
   width: number
   height: number
+  contentType: string
 }
 
 export type TRichAsset = TAsset & {
@@ -32,7 +33,8 @@ export type TRichAsset = TAsset & {
     id: string
   }
   title: string
-  placeholder: string
+  placeholder?: string
+  poster?: string
 }
 
 export type TEmoji = {
