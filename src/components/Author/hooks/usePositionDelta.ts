@@ -6,7 +6,7 @@ const MEASURE_OPTIONS = { debounce: 120 }
 
 export default function usePositionDelta() {
   const ref = useRef<HTMLDivElement>(null)
-  const [fromRef, fromBounds] = useMeasure()
+  const [fromRef, fromBounds] = useMeasure(MEASURE_OPTIONS)
   const [toRef, toBounds] = useMeasure(MEASURE_OPTIONS)
   const [offset, setOffset] = useState({ x: 0, y: 0 })
   useEffect(() => {

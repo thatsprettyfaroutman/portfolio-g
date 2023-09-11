@@ -97,7 +97,7 @@ const CustomSpinner = styled(Spinner)`
   > svg > path {
     // Adjust stroke width to match navigation icons
     // (spinnerWidth / --space) x 2
-    // Since, css-calc doesn't work with stroke-width (I suppose)
+    // Using js since calc doesn't seem to work with stroke-width
     stroke-width: ${(20 / 70) * 2}px;
   }
 `
@@ -155,43 +155,33 @@ export default function OpenImage({
       const dy = Math.sign(my)
       const flickVelocity = multiplyVector2([dx, dy], velocity)
 
-      if (mx < -window.innerWidth * 0.5) {
-        // Moved enough horizontally (left)
+      // Handle horizontal movement
+      // Change image when enough horizontal movement
+      if (Math.abs(mx) > window.innerWidth * 0.5) {
         flick([mx, my], flickVelocity)
         onChangeImage(-dx)()
         return
       }
 
-      if (mx > window.innerWidth * 0.5) {
-        // Moved enough horizontally (right)
-        flick([mx, my], flickVelocity)
-        onChangeImage(-dx)()
-        return
-      }
-
-      if (my < -window.innerHeight * 0.25) {
-        // Moved enough vertically (up)
+      // Handle vertical movement
+      // Close image when enough vertical movement
+      if (Math.abs(my) > window.innerHeight * 0.25) {
         flick([mx, my], flickVelocity)
         onCloseImage()
         return
       }
 
-      if (my > window.innerHeight * 0.25) {
-        // Moved enough vertically (down)
-        flick([mx, my], flickVelocity)
-        onCloseImage()
-        return
-      }
-
+      // Handle horizontal flick
+      // Change image
       if (velocity[0] > 1 && dx !== 0) {
-        // Horizontal flick
         flick([mx, my], flickVelocity)
         onChangeImage(-dx)()
         return
       }
 
+      // Handle vertical flick
+      // Close image
       if (velocity[1] > 1 && dy !== 0) {
-        // Vertical flick
         flick([mx, my], flickVelocity)
         onCloseImage()
         return
@@ -214,13 +204,13 @@ export default function OpenImage({
   }
 
   // Handle the case where user swipes to next image and quickly swipes back
-  const didLeave = useRef(false)
+  const lastPhase = useRef<TransitionState['phase'] | undefined>()
   useEffect(() => {
-    if (didLeave.current) {
+    if (lastPhase.current === 'leave') {
       x.start(0, { config: { velocity: 0, decay: false } })
       y.start(0, { config: { velocity: 0, decay: false } })
     }
-    didLeave.current = phase === 'leave'
+    lastPhase.current = phase
   }, [phase, x, y])
 
   useEffect(() => {
@@ -234,8 +224,8 @@ export default function OpenImage({
       <BodyTouchActionLock />
       <ADragWrapper style={style}>
         {children.placeholder && (
-          // Image.placeholder doesn't use the width or height in expected way
-          // Using img instead
+          // Image.placeholder doesn't use the width or height in an expected way
+          // Using img instead to display placeholder/loading image
           // eslint-disable-next-line @next/next/no-img-element
           <img
             width={children.width}
