@@ -78,10 +78,14 @@ export const Paragraph = styled.p`
 export const UnorderedList = styled.ul`
   ${noMargins};
   padding: 0;
-  padding-left: calc(var(--space) / 4);
+  padding-left: calc(var(--space) / 2);
+  display: grid;
+  grid-gap: calc(var(--space) / 4);
 `
 
-export const ListItem = styled(Paragraph).attrs({ as: 'li' })``
+export const ListItem = styled(Paragraph).attrs({ as: 'li' })`
+  padding-left: calc(var(--space) / 8);
+`
 
 export const MarkdownImage = styled.img`
   width: 32px;

@@ -44,8 +44,9 @@ function ImageList({ children, ...restProps }: TImageListProps) {
             href={image.url}
             open={openIndex === i}
             onClick={handleOpenImage(i)}
-            image={image}
-          />
+          >
+            {image}
+          </Thumb>
         ))}
       </Items>
 

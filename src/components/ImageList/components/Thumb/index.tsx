@@ -12,7 +12,7 @@ const THUMB_HEIGHT = 80
 
 type TThumbProps = {
   href: string
-  image: TRichAsset
+  children: TRichAsset
   open?: boolean
   onClick?: (e: SyntheticEvent) => void
 }
@@ -42,11 +42,11 @@ const CustomSpinner = styled(Spinner)`
 const AWrapper = a(Wrapper)
 
 export default function Thumb({
-  image,
+  children,
   open = false,
   ...restProps
 }: TThumbProps) {
-  const aspectRatio = image.width / image.height
+  const aspectRatio = children.width / children.height
   const spring = useSpring({
     scale: open ? 1.25 : 1,
   })
@@ -55,23 +55,27 @@ export default function Thumb({
   const imageProps = {
     width: THUMB_HEIGHT * aspectRatio,
     height: THUMB_HEIGHT,
-    src: image.url,
-    alt: image.title,
+    src: children.url,
+    alt: children.title,
     style: {
-      backgroundImage: image.placeholder && `url(${image.placeholder})`,
+      backgroundImage: children.placeholder && `url(${children.placeholder})`,
     },
   }
 
   return (
-    <AWrapper style={spring} {...bindPrefetchImage(image.url)} {...restProps}>
-      {image.contentType.includes('image') ? (
+    <AWrapper
+      style={spring}
+      {...bindPrefetchImage(children.url)}
+      {...restProps}
+    >
+      {children.contentType.includes('image') ? (
         // eslint-disable-next-line jsx-a11y/alt-text
         <Image {...imageProps} loading="lazy" placeholder="empty" />
       ) : (
         // eslint-disable-next-line jsx-a11y/alt-text
-        <img {...imageProps} src={image.poster} />
+        <img {...imageProps} src={children.poster} />
       )}
-      {prefetchingUrl(image.url) && <CustomSpinner />}
+      {prefetchingUrl(children.url) && <CustomSpinner />}
     </AWrapper>
   )
 }

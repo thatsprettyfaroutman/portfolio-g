@@ -1,7 +1,10 @@
 import styled, { keyframes } from 'styled-components'
+import { MEDIA } from '@/styles/media'
 import { palette } from '@/styles/theme'
 
 type TSpinnerProps = {}
+
+const PHONE_SCALE = 0.5
 
 const Wrapper = styled.div`
   > svg {
@@ -9,9 +12,27 @@ const Wrapper = styled.div`
     width: 100%;
     height: 100%;
     animation-name: ${keyframes`
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  `};
+      0% { 
+        transform: 
+          rotate3d(0, 0, 1, 0deg) 
+          scale3d(${PHONE_SCALE}, ${PHONE_SCALE}, 1); 
+      }
+      100% {
+        transform: 
+          rotate3d(0, 0, 1, 360deg) 
+          scale3d(${PHONE_SCALE}, ${PHONE_SCALE}, 1);
+      }
+    `};
+    ${MEDIA.tablet} {
+      animation-name: ${keyframes`
+        0% { 
+          transform: rotate3d(0, 0, 1, 0deg);
+        }
+        100% {
+          transform: rotate3d(0, 0, 1, 360deg);
+        }
+      `};
+    }
     animation-duration: 1s;
     animation-iteration-count: infinite;
 

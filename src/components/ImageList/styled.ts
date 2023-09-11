@@ -104,9 +104,9 @@ export const ImageTitle = styled(MediumParagraph)`
   color: ${palette.shade.text};
   z-index: 1;
   text-align: center;
-  padding: var(--fluidSpace) var(--space);
+  padding: var(--fluidSpace);
 
   ${MEDIA.tablet} {
-    padding: var(--space);
+    padding: calc(var(--space) / 2) var(--space);
   }
 `

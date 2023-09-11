@@ -3,7 +3,7 @@ import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { type Node, BLOCKS, MARKS, INLINES } from '@contentful/rich-text-types'
 import Emoji from '@/components/Emoji'
 import ImageList from '@/components/ImageList'
-import { MediumParagraph } from '@/components/Text'
+import { ListItem, MediumParagraph, UnorderedList } from '@/components/Text'
 import { TDocument, TEmoji, TImageList } from '@/contentful/types'
 
 export type TRichTextProps = {
@@ -35,6 +35,12 @@ export const getRichTextOptions = (links: TDocument['links']) => {
       [MARKS.BOLD]: (children: ReactNode) => <strong>{children}</strong>,
     },
     renderNode: {
+      [BLOCKS.UL_LIST]: (node: Node, children: ReactNode) => (
+        <UnorderedList>{children}</UnorderedList>
+      ),
+      [BLOCKS.LIST_ITEM]: (node: Node, children: ReactNode) => (
+        <ListItem>{children}</ListItem>
+      ),
       [BLOCKS.PARAGRAPH]: (node: Node, children: ReactNode) => (
         <MediumParagraph>{children}</MediumParagraph>
       ),
