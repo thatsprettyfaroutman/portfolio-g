@@ -16,5 +16,5 @@ export const Head = styled.div`
 
 export const WorkItems = styled.div`
   display: grid;
-  grid-gap: calc(var(--space) * 4);
+  grid-gap: calc(var(--space) * 2);
 `

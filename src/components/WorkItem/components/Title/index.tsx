@@ -13,9 +13,11 @@ const Wrapper = styled.div`
   display: grid;
   grid-gap: calc(var(--space) / 8);
   align-items: baseline;
+  text-align: center;
 
   ${MEDIA.tablet} {
     grid-template-columns: auto 1fr;
+    text-align: initial;
   }
 
   > ${Heading2} {

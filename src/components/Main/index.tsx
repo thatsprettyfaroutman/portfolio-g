@@ -8,7 +8,7 @@ import { MEDIA } from '@/styles/media'
 
 const Wrapper = styled.main`
   display: grid;
-  grid-gap: calc(var(--space) * 4);
+  grid-gap: calc(var(--space) * 2);
 `
 
 export default function Main(props: PropsWithChildren) {
