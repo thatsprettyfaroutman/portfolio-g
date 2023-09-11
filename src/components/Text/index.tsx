@@ -7,8 +7,6 @@ import FONT from '@/styles/fonts'
 import { MEDIA } from '@/styles/media'
 import { palette } from '@/styles/theme'
 
-// TODO: clean up deprecated styles
-
 export const noMargins = css`
   margin-top: 0;
   margin-bottom: 0;
@@ -132,19 +130,5 @@ export const Markdown = styled(ReactMarkdown).attrs({
   },
 })`
   display: grid;
-  grid-gap: calc(var(--space) / 4);
-`
-
-// TODO: move these custom markdowns to components, e.g. AuthorMarkdown = styled
-
-/**
- * @deprecated
- */
-export const MediumMarkdown = styled(Markdown).attrs((props) => ({
-  components: {
-    ...props.components,
-    p: MediumParagraph as FC,
-  },
-}))`
   grid-gap: calc(var(--space) / 4);
 `

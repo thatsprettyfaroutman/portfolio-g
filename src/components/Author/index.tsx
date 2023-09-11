@@ -18,7 +18,6 @@ import {
 } from './styled'
 
 // TODO: 3d card that pops fluidly
-// TODO: click to close, or X-button
 
 type TAuthorProps = {
   children: TAuthor
@@ -56,7 +55,7 @@ export default function Author({ children, ...restProps }: TAuthorProps) {
       </AExpandedContent>
 
       {/*
-         The flying profile picture. It flies between `ProfilePictureTargetAreas` based on `open`. Its positioned to the same position as `CollapsedContent.ProfilePictureTargetArea`, but it's not a child of it because it needs to be positioned relative to the entire Author component, not just the `CollapsedContent`.
+         A flying profile picture. It flies between `ProfilePictureTargetAreas` based on `isOpen`-state.
       */}
       <Magnet
         disabled={isOpen}

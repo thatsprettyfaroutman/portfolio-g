@@ -4,7 +4,6 @@ import { PropsWithChildren } from 'react'
 import range from 'ramda/src/range'
 import useMeasure from 'react-use-measure'
 import styled, { keyframes } from 'styled-components'
-import useCssVariable from '@/hooks/useCssVariable'
 
 type TMarqueeProps = PropsWithChildren
 
@@ -36,7 +35,6 @@ const Content = styled.div`
 export default function Marquee({ children, ...restProps }: TMarqueeProps) {
   const [wrapperRef, wrapperBounds] = useMeasure()
   const [contentRef, contentBounds] = useMeasure()
-  const space = useCssVariable('--space')
   const numContentsFit = Math.ceil(wrapperBounds.width / contentBounds.width)
 
   return (
@@ -47,7 +45,7 @@ export default function Marquee({ children, ...restProps }: TMarqueeProps) {
     >
       <Slider
         style={{
-          width: contentBounds.width + space,
+          width: contentBounds.width,
           height: contentBounds.height,
         }}
       >
@@ -56,7 +54,7 @@ export default function Marquee({ children, ...restProps }: TMarqueeProps) {
           <Content
             key={i}
             style={{
-              left: (contentBounds.width + space) * (i + 1),
+              left: contentBounds.width * (i + 1),
             }}
           >
             {children}
