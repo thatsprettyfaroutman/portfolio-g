@@ -3,14 +3,16 @@ import { a, useSpring } from 'react-spring'
 import styled from 'styled-components'
 import { palette } from '@/styles/theme'
 
-const PATH = {
+// This component animates between a set of svg icons
+
+const ICON_PATHS = {
   right: ['M9 5L5 9', 'M5 1L9 5'],
   rightCross: ['M11 1L3 9', 'M3 1L11 9'],
   left: ['M5 5L9 9', 'M9 1L5 5'],
   leftCross: ['M3 1L11 9', 'M11 1L3 9'],
 } as const
 
-type TMorphyIconProps = { icon: keyof typeof PATH }
+type TMorphyIconProps = { icon: keyof typeof ICON_PATHS }
 
 const Wrapper = styled.svg`
   display: block;
@@ -27,7 +29,7 @@ const Wrapper = styled.svg`
 `
 
 export default function MorphyIcon({ icon, ...restProps }: TMorphyIconProps) {
-  const paths = PATH[icon]
+  const paths = ICON_PATHS[icon]
 
   const { d0, d1, rotation } = useSpring({
     d0: paths[0],

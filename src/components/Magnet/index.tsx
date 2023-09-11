@@ -37,6 +37,9 @@ const MagnetArea = styled.span`
   -webkit-tap-highlight-color: transparent;
 `
 
+/**
+ * This component makes it child element to move towards mouse cursor when it comes close enough.
+ */
 export default function Magnet({
   children,
   disabled = false,

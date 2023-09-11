@@ -10,7 +10,7 @@ import {
 import { useTransition } from 'react-spring'
 import styled from 'styled-components'
 
-// A drop in component that animates all the children of a component with a trailing spring and without the need for _context_.
+// A drop in component that animates all the children of a component with a trailing spring.
 
 const defaultChildStyleInterpolator = (p: number): Record<string, string> => ({
   opacity: p.toString(),
@@ -64,7 +64,7 @@ export default function AnimateChildren({
   const [styleKeys, setStyleKeys] = useState([] as string[])
   const [childElements, setChildElements] = useState([] as HTMLElement[])
 
-  // Store the childStyleInterpolator in a ref so that it doesn't cause re-renders and cause styled to go nuts
+  // Store the childStyleInterpolator in a ref so that it doesn't cause re-renders
   const childStyleInterpolatorRef = useRef(childStyleInterpolator)
   childStyleInterpolatorRef.current = childStyleInterpolator
 

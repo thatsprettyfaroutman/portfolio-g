@@ -8,16 +8,6 @@ export type TUseThreeContextProps = {
   inViewSpring: SpringValue<number>
   windowSize: { width: number; height: number }
   mousePresent: boolean
-
-  /**
-   * @deprecated This is a hack to compensate for scroll position which shouldn't be needed anymore
-   */
-  scrollCompensatedBounds: {
-    x: number
-    y: number
-    width: number
-    height: number
-  }
   keepScrollPerspective?: boolean
   offsetX?: number
   offsetY?: number

@@ -8,7 +8,7 @@ type TAnimatedTextProps = {
   trailDelay?: number
 }
 
-const Letter = styled.span<{
+const Word = styled.span<{
   index: number
   delay: number
   trailDelay: number
@@ -31,9 +31,9 @@ export default function AnimatedText({
 }: TAnimatedTextProps) {
   const words = children.split(' ')
 
-  return words.map((letter, i) => (
-    <Letter delay={delay} trailDelay={trailDelay} index={i} key={i}>
-      {letter}{' '}
-    </Letter>
+  return words.map((word, i) => (
+    <Word delay={delay} trailDelay={trailDelay} index={i} key={i}>
+      {word}{' '}
+    </Word>
   ))
 }

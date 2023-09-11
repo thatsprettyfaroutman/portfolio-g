@@ -31,6 +31,10 @@ const Wrapper = styled(Link)`
   }
 `
 
+const ImageThumb = Image
+
+const VideoThumb = styled.img``
+
 const CustomSpinner = styled(Spinner)`
   position: absolute;
   bottom: calc(var(--space) / 16);
@@ -55,8 +59,6 @@ export default function Thumb({
   const imageProps = {
     width: THUMB_HEIGHT * aspectRatio,
     height: THUMB_HEIGHT,
-    src: children.url,
-    alt: children.title,
     style: {
       backgroundImage: children.placeholder && `url(${children.placeholder})`,
     },
@@ -69,11 +71,19 @@ export default function Thumb({
       {...restProps}
     >
       {children.contentType.includes('image') ? (
-        // eslint-disable-next-line jsx-a11y/alt-text
-        <Image {...imageProps} loading="lazy" placeholder="empty" />
+        <ImageThumb
+          {...imageProps}
+          src={children.url}
+          alt={children.title}
+          loading="lazy"
+          placeholder="empty"
+        />
       ) : (
-        // eslint-disable-next-line jsx-a11y/alt-text
-        <img {...imageProps} src={children.poster} />
+        <VideoThumb
+          {...imageProps}
+          src={children.poster}
+          alt={children.title}
+        />
       )}
       {prefetchingUrl(children.url) && <CustomSpinner />}
     </AWrapper>

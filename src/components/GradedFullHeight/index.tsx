@@ -16,13 +16,15 @@ const Wrapper = styled.div`
   height: 100vh;
 `
 
+/**
+ * This component takes full height of the viewport by default and only updates it when the viewport height change is more than the `threshold`. Helpful on some phone browsers where viewport height changes when user scrolls and the browsers address bar is hidden.
+ */
 export default function GradedFullHeight({
   threshold = 320,
   tag,
   ...restProps
 }: TGradedFullHeightProps) {
   const { height } = useWindowSize()
-
   const lastHeightRef = useRef(0)
 
   if (!lastHeightRef.current) {

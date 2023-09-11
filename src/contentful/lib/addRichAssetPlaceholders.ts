@@ -21,7 +21,9 @@ const getWidthUrl = (url: string) => {
   return `${url}${q}w=${PLACEHOLDER_WIDTH}`
 }
 
-// Populate TRichAsset with `placeholder` images
+/**
+ * Populate TRichAsset with `placeholder` images that are generated with node-canvas in the build time.
+ */
 export default async function addRichAssetPlaceholders<T>(
   data: Array<TRichAsset> | Record<string, TRichAsset> | TRichAsset
 ): Promise<T> {

@@ -14,6 +14,7 @@ import clamp from 'ramda/src/clamp'
 import { Group, Mesh, RingGeometry } from 'three'
 import useCssVariable from '@/hooks/useCssVariable'
 import { usePalette, palette } from '@/styles/theme'
+import useFirstRender from '@/three/hooks/useFirstRender'
 import MeshAuroraMaterial, {
   TMeshAuroraMaterial,
 } from './materials/MeshAuroraMaterial'
@@ -28,7 +29,6 @@ type TThingProps = GroupProps & {
   timeScale?: number
   disableAppearAnimation?: boolean
   appearDelay?: number
-  onFirstRender?: () => void
 }
 
 extend({
@@ -57,7 +57,6 @@ export default function AuroraDisc({
   timeScale = 1,
   appearDelay = 1000,
   disableAppearAnimation,
-  onFirstRender,
   ...restProps
 }: TThingProps) {
   const { size } = useThree()
@@ -71,7 +70,6 @@ export default function AuroraDisc({
   const appearSpring = useSpringValue(0, {
     config: { tension: 20 },
   })
-  const firstRender = useRef(true)
 
   useFrame((s) => {
     const t = s.clock.getElapsedTime() * timeScale
@@ -91,16 +89,10 @@ export default function AuroraDisc({
     }
   })
 
-  useFrame(() => {
-    if (firstRender.current) {
-      firstRender.current = false
-      if (typeof onFirstRender === 'function') {
-        onFirstRender()
-      }
-      setTimeout(() => {
-        appearSpring.start(1)
-      }, appearDelay)
-    }
+  useFirstRender(() => {
+    setTimeout(() => {
+      appearSpring.start(1)
+    }, appearDelay)
   })
 
   return (

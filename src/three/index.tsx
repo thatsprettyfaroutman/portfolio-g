@@ -1,22 +1,12 @@
 'use client'
 
-// TODO: clean up file
-// TODO: move ThreeCanvas to own file
-import {
-  useMemo,
-  ReactNode,
-  CSSProperties,
-  PropsWithChildren,
-  useRef,
-  useState,
-} from 'react'
+import { ReactNode, CSSProperties, PropsWithChildren, useState } from 'react'
 import { useSpring } from '@react-spring/three'
 import { Edges, MeshDiscardMaterial } from '@react-three/drei'
 import { Canvas, extend } from '@react-three/fiber'
 import pick from 'ramda/src/pick'
 import { useInView } from 'react-intersection-observer'
 import { mergeRefs } from 'react-merge-refs'
-import useMeasure from 'react-use-measure'
 import styled from 'styled-components'
 import { Group } from 'three'
 import useWindowSize from '@/hooks/useWindowSize'
@@ -27,6 +17,8 @@ import {
   ThreeContextProvider,
   useThreeContext,
 } from '@/three/context'
+
+// TODO: move ThreeCanvas to its own file
 
 extend({ Group })
 
@@ -96,32 +88,6 @@ export default function Three({
   const windowSize = useWindowSize()
   const [mousePresent, setMousePresent] = useState(false)
 
-  // Handle bounds
-  const [measureRef, bounds] = useMeasure({ scroll: inView })
-  const lastBoundsRef = useRef({
-    x: 0,
-    y: 0,
-    width: 0,
-    height: 0,
-  })
-
-  /**
-   * @deprecated This is a hack to compensate for scroll position which shouldn't be needed anymore
-   */
-  const scrollCompensatedBounds = useMemo(() => {
-    if (!inView) {
-      return lastBoundsRef.current
-    }
-    lastBoundsRef.current = {
-      x: bounds.x,
-      // Non-scroll y
-      y: (typeof window !== 'undefined' ? window.scrollY : 0) + bounds.y,
-      width: bounds.width,
-      height: bounds.height,
-    }
-    return lastBoundsRef.current
-  }, [bounds.width, bounds.height, bounds.x, bounds.y, inView])
-
   const { inViewSpring } = useSpring({
     inViewSpring: inView ? 1 : 0,
   })
@@ -131,7 +97,6 @@ export default function Three({
     renderEnabled,
     inView,
     inViewSpring,
-    scrollCompensatedBounds,
     windowSize,
     mousePresent,
   }
@@ -141,7 +106,7 @@ export default function Three({
       onPointerEnter={() => setMousePresent(true)}
       onPointerLeave={() => setMousePresent(false)}
       className={`three ${className || ''}`}
-      ref={mergeRefs([renderRef, inViewRef, measureRef])}
+      ref={mergeRefs([renderRef, inViewRef])}
       {...restProps}
     >
       <ThreeContextProvider {...contextProps}>
