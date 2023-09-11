@@ -18,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
   }
 
-  h1, h2, h3, h4, h5, h6, p, li, a, strong {
+  h1, h2, h3, h4, h5, h6, p, li, a, strong, i, em {
     ::selection {
       background-color: ${palette.accents[0].brighten(2)};
       color: ${palette.main.background};
