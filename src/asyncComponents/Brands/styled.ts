@@ -1,6 +1,7 @@
 'use client'
 
 import styled from 'styled-components'
+import Marquee from '@/components/Marquee'
 import { MiniHeading } from '@/components/Text'
 import { palette } from '@/styles/theme'
 
@@ -13,7 +14,7 @@ export const Title = styled(MiniHeading)`
   text-align: center;
 `
 
-export const BrandsWrapper = styled.div`
+export const BrandsMarquee = styled(Marquee)`
   position: relative;
   padding: var(--space) 0;
   background-color: ${palette.main.background.darken(0.2)};
@@ -23,7 +24,7 @@ export const BrandsWrapper = styled.div`
 export const Brands = styled.div`
   display: flex;
   flex-direction: row;
-  // Update Marquee space if this is changed
+  margin-right: var(--space);
   gap: var(--space);
   row-gap: calc(var(--space) / 2);
   justify-content: start;
