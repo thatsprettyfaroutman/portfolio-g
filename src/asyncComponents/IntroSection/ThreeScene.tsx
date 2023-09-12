@@ -6,7 +6,7 @@ import AuroraDisc from '@/three/components/AuroraDisc'
 // @ts-ignore
 export default function Scene(props) {
   return (
-    <Three keepScrollPerspective {...props}>
+    <Three {...props}>
       <AuroraDisc />
     </Three>
   )
