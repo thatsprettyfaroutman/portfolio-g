@@ -71,6 +71,9 @@ const FaviconPrinter = () => {
   return null
 }
 
+/**
+ * React-three-fiber animated favicon component. It renders a 64x64 animated favicon.
+ */
 export default function Favicon(props: TFaviconProps) {
   const { width } = useWindowSize()
   if (width < 768) {

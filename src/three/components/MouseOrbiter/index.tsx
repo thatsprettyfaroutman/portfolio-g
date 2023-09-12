@@ -1,6 +1,9 @@
 'use client'
 
 import { PropsWithChildren, useRef } from 'react'
+import { MeshDiscardMaterial } from '@react-three/drei'
+import { useThree, useFrame, extend } from '@react-three/fiber'
+import lerp from 'lerp'
 import {
   Vector2,
   Vector3,
@@ -9,10 +12,7 @@ import {
   ShaderMaterial,
   Group,
 } from 'three'
-import { useThree, useFrame, extend } from '@react-three/fiber'
-import { MeshDiscardMaterial } from '@react-three/drei'
 import { useThreeContext } from '@/three/context'
-import lerp from 'lerp'
 
 extend({
   Group,
@@ -33,6 +33,9 @@ type TMouseOrbiterProps = {
   maxAngle?: number
 }
 
+/**
+ * This component will rotate the children based on the mouse position.
+ */
 export default function MouseOrbiter({
   hoverWidth,
   hoverHeight,

@@ -10,17 +10,6 @@ import {
 import { useTransition } from 'react-spring'
 import styled from 'styled-components'
 
-// A drop in component that animates all the children of a component with a trailing spring.
-
-const defaultChildStyleInterpolator = (p: number): Record<string, string> => ({
-  opacity: p.toString(),
-  transform: `perspective(1000px) translate3d(${[
-    0,
-    `calc(var(--space) / 8 * ${1 - p})`,
-    `calc(var(--space) * -2 * ${1 - p})`,
-  ].join(',')})`,
-})
-
 type TAnimateChildrenProps = PropsWithChildren<{
   showing?: boolean
   reverseAnimationOrder?: boolean
@@ -49,6 +38,19 @@ const Wrapper = styled.div<{
     ${(p) => p.$childStyleInterpolatorRef.current(0)};
   }
 `
+
+const defaultChildStyleInterpolator = (p: number): Record<string, string> => ({
+  opacity: p.toString(),
+  transform: `perspective(1000px) translate3d(${[
+    0,
+    `calc(var(--space) / 8 * ${1 - p})`,
+    `calc(var(--space) * -2 * ${1 - p})`,
+  ].join(',')})`,
+})
+
+/**
+ * This component animates the children with a trailing spring.
+ */
 
 export default function AnimateChildren({
   showing = true,

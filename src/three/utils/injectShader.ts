@@ -33,6 +33,9 @@ const createInjectShader = (
     (position: string, code: string): string
   }
 
+/**
+ * This is a helper for injecting shader code into existing THREE shaders.
+ */
 const getShaderInjectors = (shader: Shader) => {
   const vertex = createInjectShader(shader, 'vertexShader')
   const fragment = createInjectShader(shader, 'fragmentShader')

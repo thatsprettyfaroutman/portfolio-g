@@ -17,6 +17,9 @@ type TText3dProps = {
   children?: string
 }
 
+/**
+ * This component renders a 3d text.
+ */
 export default function Text3d({
   children = 'Hi',
   color = '#fff',

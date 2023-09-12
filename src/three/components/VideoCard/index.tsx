@@ -5,7 +5,7 @@ import {
   useTexture,
   useVideoTexture,
 } from '@react-three/drei'
-import { type ThreeEvent, useThree, extend } from '@react-three/fiber'
+import { type ThreeEvent, extend } from '@react-three/fiber'
 import lerp from 'lerp'
 import clamp from 'ramda/src/clamp'
 import {
@@ -22,6 +22,7 @@ import MouseOrbiter from '@/three/components/MouseOrbiter'
 import { useThreeContext } from '@/three/context'
 import { VideoCardBox } from './geometries/VideoCardBox'
 import useBackMap from './hooks/useBackMap'
+import useContainSize from './hooks/useContainSize'
 import VideoCardPhysicalMaterial from './materials/VideoCardPhysicalMaterial'
 import shadowNormal from './textures/shadow-normal.png'
 
@@ -42,23 +43,9 @@ export type TCardProps = {
   backText?: string
 }
 
-const useContainSize = (width: number, height: number) => {
-  const { size } = useThree()
-  const aspect = width / height
-  const sizeAspect = size.width / size.height
-  if (sizeAspect < aspect) {
-    if (width > size.width) {
-      return { width: size.width, height: size.width / aspect }
-    }
-  } else {
-    if (height > size.height) {
-      return { width: size.height * aspect, height: size.height }
-    }
-  }
-
-  return { width, height }
-}
-
+/**
+ * This component renders a 3d video card using @react-three/fiber.
+ */
 export default function VideoCard({
   src,
   width: widthProp = 300,

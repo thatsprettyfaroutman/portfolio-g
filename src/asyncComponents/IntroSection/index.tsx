@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic'
 import Brands from '@/asyncComponents/Brands'
 import SocialMediaLinks from '@/asyncComponents/SocialMediaLinks'
-import AnimateChildren from '@/components/AnimateChildren'
 import AnimatedText from '@/components/AnimatedText'
 import Arrow from '@/components/Arrow/lazy'
 import Author from '@/components/Author/lazy'
@@ -15,7 +14,7 @@ import {
   CustomMarkdown,
 } from './styled'
 
-const Scene = dynamic(() => import('./ThreeScene'), { ssr: false })
+const ThreeScene = dynamic(() => import('./ThreeScene'), { ssr: false })
 
 export default async function IntroSection({ ...restProps }) {
   const introSection = await useIntroSection()
@@ -23,7 +22,7 @@ export default async function IntroSection({ ...restProps }) {
   return (
     <Wrapper {...restProps}>
       <Hero>
-        <Scene />
+        <ThreeScene />
         <Heading1>
           <AnimatedText delay={1000} trailDelay={800}>
             {introSection.title}

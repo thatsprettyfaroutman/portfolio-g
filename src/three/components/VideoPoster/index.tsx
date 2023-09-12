@@ -13,6 +13,9 @@ type TVideoPosterProps = {
   src: string
 }
 
+/**
+ * WIP - This component renders a 3d video poster using @react-three/fiber.
+ */
 export default function VideoPoster({
   width = 400,
   height = 600,
