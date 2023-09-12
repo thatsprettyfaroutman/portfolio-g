@@ -46,7 +46,9 @@ export const Wrapper = styled(Link).withConfig(
     border-radius: calc(var(--space) / 4);
     border: 1px solid transparent;
     border-bottom-width: 4px;
-    transition: border-color 200ms ease-in-out;
+    transition-property: border-color, border-bottom-width, bottom;
+    transition-duration: 200ms;
+    transition-timing-function: ease-in-out;
 
     ${(p) =>
       !p.stealthMode &&
@@ -68,7 +70,7 @@ export const Wrapper = styled(Link).withConfig(
   }
 
   :hover {
-    transform: translate3d(0, -1.5px, 0);
+    transform: translate3d(0, -4px, 0);
 
     ::before {
       bottom: -4px;
