@@ -5,14 +5,9 @@ import styled from 'styled-components'
 import Arrow from '@/components/Arrow'
 import GradedFullHeight from '@/components/GradedFullHeight'
 import Section from '@/components/Section'
-import {
-  MediumParagraph,
-  Heading3,
-  Heading4,
-  Markdown,
-} from '@/components/Text'
+import SmoothLink from '@/components/SmoothLink'
+import { MediumParagraph, Heading3, Markdown } from '@/components/Text'
 import { MEDIA } from '@/styles/media'
-import { palette } from '@/styles/theme'
 
 export const Wrapper = styled.section`
   display: grid;
@@ -76,6 +71,7 @@ export const CustomMarkdown = styled(Markdown).attrs((props) => ({
     p: MediumParagraph as FC,
     h1: Heading3 as FC,
     h2: Heading3 as FC,
+    a: SmoothLink as FC,
   },
 }))`
   grid-gap: calc(var(--space) / 4);
