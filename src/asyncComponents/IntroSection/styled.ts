@@ -11,7 +11,7 @@ import { MEDIA } from '@/styles/media'
 
 export const Wrapper = styled.section`
   display: grid;
-  grid-gap: var(--space);
+  grid-gap: calc(var(--space) * 1.5);
 `
 
 export const Hero = styled(GradedFullHeight)`
