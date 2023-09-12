@@ -1,27 +1,37 @@
-import { useCallback, useState } from 'react'
-import uniq from 'ramda/src/uniq'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
-const fetchedImages = new Set<string>()
+const imageStatusesStore = new Map<string, 'fetching' | 'done'>()
 
 export default function usePrefetchImage() {
-  const [urlsPrefetching, setUrlsPrefetching] = useState<string[]>([])
+  const [imageStatuses, setImageStatuses] = useState(imageStatusesStore)
+  const mounted = useRef(false)
+  useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+    }
+  }, [])
 
   const prefetchImage = useCallback((src: string) => {
-    if (fetchedImages.has(src)) {
+    if (imageStatusesStore.has(src)) {
       return
     }
-    setUrlsPrefetching((s) => uniq([...s, src]))
+    imageStatusesStore.set(src, 'fetching')
+    setImageStatuses(new Map(imageStatusesStore))
+
     const loader = new Image()
     loader.src = src
     loader.onload = loader.onerror = () => {
-      setUrlsPrefetching((s) => s.filter((url) => url !== src))
+      imageStatusesStore.set(src, 'done')
+      if (mounted.current) {
+        setImageStatuses(new Map(imageStatusesStore))
+      }
     }
-    fetchedImages.add(src)
   }, [])
 
   const prefetchingUrl = useCallback(
-    (src: string) => urlsPrefetching.includes(src),
-    [urlsPrefetching]
+    (src: string) => imageStatuses.get(src) === 'fetching',
+    [imageStatuses]
   )
 
   return {
