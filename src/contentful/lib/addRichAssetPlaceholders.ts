@@ -43,6 +43,7 @@ export default async function addRichAssetPlaceholders<T>(
       : getWidthUrl(rawAsset.url)
 
     const image = await loadImage(url)
+
     const canvas = createCanvas(image.width, image.height)
     const context = canvas.getContext('2d')
     context.drawImage(image, 0, 0)
@@ -55,6 +56,8 @@ export default async function addRichAssetPlaceholders<T>(
 
     const asset = {
       ...rawAsset,
+      width: rawAsset.width || image.width,
+      height: rawAsset.height || image.height,
       placeholder: canvas.toDataURL(),
     }
 
