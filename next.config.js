@@ -14,7 +14,7 @@ if (
 
 const nextConfig = {
   reactStrictMode: true,
-  webpack: (config, options) => {
+  webpack: (config) => {
     config.module.rules.push({
       test: /\.(glsl|vert|frag)$/,
       use: ['raw-loader', 'glslify-loader'],
