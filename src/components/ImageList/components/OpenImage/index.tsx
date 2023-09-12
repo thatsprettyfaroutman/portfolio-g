@@ -16,7 +16,7 @@ import useCssVariable from '@/hooks/useCssVariable'
 import { MEDIA } from '@/styles/media'
 import Spinner from '../Spinner'
 
-const INITIAL_SCALE = 0.9
+const LOADING_SCALE = 0.9
 
 type TOpenImageProps = {
   children: TRichAsset
@@ -35,6 +35,11 @@ const BodyTouchActionLock = createGlobalStyle`
   body {
     touch-action: none;
     user-select: none;
+    overflow: hidden;
+
+    ${MEDIA.tablet} {
+      overflow: initial;
+    }
   }
 `
 
@@ -84,6 +89,10 @@ const DragWrapper = styled.div`
   }
 `
 
+const Placeholder = styled.img`
+  transform: scale(${LOADING_SCALE});
+`
+
 const CustomSpinner = styled(Spinner)`
   position: absolute;
   top: 50%;
@@ -103,6 +112,7 @@ const CustomSpinner = styled(Spinner)`
 `
 
 const ADragWrapper = a(DragWrapper)
+const AImage = a(Image)
 
 // Helper function to multiply two vectors
 const multiplyVector2 = (v0: TVector2, v1: TVector2): TVector2 => [
@@ -124,11 +134,11 @@ export default function OpenImage({
   const [loading, setLoading] = useState(true)
   const x = useSpringValue(0)
   const y = useSpringValue(0)
-  const loadingScale = useSpringValue(loading ? INITIAL_SCALE : 1)
+  const loadingSpring = useSpringValue(loading ? 1 : 0)
 
   useEffect(() => {
-    loadingScale.start(loading ? INITIAL_SCALE : 1)
-  }, [loading, loadingScale])
+    loadingSpring.start(loading ? 1 : 0)
+  }, [loading, loadingSpring])
 
   const flick = ([mx, my]: TVector2, [vx, vy]: TVector2) => {
     x.start(mx, {
@@ -193,13 +203,16 @@ export default function OpenImage({
     }
   })
 
-  const style = {
+  const dragWrapperStyle = {
     opacity,
     x: to([xProgress, x], (p, x) => p * space + x),
     y,
+  }
+
+  const assetStyle = {
     scale: to(
-      [showProgress, loadingScale],
-      (p, scale) => lerp(0.95, 1, p) * scale
+      [showProgress, loadingSpring],
+      (p, loadingP) => lerp(0.95, 1, p) * lerp(1, LOADING_SCALE, loadingP)
     ),
   }
 
@@ -222,12 +235,9 @@ export default function OpenImage({
   return (
     <Wrapper {...restProps} {...bindDrag()}>
       <BodyTouchActionLock />
-      <ADragWrapper style={style}>
+      <ADragWrapper style={dragWrapperStyle}>
         {children.placeholder && (
-          // Image.placeholder doesn't use the width or height in an expected way
-          // Using img instead to display placeholder/loading image
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Placeholder
             width={children.width}
             height={children.height}
             src={children.placeholder}
@@ -235,7 +245,7 @@ export default function OpenImage({
           />
         )}
         {children.contentType.includes('image') ? (
-          <Image
+          <AImage
             src={children.url}
             width={children.width}
             height={children.height}
@@ -244,15 +254,17 @@ export default function OpenImage({
             onLoad={() => {
               setLoading(false)
             }}
+            style={assetStyle}
           />
         ) : (
-          <video
+          <a.video
             src={children.url}
             muted
             autoPlay
             loop
             playsInline
             controls={false}
+            style={assetStyle}
           />
         )}
         {loading && <CustomSpinner />}

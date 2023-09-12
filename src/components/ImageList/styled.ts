@@ -107,6 +107,9 @@ export const ImageTitle = styled(MediumParagraph)`
   padding: var(--fluidSpace);
 
   ${MEDIA.tablet} {
-    padding: calc(var(--space) / 2) var(--space);
+    padding: 0 var(--space);
+    // Middle align text inside the bottom padding.
+    // 32px is MediumParagraph's line-height.
+    bottom: calc((var(--space) - 32px) / 2);
   }
 `
