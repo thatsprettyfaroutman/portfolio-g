@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Section from '@/components/Section'
 
 export const Wrapper = styled(Section)`
+  padding-top: var(--space);
   grid-gap: calc(var(--space) * 4);
 `
 
