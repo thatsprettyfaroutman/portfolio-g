@@ -30,11 +30,7 @@ CONTENTFUL_ACCESS_TOKEN=
 Example code:
 ```jsx
 // Imports
-import dynamic from 'next/dynamic'
 import styled from 'styled-components'
-
-// Dynamic imports
-const ThreeScene = dynamic(() => import('@/three/scene'), { ssr: false )
 
 // Consts
 const SOME_CONST = 'hello'
@@ -45,13 +41,17 @@ type TComponentNameProps = {}
 // Styles
 const Wrapper = styled.div``
 
+// Component code
 export default function ComponentName({...restProps}:TComponentNameProps) {
 
   // Logic
 
-  // Pass `restProps`, for flexibility. This way its easier to extend component styles with Styled etc...
+  // Jsx
   return (
-    <Wrapper {...restProps} />
+    <Wrapper
+      // Pass `restProps` for flexibility. This way its easier to extend component styles with Styled etc...
+      {...restProps}
+    />
   )
 }
 ```
