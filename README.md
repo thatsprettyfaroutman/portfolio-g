@@ -1,6 +1,6 @@
 # Viljami.dev Portfolio
 
-This is the source code for my portfolio site viljami.dev. It's built with Next.js, Typescript, and React. There are also 3D elements written with @react-three/fiber and three.js. Content is managed with Contentful.
+This is the source code for my portfolio site [viljami.dev](https://viljami.dev). It's built with Next.js, Typescript, and React. There are also 3D elements written with @react-three/fiber and three.js. Content is managed with Contentful.
 
 ![viljami dev demo25-15](https://github.com/thatsprettyfaroutman/portfolio-g/assets/6589190/e35e28c9-814f-4dd3-8af7-25a82f1f4e68)
 
