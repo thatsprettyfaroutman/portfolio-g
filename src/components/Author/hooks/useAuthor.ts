@@ -4,7 +4,6 @@ import { useRef, useEffect, useState, useCallback } from 'react'
 import lerp from 'lerp'
 import { mergeRefs } from 'react-merge-refs'
 import { useSpring, useInView } from 'react-spring'
-import useCssVariable from '@/hooks/useCssVariable'
 import usePositionDelta from './usePositionDelta'
 
 const EXPANDED_CONTENT_SCROLL_SAFETY_AREA = 20
