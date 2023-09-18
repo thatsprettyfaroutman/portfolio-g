@@ -1,7 +1,7 @@
 'use client'
 
 import { FC } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Wrapper as MagnetWrapper } from '@/components/Magnet'
 import ProfilePicture from '@/components/ProfilePicture'
 import { Heading4, Markdown, SmallListItem, Paragraph } from '@/components/Text'
@@ -11,6 +11,15 @@ import { palette } from '@/styles/theme'
 export const Wrapper = styled.div`
   position: relative;
   width: 100%;
+  min-height: var(--space);
+  animation-name: ${keyframes`
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  `};
+  animation-duration: 0.5s;
+  animation-fill-mode: backwards;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in-out;
 
   ${MagnetWrapper} {
     position: absolute;

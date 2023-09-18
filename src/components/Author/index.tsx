@@ -12,6 +12,7 @@ import {
   ProfilePictureTargetArea,
   CustomProfilePicture,
   CollapsedContent,
+  ExpandedContentWrapper,
   ExpandedContent,
   ExpandedContentBackground,
   CustomMarkdown,
@@ -29,8 +30,14 @@ const ACollapsedContent = a(CollapsedContent)
 const AExpandedContent = a(ExpandedContent)
 
 export default function Author({ children, ...restProps }: TAuthorProps) {
-  const { isOpen, toggle, style, expandedContentRef, profilePictureDelta } =
-    useAuthor()
+  const {
+    isOpen,
+    toggle,
+    style,
+    expandedContentWrapperRef,
+    expandedContentRef,
+    profilePictureDelta,
+  } = useAuthor()
 
   return (
     <Wrapper {...restProps}>
@@ -55,7 +62,7 @@ export default function Author({ children, ...restProps }: TAuthorProps) {
       </AExpandedContent>
 
       {/*
-         A flying profile picture. It flies between `ProfilePictureTargetAreas` based on `isOpen`-state.
+         A flying profile picture! It flies between `ProfilePictureTargetAreas` based on `isOpen`-state.
       */}
       <Magnet
         disabled={isOpen}

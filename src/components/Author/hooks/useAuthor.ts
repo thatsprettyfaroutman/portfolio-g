@@ -4,9 +4,10 @@ import { useRef, useEffect, useState, useCallback } from 'react'
 import lerp from 'lerp'
 import { mergeRefs } from 'react-merge-refs'
 import { useSpring, useInView } from 'react-spring'
+import useCssVariable from '@/hooks/useCssVariable'
 import usePositionDelta from './usePositionDelta'
 
-const EXPANDED_CONTENT_SAFE_MARGIN = 20
+const EXPANDED_CONTENT_SCROLL_SAFETY_AREA = 20
 
 export default function useAuthor() {
   const [isOpen, setOpen] = useState(false)
@@ -56,7 +57,7 @@ export default function useAuthor() {
       // If expanded content fits in view then scroll so expanded content is in the middle of the view
       if (
         expandedContentRect.height <
-        window.innerHeight - EXPANDED_CONTENT_SAFE_MARGIN * 2
+        window.innerHeight - EXPANDED_CONTENT_SCROLL_SAFETY_AREA * 2
       ) {
         scrollRef.current = {
           from: window.scrollY,
@@ -70,7 +71,7 @@ export default function useAuthor() {
 
       // Otherwise scroll so expanded content is at the top of the view
       const expandedContentMinScroll =
-        expandedContentRect.y - EXPANDED_CONTENT_SAFE_MARGIN
+        expandedContentRect.y - EXPANDED_CONTENT_SCROLL_SAFETY_AREA
       if (expandedContentMinScroll < 0) {
         scrollRef.current = {
           from: window.scrollY,
@@ -94,7 +95,7 @@ export default function useAuthor() {
     })
   }, [updateScrollRef])
 
-  // Collapse automatically if there is less than 10% of the popup visible
+  // Collapse automatically if there's less than 10% of the popup visible
   useEffect(() => {
     if (!isInView && isOpen && !isOpening) {
       toggle()
@@ -118,6 +119,7 @@ export default function useAuthor() {
   const expandedContentStyle = {
     opacity: progressX,
     pointerEvents: progressX.to((p) => (p < 0.5 ? 'none' : undefined)),
+    y: (expandedContentRef.current?.getBoundingClientRect().height || 0) * 0.5,
   }
 
   // Profile picture flies from closed to open in fluid motion
