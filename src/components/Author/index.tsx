@@ -12,7 +12,6 @@ import {
   ProfilePictureTargetArea,
   CustomProfilePicture,
   CollapsedContent,
-  ExpandedContentWrapper,
   ExpandedContent,
   ExpandedContentBackground,
   CustomMarkdown,
