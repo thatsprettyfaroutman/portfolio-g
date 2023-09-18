@@ -29,14 +29,8 @@ const ACollapsedContent = a(CollapsedContent)
 const AExpandedContent = a(ExpandedContent)
 
 export default function Author({ children, ...restProps }: TAuthorProps) {
-  const {
-    isOpen,
-    toggle,
-    style,
-    expandedContentWrapperRef,
-    expandedContentRef,
-    profilePictureDelta,
-  } = useAuthor()
+  const { isOpen, toggle, style, expandedContentRef, profilePictureDelta } =
+    useAuthor()
 
   return (
     <Wrapper {...restProps}>
