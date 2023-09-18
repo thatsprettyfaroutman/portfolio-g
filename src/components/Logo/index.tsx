@@ -15,7 +15,7 @@ const Wrapper = styled(MiniHeading)`
 `
 
 export default function Logo({
-  children = 'Viljami.dev / ghost',
+  children = 'viljami.dev',
   ...restProps
 }: TLogoProps) {
   return <Wrapper {...restProps}>{children}</Wrapper>

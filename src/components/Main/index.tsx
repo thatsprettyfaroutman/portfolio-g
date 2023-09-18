@@ -24,7 +24,9 @@ export default function Main(props: PropsWithChildren) {
   // Update viewport meta tag based on `scale`
   useEffect(() => {
     const viewportMeta = document.head.querySelector('meta[name="viewport"]')
-    if (!viewportMeta) return
+    if (!viewportMeta) {
+      return
+    }
     viewportMeta.setAttribute(
       'content',
       `width=device-width, initial-scale=${scale}, viewport-fit=cover`

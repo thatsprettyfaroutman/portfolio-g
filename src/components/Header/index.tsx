@@ -1,13 +1,23 @@
 'use client'
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { MEDIA } from '@/styles/media'
+import { noProp } from '@/styles/utils'
 
-export const Wrapper = styled.header`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+const Header = styled.header.withConfig(noProp(['absolute']))<{
+  absolute?: boolean
+}>`
+  position: relative;
+
+  ${(p) =>
+    p.absolute &&
+    css`
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+    `};
+
   z-index: 1;
   height: calc(var(--space) / 2);
   padding: calc(var(--space) / 2) var(--fluidSpace);
@@ -33,3 +43,5 @@ export const Wrapper = styled.header`
     }
   }
 `
+
+export default Header

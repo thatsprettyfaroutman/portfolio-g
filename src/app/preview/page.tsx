@@ -13,10 +13,10 @@ export default async function Home() {
     <Main>
       <Favicon />
       <Header absolute>
-        <Logo>Viljami.dev / Ghost</Logo>
+        <Logo>Viljami.dev</Logo>
         <SocialMediaLinks stealthMode />
       </Header>
-      <HeroGhost title="Hello Ghost" />
+      <HeroGhost />
       <IntroSection />
       <WorkSection />
       <Footer />
