@@ -1,7 +1,7 @@
 import { type PropsWithChildren } from 'react'
-// Uncomment to enable theme toggle 1/2
-// import ThemeToggle from '@/components/ThemeToggle/lazy'
 import { type THeaderStyledProps, Wrapper } from './styled'
+
+// To enable theme toggling look for commit: `feat: disable theme toggling for now`
 
 type THeaderProps = PropsWithChildren<THeaderStyledProps>
 
@@ -12,8 +12,6 @@ export default function Header({ children, ...restProps }: THeaderProps) {
         // TODO: fix type error
         @ts-ignore */}
       {children}
-      {/* Uncomment to enable theme toggle 2/2 */}
-      {/* <ThemeToggle /> */}
     </Wrapper>
   )
 }
