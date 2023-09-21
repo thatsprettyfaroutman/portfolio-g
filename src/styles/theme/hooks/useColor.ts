@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { path } from 'ramda'
-import { useTheme } from '@/styles/ThemeProvider/context'
+// Uncomment to add theme support 1/2
+// import { useTheme } from '@/styles/ThemeProvider/context'
 import { CSS_COLOR_PREFIX } from '../consts'
 import { darkPalette, lightPalette } from '../palettes'
 
@@ -17,7 +18,9 @@ const getColor = (colorCssKey: string, palette = darkPalette) => {
 }
 
 export const useColor = (colorCssKey: string) => {
-  const [theme] = useTheme()
+  // Uncomment to add theme support 1/2
+  // const [theme] = useTheme()
+  const theme = 'dark' as 'dark' | 'light'
 
   // Not using useMemo, so next doesn't complain build being different from render
   const [color, setColor] = useState(() => getColor(colorCssKey))
