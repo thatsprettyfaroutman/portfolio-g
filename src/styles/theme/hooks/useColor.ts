@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { path } from 'ramda'
-// Uncomment to add theme support 1/2
-// import { useTheme } from '@/styles/ThemeProvider/context'
 import { CSS_COLOR_PREFIX } from '../consts'
 import { darkPalette, lightPalette } from '../palettes'
+
+// To enable theme toggling look for commit: `feat: disable theme toggling for now`
 
 const getColor = (colorCssKey: string, palette = darkPalette) => {
   const keyPath = colorCssKey.replace(`${CSS_COLOR_PREFIX}-`, '').split('-')
@@ -18,8 +18,6 @@ const getColor = (colorCssKey: string, palette = darkPalette) => {
 }
 
 export const useColor = (colorCssKey: string) => {
-  // Uncomment to add theme support 1/2
-  // const [theme] = useTheme()
   const theme = 'dark' as 'dark' | 'light'
 
   // Not using useMemo, so next doesn't complain build being different from render

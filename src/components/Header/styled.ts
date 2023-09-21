@@ -4,6 +4,8 @@ import styled, { css } from 'styled-components'
 import { MEDIA } from '@/styles/media'
 import { noProp } from '@/styles/utils'
 
+// To enable theme toggling look for commit: `feat: disable theme toggling for now`
+
 export type THeaderStyledProps = {
   absolute?: boolean
 }
@@ -30,7 +32,6 @@ export const Wrapper = styled.header.withConfig(
   display: flex;
   justify-content: center;
   align-items: center;
-  /* flex-flow: row wrap; */
   gap: calc(var(--space) / 4);
 
   user-select: none;
