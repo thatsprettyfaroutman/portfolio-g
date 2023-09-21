@@ -2,7 +2,7 @@ import { type MutableRefObject, useEffect, useRef } from 'react'
 import { useTexture } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { Color, Texture, Vector2, RepeatWrapping } from 'three'
-import { usePalette, palette } from '@/styles/theme'
+import { useColor } from '@/styles/theme'
 import getShaderInjectors from '@/three/utils/injectShader'
 // @ts-ignore
 import fragmentMain from './shaders/main.frag'
@@ -42,8 +42,8 @@ export default function VideoCardPhysicalMaterial({
 
   //
   // Colors
-  const iconBackgroundColor = usePalette(palette.shade.background)
-  const iconForegroundColor = usePalette(palette.shade.text)
+  const iconBackgroundColor = useColor('shade-bg')
+  const iconForegroundColor = useColor('shade-text')
 
   //
   // Maps

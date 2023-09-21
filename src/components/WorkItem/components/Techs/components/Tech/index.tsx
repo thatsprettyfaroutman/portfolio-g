@@ -1,7 +1,7 @@
 import chroma from 'chroma-js'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { SmallParagraph } from '@/components/Text'
-import { palette } from '@/styles/theme'
+import { useColor } from '@/styles/theme'
 
 type TTechProps = { name: string; iconSrc?: string }
 
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   grid-gap: 0;
 
-  border: 1px solid ${palette.main.border.alpha(0.3)};
+  border: 1px solid var(--color-main-border-alpha-30);
 
   > p {
     padding: calc(var(--fluidSpace) / 4) 0;
@@ -36,17 +36,6 @@ const Icon = styled.div`
     height: auto;
     max-width: 16px;
     max-height: 16px;
-
-    ${(p) => {
-      // Adapt tech icon to text color when theme changes
-      const color = palette.main.text(p)
-      const isDark = chroma(color).get('lab.l') < 50
-      if (isDark) {
-        return css`
-          filter: invert(1);
-        `
-      }
-    }};
   }
 
   // Empty state icon
@@ -57,7 +46,7 @@ const Icon = styled.div`
       width: 10px;
       height: 10px;
       align-self: center;
-      border: 1px solid ${palette.main.text};
+      border: 1px solid var(--color-main-text);
       box-sizing: border-box;
       transform: rotate(45deg);
     }
@@ -65,12 +54,16 @@ const Icon = styled.div`
 `
 
 export default function Tech({ name, iconSrc }: TTechProps) {
+  const color = useColor('main-text')
+  const filter =
+    color && chroma(color).get('lab.l') < 50 ? 'invert()' : undefined
+
   return (
     <Wrapper>
       <Icon>
         {iconSrc && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={iconSrc} alt="" />
+          <img src={iconSrc} alt="" style={{ filter }} />
         )}
       </Icon>
       <SmallParagraph>{name}</SmallParagraph>

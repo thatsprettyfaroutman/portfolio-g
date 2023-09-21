@@ -17,7 +17,7 @@ import {
   NearestFilter,
   DoubleSide,
 } from 'three'
-import { usePalette, palette } from '@/styles/theme'
+import { useColor } from '@/styles/theme'
 import MouseOrbiter from '@/three/components/MouseOrbiter'
 import { useThreeContext } from '@/three/context'
 import { VideoCardBox } from './geometries/VideoCardBox'
@@ -57,7 +57,7 @@ export default function VideoCard({
   const [flipCount, setFlipCount] = useState(0)
   const { width, height } = useContainSize(widthProp, heightProp)
   const { inView, inViewSpring, mousePresent } = useThreeContext()
-  const ambientLightColor = usePalette(palette.main.background)
+  const ambientLightColor = useColor('main-bg')
   const mouseRef = useRef({
     hover: 0,
     position: new Vector2(0),

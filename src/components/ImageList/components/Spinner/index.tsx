@@ -1,6 +1,5 @@
 import styled, { keyframes } from 'styled-components'
 import { MEDIA } from '@/styles/media'
-import { palette } from '@/styles/theme'
 
 type TSpinnerProps = {}
 
@@ -37,7 +36,7 @@ const Wrapper = styled.div`
     animation-iteration-count: infinite;
 
     > path {
-      stroke: ${palette.shade.text};
+      stroke: var(--color-shade-text);
     }
   }
 `

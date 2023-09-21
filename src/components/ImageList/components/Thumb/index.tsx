@@ -5,7 +5,6 @@ import { a, useSpring } from 'react-spring'
 import styled from 'styled-components'
 import { type TRichAsset } from '@/contentful/types'
 import usePrefetchImage from '@/hooks/usePrefetchImage'
-import { palette } from '@/styles/theme'
 import Spinner from '../Spinner'
 
 const THUMB_HEIGHT = 80
@@ -27,7 +26,7 @@ const Wrapper = styled(Link)`
     margin: 0;
     border-radius: 4px;
     box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
-      ${palette.main.text.alpha(0.15)};
+      var(--color-main-text-alpha-15);
   }
 `
 

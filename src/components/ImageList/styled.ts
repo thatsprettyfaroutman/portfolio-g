@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { MediumParagraph } from '@/components/Text'
 import { MEDIA } from '@/styles/media'
-import { palette } from '@/styles/theme'
 
 export const Wrapper = styled.div``
 
@@ -20,7 +19,7 @@ export const Items = styled.div`
       margin: 0;
       border-radius: 4px;
       box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
-        ${palette.main.text.alpha(0.15)};
+        var(--color-main-text-alpha-15);
     }
 
     /* Spinner */
@@ -39,7 +38,7 @@ export const Shade = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: ${palette.shade.background};
+  background-color: var(--color-shade-bg);
   z-index: 1;
   user-select: none;
 `
@@ -101,7 +100,7 @@ export const ImageTitle = styled(MediumParagraph)`
   bottom: 0;
   left: 0;
   right: 0;
-  color: ${palette.shade.text};
+  color: var(--color-shade-text);
   z-index: 1;
   text-align: center;
   padding: var(--fluidSpace);
