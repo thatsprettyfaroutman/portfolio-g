@@ -35,19 +35,19 @@ export const Wrapper = styled.header.withConfig(
 
   user-select: none;
 
-  > :not(:first-child, :last-child) {
+  > :not(:first-child) {
     display: none;
   }
 
   > :first-child {
-    /* min-width: 100%; */
+    min-width: 100%;
     margin-right: auto;
   }
 
   ${MEDIA.tablet} {
     justify-content: space-between;
 
-    > :not(:first-child, :last-child) {
+    > :not(:first-child) {
       display: flex;
     }
 
