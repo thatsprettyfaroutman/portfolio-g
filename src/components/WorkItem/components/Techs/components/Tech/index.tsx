@@ -1,7 +1,6 @@
-import chroma from 'chroma-js'
 import styled from 'styled-components'
 import { SmallParagraph } from '@/components/Text'
-import { useColor } from '@/styles/theme'
+import { useColorBrightness } from '@/styles/theme'
 
 type TTechProps = { name: string; iconSrc?: string }
 
@@ -54,9 +53,7 @@ const Icon = styled.div`
 `
 
 export default function Tech({ name, iconSrc }: TTechProps) {
-  const color = useColor('main-text')
-  const filter =
-    color && chroma(color).get('lab.l') < 50 ? 'invert()' : undefined
+  const filter = useColorBrightness('main-text') < 0.5 ? 'invert()' : undefined
 
   return (
     <Wrapper>
