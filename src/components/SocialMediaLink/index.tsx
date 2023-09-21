@@ -1,10 +1,9 @@
 'use client'
 
-import chroma from 'chroma-js'
 import Image from 'next/image'
 import { a } from 'react-spring'
 import { TSocialMediaLink } from '@/contentful/types'
-import { useColor } from '@/styles/theme'
+import { useColorBrightness } from '@/styles/theme'
 import { type TSocialMediaLinkStyledProps, Wrapper, Name } from './styled'
 
 const ICON_HEIGHT = 12
@@ -21,8 +20,8 @@ export default function SocialMediaLink({
   ...restProps
 }: TSocialMediaLinkProps) {
   const iconAspectRatio = children.icon.width / children.icon.height
-  const color = useColor(variant === 'footer' ? 'footer-text' : 'main-text')
-  const invertIcon = color && chroma(color).get('lab.l') < 50
+  const colorName = variant === 'footer' ? 'footer-text' : 'main-text'
+  const filter = useColorBrightness(colorName) < 0.5 ? 'invert()' : undefined
 
   return (
     <AWrapper variant={variant} href={children.href} {...restProps}>
@@ -32,7 +31,7 @@ export default function SocialMediaLink({
         width={ICON_HEIGHT * iconAspectRatio}
         height={ICON_HEIGHT}
         alt=""
-        style={{ filter: invertIcon ? 'invert()' : undefined }}
+        style={{ filter }}
       />
     </AWrapper>
   )

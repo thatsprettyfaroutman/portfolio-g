@@ -131,7 +131,7 @@ export const ExpandedContentBackground = styled.div`
     background: linear-gradient(
       135deg,
       var(--color-panel-bg),
-      var(--color-panel-bgAlt)
+      var(--color-panel-bg-alt)
     );
     box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
       var(--color-main-text-alpha-15);
