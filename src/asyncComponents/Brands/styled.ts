@@ -3,7 +3,6 @@
 import styled from 'styled-components'
 import Marquee from '@/components/Marquee'
 import { MiniHeading } from '@/components/Text'
-import { palette } from '@/styles/theme'
 
 export const Wrapper = styled.div`
   display: grid;
@@ -17,7 +16,7 @@ export const Title = styled(MiniHeading)`
 export const BrandsMarquee = styled(Marquee)`
   position: relative;
   padding: var(--space) 0;
-  background-color: ${palette.main.background.darken(0.2)};
+  background-color: var(--color-main-bg-down-20);
   min-height: calc(var(--space) / 2);
 `
 

@@ -3,8 +3,8 @@
 import React, { useState } from 'react'
 import { useServerInsertedHTML } from 'next/navigation'
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components'
-import CustomThemeProvider from './CustomThemeProvider'
 import GlobalStyle from './GlobalStyle'
+import ThemeProvider from './ThemeProvider'
 
 export default function StyledComponentsRegistry({
   children,
@@ -27,19 +27,19 @@ export default function StyledComponentsRegistry({
 
   if (typeof window !== 'undefined') {
     return (
-      <CustomThemeProvider>
+      <ThemeProvider>
         <GlobalStyle />
-        <>{children}</>
-      </CustomThemeProvider>
+        {children}
+      </ThemeProvider>
     )
   }
 
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>
-      <CustomThemeProvider>
+      <ThemeProvider>
         <GlobalStyle />
-        <>{children}</>
-      </CustomThemeProvider>
+        {children}
+      </ThemeProvider>
     </StyleSheetManager>
   )
 }

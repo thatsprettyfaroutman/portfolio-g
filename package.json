@@ -62,7 +62,6 @@
     "react-spring": "9.7.2",
     "react-use-media-query-ts": "1.0.1",
     "styled-components": "5.3.10",
-    "styled-palette": "0.3.0",
     "three": "0.151.3",
     "three-stdlib": "2.23.10",
     "typescript": "5.1.3"

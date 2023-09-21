@@ -1,7 +1,6 @@
 import React from 'react'
 import { a, useSpring } from 'react-spring'
 import styled from 'styled-components'
-import { palette } from '@/styles/theme'
 
 // This component animates between a set of svg icons
 
@@ -24,7 +23,7 @@ const Wrapper = styled.svg`
   }
 
   > g > path {
-    stroke: ${palette.shade.text};
+    stroke: var(--color-shade-text);
   }
 `
 

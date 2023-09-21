@@ -1,36 +1,25 @@
 'use client'
 
-import chroma from 'chroma-js'
 import Link from 'next/link'
 import styled, { css } from 'styled-components'
 import FONT from '@/styles/fonts'
-import { type TPaletteColor } from '@/styles/theme'
 import { noProp } from '@/styles/utils'
 
 export type TSocialMediaLinkStyledProps = {
-  variant: {
-    background: TPaletteColor
-    text: TPaletteColor
-  }
+  variant?: 'footer'
   stealthMode: boolean
 }
 
 export const Wrapper = styled(Link).withConfig(
   noProp(['stealthMode', 'variant'])
-)<{
-  variant: {
-    background: TPaletteColor
-    text: TPaletteColor
-  }
-  stealthMode: boolean
-}>`
+)<TSocialMediaLinkStyledProps>`
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   padding: 0 calc(var(--space) / 4);
   gap: calc(var(--space) / 8);
-  color: ${(p) => p.variant.text};
+  color: var(--color-main-text);
   transform: translate3d(0, 0px, 0);
   text-decoration: none;
   transition: transform 200ms ease-in-out;
@@ -53,20 +42,14 @@ export const Wrapper = styled(Link).withConfig(
     ${(p) =>
       !p.stealthMode &&
       css`
-        border-color: ${p.variant.text};
         border-bottom-width: 1px;
+        border-color: var(--color-main-text);
       `};
   }
 
   > img {
     display: block;
     margin-top: -2px;
-
-    ${(p) =>
-      chroma(p.variant.text(p)).get('hsl.l') < 0.5 &&
-      css`
-        filter: invert();
-      `}
   }
 
   :hover {
@@ -74,10 +57,20 @@ export const Wrapper = styled(Link).withConfig(
 
     ::before {
       bottom: -4px;
-      border-color: ${(p) => p.variant.text};
       border-bottom-width: 4px;
+      border-color: var(--color-main-text);
     }
   }
+
+  ${(p) =>
+    p.variant === 'footer' &&
+    css`
+      color: var(--color-footer-text);
+
+      ::before {
+        border-color: var(--color-footer-text);
+      }
+    `};
 `
 
 export const Name = styled.span`

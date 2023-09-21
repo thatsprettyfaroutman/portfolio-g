@@ -2,7 +2,6 @@ import { type CSSProperties } from 'react'
 import { a } from 'react-spring'
 import styled from 'styled-components'
 import { type TRichAsset } from '@/contentful/types'
-import { palette } from '@/styles/theme'
 
 type TProfilePictureProps = {
   photo: TRichAsset
@@ -16,7 +15,7 @@ const Wrapper = styled(a.div)`
   transform-origin: 0 0;
   border-radius: 50%;
   box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
-    ${palette.main.text.alpha(0.15)};
+    var(--color-main-text-alpha-15);
   background-size: cover;
 `
 

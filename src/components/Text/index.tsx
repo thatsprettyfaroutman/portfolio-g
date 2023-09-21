@@ -5,7 +5,6 @@ import ReactMarkdown from 'react-markdown'
 import styled, { css } from 'styled-components'
 import FONT from '@/styles/fonts'
 import { MEDIA } from '@/styles/media'
-import { palette } from '@/styles/theme'
 
 export const noMargins = css`
   margin-top: 0;
@@ -46,7 +45,7 @@ export const MiniHeading = styled.h5`
   line-height: 18px;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: ${palette.main.border};
+  color: var(--color-main-border);
 `
 
 export const Paragraph = styled.p`
@@ -55,20 +54,20 @@ export const Paragraph = styled.p`
   font-weight: 400;
   font-size: 17px;
   line-height: 28px;
-  color: ${palette.main.text.alpha(0.8)};
+  color: var(--color-main-text-alpha-80);
   letter-spacing: 0.5px;
 
   > strong {
-    color: ${palette.main.text};
+    color: var(--color-main-text);
     font-weight: 500;
   }
 
   > a {
-    color: ${palette.accents[2]};
+    color: var(--color-accents-2);
     text-decoration: none;
 
     :visited {
-      color: ${palette.accents[0]};
+      color: var(--color-accents-0);
     }
   }
 `

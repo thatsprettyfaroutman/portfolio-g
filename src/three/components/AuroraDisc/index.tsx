@@ -13,7 +13,7 @@ import lerp from 'lerp'
 import clamp from 'ramda/src/clamp'
 import { Group, Mesh, RingGeometry } from 'three'
 import useCssVariable from '@/hooks/useCssVariable'
-import { usePalette, palette } from '@/styles/theme'
+import { useColor } from '@/styles/theme'
 import useFirstRender from '@/three/hooks/useFirstRender'
 import MeshAuroraMaterial, {
   TMeshAuroraMaterial,
@@ -65,8 +65,9 @@ export default function AuroraDisc({
   const materialRef = useRef<TMeshAuroraMaterial>(null)
   const radius = Math.min(size.width, size.height) * 0.5
   const scale = clamp(padding, padding * 4, radius - padding)
-  const color0 = usePalette(palette.accents[0])
-  const color1 = usePalette(palette.accents[1])
+  const color0 = useColor('accents-0')
+  const color1 = useColor('accents-1')
+
   const appearSpring = useSpringValue(0, {
     config: { tension: 20 },
   })

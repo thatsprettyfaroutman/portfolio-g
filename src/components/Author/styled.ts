@@ -6,7 +6,6 @@ import { Wrapper as MagnetWrapper } from '@/components/Magnet'
 import ProfilePicture from '@/components/ProfilePicture'
 import { Heading4, Markdown, SmallListItem, Paragraph } from '@/components/Text'
 import { MEDIA } from '@/styles/media'
-import { palette } from '@/styles/theme'
 
 export const Wrapper = styled.div`
   position: relative;
@@ -44,7 +43,7 @@ export const Shade = styled.div`
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: ${palette.shade.background};
+    background-color: var(--color-shade-bg);
   }
 
   ${MEDIA.tablet} {
@@ -97,7 +96,7 @@ export const ExpandedContent = styled.div`
   box-sizing: border-box;
   padding: calc(var(--space) / 2);
   padding-bottom: var(--space);
-  color: ${palette.panel.text};
+  color: var(--color-panel-text);
 
   cursor: pointer;
   user-select: none;
@@ -131,11 +130,11 @@ export const ExpandedContentBackground = styled.div`
   ${MEDIA.tablet} {
     background: linear-gradient(
       135deg,
-      ${palette.panel.background},
-      ${palette.panel.backgroundAlt}
+      var(--color-panel-bg),
+      var(--color-panel-bgAlt)
     );
     box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
-      ${palette.main.text.alpha(0.15)};
+      var(--color-main-text-alpha-15);
   }
 `
 
@@ -153,7 +152,7 @@ export const CustomMarkdown = styled(Markdown).attrs((props) => ({
   gap: calc(var(--space) / 2);
 
   strong {
-    color: ${palette.panel.text};
+    color: var(--color-panel-text);
   }
 
   ul {
@@ -170,7 +169,7 @@ export const CustomMarkdown = styled(Markdown).attrs((props) => ({
     li > em {
       font-style: normal;
       font-size: 12px;
-      color: ${palette.panel.text.alpha(0.7)};
+      color: var(--color-panel-text-alpha-70);
     }
   }
 `

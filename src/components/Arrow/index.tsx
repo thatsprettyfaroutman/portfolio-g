@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { a, useSpringValue, config } from 'react-spring'
 import styled, { keyframes } from 'styled-components'
-import { palette } from '@/styles/theme'
 
 type TArrowProps = {}
 
@@ -25,7 +24,7 @@ const Wrapper = styled.div`
     animation-timing-function: ease-in-out;
 
     > path {
-      fill: ${palette.main.text};
+      fill: var(--color-main-text);
     }
   }
 `
