@@ -3,6 +3,8 @@ import { createGlobalStyle } from 'styled-components'
 import { darkCss, lightCss } from '@/styles/theme'
 import { ThemeContextProvider, useTheme } from './context'
 
+export { useTheme } from './context'
+
 const SystemTheme = createGlobalStyle`
   :root {
     ${darkCss};
@@ -15,28 +17,25 @@ const SystemTheme = createGlobalStyle`
 const DarkTheme = createGlobalStyle`
   :root {
     ${darkCss};
-    @media (prefers-color-scheme: light) {
-      ${darkCss};
-    }
   }
 `
 
 const LightTheme = createGlobalStyle`
   :root {
     ${lightCss};
-    @media (prefers-color-scheme: light) {
-      ${lightCss};
-    }
   }
 `
 
 const ThemeHandler = ({ children }: PropsWithChildren) => {
-  const [theme] = useTheme()
+  const { state } = useTheme()
+
+  console.log('state', state)
+
   return (
     <>
-      <SystemTheme />
-      {theme === 'dark' ? <DarkTheme /> : null}
-      {theme === 'light' ? <LightTheme /> : null}
+      {state === 'system' ? <SystemTheme /> : null}
+      {state === 'light' ? <LightTheme /> : null}
+      {state === 'dark' ? <DarkTheme /> : null}
       {children}
     </>
   )

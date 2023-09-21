@@ -40,7 +40,7 @@ export const Heading4 = styled.h4`
 export const MiniHeading = styled.h5`
   ${noMargins};
   font-family: ${FONT.Montserrat};
-  font-weight: 400;
+  font-weight: 500;
   font-size: 10px;
   line-height: 18px;
   letter-spacing: 1px;
@@ -130,4 +130,12 @@ export const Markdown = styled(ReactMarkdown).attrs({
 })`
   display: grid;
   grid-gap: calc(var(--space) / 4);
+`
+
+export const SmallUi = styled.span`
+  font-family: ${FONT.Montserrat};
+  font-size: 12px;
+  line-height: calc(var(--space) / 1.5);
+  letter-spacing: 0.1em;
+  font-weight: 500;
 `

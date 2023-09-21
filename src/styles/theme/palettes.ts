@@ -3,7 +3,7 @@ export const darkPalette = {
     bg: '#080808',
     bgAlt: '#000',
     text: '#fff',
-    border: '#b7b7b7',
+    border: '#fff',
   },
   shade: {
     bg: '#000',
@@ -19,14 +19,16 @@ export const darkPalette = {
     text: '#fff',
   },
   accents: ['#f0f', '#0ff', '#40F'],
+  ambientLight: '#fff',
 }
 
 export const lightPalette = {
   main: {
-    bg: '#f8f8f8',
+    // bg: '#fffcf8',
+    bg: '#f0f0f0',
     bgAlt: '#fff',
     text: '#000',
-    border: '#b7b7b7',
+    border: '#000',
   },
   shade: {
     bg: '#000',
@@ -41,5 +43,6 @@ export const lightPalette = {
     bgAlt: '#00ffb2',
     text: '#fff',
   },
-  accents: ['#0f0', '#ff0', '#40F'],
+  accents: ['#080', '#880', '#40F'],
+  ambientLight: '#fff',
 }

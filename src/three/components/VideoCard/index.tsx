@@ -17,6 +17,7 @@ import {
   NearestFilter,
   DoubleSide,
 } from 'three'
+import { useTheme } from '@/styles/ThemeProvider'
 import { useColor } from '@/styles/theme'
 import MouseOrbiter from '@/three/components/MouseOrbiter'
 import { useThreeContext } from '@/three/context'
@@ -54,10 +55,11 @@ export default function VideoCard({
   backText,
   ...restProps
 }: TCardProps) {
+  const [theme] = useTheme()
   const [flipCount, setFlipCount] = useState(0)
   const { width, height } = useContainSize(widthProp, heightProp)
   const { inView, inViewSpring, mousePresent } = useThreeContext()
-  const ambientLightColor = useColor('main-bg')
+  const ambientLightColor = useColor('ambientLight')
   const mouseRef = useRef({
     hover: 0,
     position: new Vector2(0),
@@ -116,20 +118,22 @@ export default function VideoCard({
       />
 
       {/* Shadow mesh */}
-      <a.mesh
-        position-z={to([flipSpringWobbly, inViewSpring], (flipP, inViewP) => {
-          const flip = Math.sin(Math.abs(flipP % 1) * Math.PI) * -160
-          const view = lerp(-200, -490, 1 - inViewP)
-          return view + flip
-        })}
-        position-y={-20}
-        scale-x={flipSpring.to((p) =>
-          clamp(0.05, 1, 1 - Math.abs(Math.sin(p * Math.PI)))
-        )}
-      >
-        <planeGeometry args={[width * 1.25, height * 1.25]} />
-        <meshStandardMaterial map={shadowMap} transparent side={DoubleSide} />
-      </a.mesh>
+      {theme === 'light' ? (
+        <a.mesh
+          position-z={to([flipSpringWobbly, inViewSpring], (flipP, inViewP) => {
+            const flip = Math.sin(Math.abs(flipP % 1) * Math.PI) * -160
+            const view = lerp(-200, -490, 1 - inViewP)
+            return view + flip
+          })}
+          position-y={-20}
+          scale-x={flipSpring.to((p) =>
+            clamp(0.05, 1, 1 - Math.abs(Math.sin(p * Math.PI)))
+          )}
+        >
+          <planeGeometry args={[width * 1.25, height * 1.25]} />
+          <meshStandardMaterial map={shadowMap} transparent side={DoubleSide} />
+        </a.mesh>
+      ) : null}
 
       {/* Card */}
       <MouseOrbiter

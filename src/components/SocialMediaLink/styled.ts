@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import styled, { css } from 'styled-components'
-import FONT from '@/styles/fonts'
 import { noProp } from '@/styles/utils'
+import { SmallUi } from '../Text'
 
 export type TSocialMediaLinkStyledProps = {
   variant?: 'footer'
@@ -22,6 +22,7 @@ export const Wrapper = styled(Link).withConfig(
   color: var(--color-main-text);
   transform: translate3d(0, 0px, 0);
   text-decoration: none;
+  will-change: transform;
   transition: transform 200ms ease-in-out;
   user-select: none;
 
@@ -32,9 +33,10 @@ export const Wrapper = styled(Link).withConfig(
     right: 0;
     bottom: 0;
     left: 0;
-    border-radius: calc(var(--space) / 4);
-    border: 1px solid transparent;
+    border-radius: calc(var(--space) / 2.8);
+    border: 2px solid transparent;
     border-bottom-width: 4px;
+    will-change: border-color, border-bottom-width, bottom;
     transition-property: border-color, border-bottom-width, bottom;
     transition-duration: 200ms;
     transition-timing-function: ease-in-out;
@@ -42,7 +44,7 @@ export const Wrapper = styled(Link).withConfig(
     ${(p) =>
       !p.stealthMode &&
       css`
-        border-bottom-width: 1px;
+        border-bottom-width: 2px;
         border-color: var(--color-main-text);
       `};
   }
@@ -73,11 +75,4 @@ export const Wrapper = styled(Link).withConfig(
     `};
 `
 
-export const Name = styled.span`
-  position: relative;
-  font-family: ${FONT.Montserrat};
-  font-size: 12px;
-  line-height: calc(var(--space) / 2);
-  letter-spacing: 0.1em;
-  color: inherit;
-`
+export const Name = SmallUi

@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   grid-gap: 0;
 
-  border: 1px solid var(--color-main-border-alpha-30);
+  border: 2px solid var(--color-main-border);
 
   > p {
     padding: calc(var(--fluidSpace) / 4) 0;

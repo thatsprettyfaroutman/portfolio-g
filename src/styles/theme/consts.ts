@@ -8,4 +8,4 @@ export const alphas = [15, 30, 50, 70, 80]
 export const ups = [200]
 
 // Darkens generated for each color in percentage[]
-export const downs = [20]
+export const downs = []

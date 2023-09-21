@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import constate from 'constate'
+import useMediaQuery from 'react-use-media-query-ts'
 
 const THEME_KEYS = ['system', 'light', 'dark'] as const
 
@@ -11,7 +12,7 @@ const isTheme = (theme?: unknown): theme is TTheme =>
   THEME_KEYS.includes(theme)
 
 const useThemeProviderContext = () => {
-  const [theme, setTheme] = useState<TTheme>('system')
+  const [theme, setTheme] = useState<TTheme>('dark')
   useEffect(() => {
     const theme = localStorage.getItem('theme')
     setTheme(isTheme(theme) ? theme : 'system')
@@ -25,11 +26,20 @@ const useThemeProviderContext = () => {
     setTheme(theme)
   }, [])
 
-  const res = [theme, changeTheme] as [typeof theme, typeof changeTheme] & {
-    theme: typeof theme
+  const prefersLight = useMediaQuery('(prefers-color-scheme: light)')
+  const computedTheme =
+    theme === 'light' || (theme === 'system' && prefersLight) ? 'light' : 'dark'
+
+  const res = [computedTheme, changeTheme] as [
+    typeof computedTheme,
+    typeof changeTheme
+  ] & {
+    state: typeof theme
+    computedTheme: typeof computedTheme
     changeTheme: typeof changeTheme
   }
-  res.theme = theme
+  res.state = theme
+  res.computedTheme = computedTheme
   res.changeTheme = changeTheme
   return res
 }
