@@ -16,7 +16,7 @@ export const Title = styled(MiniHeading)`
 export const BrandsMarquee = styled(Marquee)`
   position: relative;
   padding: var(--space) 0;
-  background-color: var(--color-main-bg-down-20);
+  background-color: var(--color-main-bg-alt);
   min-height: calc(var(--space) / 2);
 `
 
