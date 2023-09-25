@@ -4,7 +4,8 @@ const THEME_KEYS = ['system', 'light', 'dark'] as const
 
 type TTheme = (typeof THEME_KEYS)[number]
 
-const NOOP = () => {}
+// @ts-ignore
+const NOOP = (themeName: THEME_KEYS) => {}
 
 export const useTheme = () => {
   const theme = 'dark' as TTheme
