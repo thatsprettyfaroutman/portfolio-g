@@ -5,6 +5,9 @@ export const darkPalette = {
     text: '#fff',
     border: '#fff',
   },
+  hero: {
+    bg: '#130627',
+  },
   shade: {
     bg: '#000',
     text: '#fff',
@@ -24,11 +27,13 @@ export const darkPalette = {
 
 export const lightPalette = {
   main: {
-    // bg: '#fffcf8',
     bg: '#f0f0f0',
     bgAlt: '#fff',
     text: '#000',
     border: '#000',
+  },
+  hero: {
+    bg: '#130627',
   },
   shade: {
     bg: '#000',

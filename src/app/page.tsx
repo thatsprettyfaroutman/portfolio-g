@@ -3,17 +3,18 @@ import IntroSection from '@/asyncComponents/IntroSection'
 import SocialMediaLinks from '@/asyncComponents/SocialMediaLinks'
 import WorkSection from '@/asyncComponents/WorkSection'
 import Header from '@/components/Header'
+import Hero from '@/components/Hero/lazy'
 import Logo from '@/components/Logo'
 import Main from '@/components/Main'
-import Favicon from '@/three/components/Favicon/lazy'
 
 export default async function Home() {
   return (
     <Main>
-      <Header>
-        <Logo>Viljami.dev</Logo>
+      <Header absolute>
+        <Logo />
         <SocialMediaLinks stealthMode />
       </Header>
+      <Hero />
       <IntroSection />
       <WorkSection />
       <Footer />
