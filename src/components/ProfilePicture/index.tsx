@@ -14,8 +14,6 @@ const Wrapper = styled(a.div)`
   width: 100%;
   transform-origin: 0 0;
   border-radius: 50%;
-  box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
-    var(--color-main-text-alpha-15);
   background-size: cover;
 `
 

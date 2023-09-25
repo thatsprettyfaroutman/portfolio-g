@@ -12,24 +12,6 @@ export const Items = styled.div`
   > a {
     position: relative;
     display: block;
-
-    > img {
-      position: relative;
-      display: block;
-      margin: 0;
-      border-radius: 4px;
-      box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
-        var(--color-main-text-alpha-15);
-    }
-
-    /* Spinner */
-    > svg {
-      position: absolute;
-      bottom: calc(var(--space) / 16);
-      right: calc(var(--space) / 16);
-      width: calc(var(--space) / 4);
-      height: calc(var(--space) / 4);
-    }
   }
 `
 export const Shade = styled.div`
