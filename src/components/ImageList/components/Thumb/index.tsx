@@ -25,8 +25,6 @@ const Wrapper = styled(Link)`
     display: block;
     margin: 0;
     border-radius: 4px;
-    box-shadow: 0 calc(var(--space) / 8) calc(var(--space) / 8)
-      var(--color-main-text-alpha-15);
   }
 `
 

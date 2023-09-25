@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   grid-gap: 0;
 
+  background-color: var(--color-main-bg-alt);
   border: 2px solid var(--color-main-border);
 
   > p {
