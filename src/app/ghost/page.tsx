@@ -12,7 +12,7 @@ export default async function Home() {
   return (
     <Main>
       <Header absolute>
-        <Logo>Viljami.dev / Ghost</Logo>
+        <Logo>/ Ghost</Logo>
         <SocialMediaLinks stealthMode />
       </Header>
       <HeroGhost title="Hello Ghost" />

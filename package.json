@@ -46,6 +46,8 @@
     "@react-three/drei": "9.78.2",
     "@react-three/fiber": "8.13.5",
     "@react-three/postprocessing": "2.7.1",
+    "@splinetool/react-spline": "2.2.6",
+    "@splinetool/runtime": "0.9.455",
     "@use-gesture/react": "10.2.27",
     "canvas": "2.11.2",
     "canvas-txt": "4.0.4",

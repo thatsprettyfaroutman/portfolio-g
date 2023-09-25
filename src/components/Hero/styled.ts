@@ -7,12 +7,13 @@ import ThrottledFullHeight from '@/components/ThrottledFullHeight'
 export const Wrapper = styled(ThrottledFullHeight)`
   position: relative;
   display: grid;
-  height: 100vh;
   min-height: 600px;
   place-items: center;
   user-select: none;
+  background: linear-gradient(var(--color-hero-bg), var(--color-main-bg));
+  overflow: hidden;
 
-  > .three {
+  > .spline {
     position: absolute;
     top: 0;
     right: 0;
