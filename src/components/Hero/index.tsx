@@ -91,10 +91,11 @@ export default function Hero() {
     }
 
     const handleMouseMove = (e: MouseEvent) => {
-      const { x, y } = e
+      const x = e.x + window.scrollX
+      const y = e.y + window.scrollY
 
-      mouse.current.position.x = x + window.scrollX
-      mouse.current.position.y = y + window.scrollY
+      mouse.current.position.x = x
+      mouse.current.position.y = y
       mouse.current.percentual.x = (x / window.innerWidth) * 2 - 1
       mouse.current.percentual.y = (y / window.innerHeight) * 2 - 1
 
