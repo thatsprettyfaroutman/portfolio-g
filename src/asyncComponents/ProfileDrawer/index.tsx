@@ -1,4 +1,3 @@
-import SocialMediaLinks from '@/asyncComponents/SocialMediaLinks'
 import useIntroSection from '@/contentful/hooks/useIntroSection'
 import Drawer from './components/Drawer/lazy'
 import { Wrapper } from './styled'
