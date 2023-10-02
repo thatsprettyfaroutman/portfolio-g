@@ -5,6 +5,7 @@ import { useColorBrightness } from '@/styles/theme'
 type TTechProps = { name: string; iconSrc?: string }
 
 const Wrapper = styled.div`
+  position: relative;
   display: flex;
   width: 100%;
   place-items: center;
@@ -12,12 +13,15 @@ const Wrapper = styled.div`
   overflow: hidden;
   box-sizing: border-box;
   grid-gap: 0;
-
-  background-color: var(--color-main-bg-alt);
-  border: 2px solid var(--color-main-border);
+  background-color: var(--color-hero-bg-up-10);
+  padding-right: calc(var(--space) / 4);
 
   > p {
+    display: block;
+    width: 100%;
     padding: calc(var(--fluidSpace) / 4) 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 `
 
@@ -57,7 +61,7 @@ export default function Tech({ name, iconSrc }: TTechProps) {
   const filter = useColorBrightness('main-text') < 0.5 ? 'invert()' : undefined
 
   return (
-    <Wrapper>
+    <Wrapper title={name}>
       <Icon>
         {iconSrc && (
           // eslint-disable-next-line @next/next/no-img-element

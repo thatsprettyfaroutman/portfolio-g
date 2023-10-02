@@ -1,9 +1,8 @@
 import styled from 'styled-components'
-import { MEDIA } from '@/styles/media'
-import BorderedGrid from '@/components/BorderedGrid'
-import Tech from './components/Tech'
-import { TTech } from '@/contentful/types'
 import { MiniHeading } from '@/components/Text'
+import { TTech } from '@/contentful/types'
+import { MEDIA } from '@/styles/media'
+import Tech from './components/Tech'
 
 type TTechsProps = { children: TTech[] }
 
@@ -12,17 +11,18 @@ const Wrapper = styled.div`
   grid-gap: calc(var(--space) / 4);
 `
 
-const Items = styled(BorderedGrid)`
+const Items = styled.div`
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
+  grid-gap: calc(var(--space) / 8);
 
   ${MEDIA.tablet} {
     grid-template-columns: repeat(4, 1fr);
   }
 
   ${MEDIA.desktop} {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 `
 

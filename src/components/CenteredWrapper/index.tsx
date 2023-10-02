@@ -1,6 +1,8 @@
+'use client'
+
 import styled from 'styled-components'
 
-const Section = styled.section`
+const CenteredWrapper = styled.div`
   display: grid;
   grid-row-gap: calc(var(--space) / 2);
   width: 100%;
@@ -12,4 +14,4 @@ const Section = styled.section`
   box-sizing: border-box;
 `
 
-export default Section
+export default CenteredWrapper

@@ -2,7 +2,8 @@
 
 import { type FC } from 'react'
 import styled from 'styled-components'
-import Section from '@/components/Section'
+import Arrow from '@/components/Arrow'
+import CenteredWrapper from '@/components/CenteredWrapper'
 import SmoothLink from '@/components/SmoothLink'
 import { MediumParagraph, Heading3, Markdown } from '@/components/Text'
 import { MEDIA } from '@/styles/media'
@@ -10,33 +11,48 @@ import { MEDIA } from '@/styles/media'
 export const Wrapper = styled.section`
   display: grid;
   grid-gap: calc(var(--space) * 1.5);
+  background: linear-gradient(
+    var(--color-hero-bg),
+    var(--color-hero-bg-alpha-0)
+  );
+  margin-bottom: calc(var(--space) * -1);
 `
 
-export const IntroContent = styled(Section).attrs({ as: 'div' })`
-  max-width: 800px;
+export const IntroContent = styled(CenteredWrapper)`
+  position: relative;
+  max-width: none;
+  align-items: center;
+  justify-content: center;
+
+  ${MEDIA.tabletLandscape} {
+    grid-gap: calc(var(--space) / 2);
+    grid-template-columns: 1fr 1fr;
+    justify-content: initial;
+  }
+`
+
+export const IntroInfo = styled.div`
+  display: grid;
   grid-gap: calc(var(--space) / 2);
+  max-width: 600px;
 `
 
-export const IntroFooter = styled.div`
+export const PhoneIntroFooter = styled.div`
   display: grid;
   grid-gap: var(--space);
   justify-items: center;
   min-height: var(--space);
   margin-top: calc(var(--space) / 4);
 
-  > :last-child {
-    grid-row: 1;
-    justify-self: end;
-  }
-
   ${MEDIA.tablet} {
-    grid-template-columns: auto auto;
-    justify-items: start;
-
-    > :last-child {
-      grid-row: initial;
-    }
+    display: none;
   }
+`
+
+export const AbsoluteArrow = styled(Arrow)`
+  position: absolute;
+  bottom: var(--space);
+  left: 50%;
 `
 
 export const CustomMarkdown = styled(Markdown).attrs((props) => ({
@@ -56,7 +72,10 @@ export const CustomMarkdown = styled(Markdown).attrs((props) => ({
   }
 
   > ${Heading3} {
-    text-align: center;
     margin-bottom: calc(var(--space) / 2);
+    text-align: center;
+    ${MEDIA.tabletLandscape} {
+      text-align: initial;
+    }
   }
 `

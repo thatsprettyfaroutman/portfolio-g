@@ -94,7 +94,7 @@ export const ExpandedContent = styled.div`
   gap: calc(var(--space) / 2);
   width: calc(100vw - var(--fluidSpace) * 2);
   box-sizing: border-box;
-  padding: calc(var(--space) / 2);
+  padding: calc(var(--space) / 4);
   padding-bottom: var(--space);
   color: var(--color-panel-text);
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { a, useSpringValue, config } from 'react-spring'
 import styled, { keyframes } from 'styled-components'
 
-type TArrowProps = {}
+type TArrowProps = { delay?: number }
 
 const Wrapper = styled.div`
   transform: translateX(-50%);
@@ -31,13 +31,16 @@ const Wrapper = styled.div`
 
 const AWrapper = a(Wrapper)
 
-function Arrow(props: TArrowProps) {
+function Arrow({ delay = 4000, ...restProps }: TArrowProps) {
   const [didScroll, setDidScroll] = useState(false)
   const opacity = useSpringValue(0)
 
   useEffect(() => {
-    opacity.start(1, { delay: 4000, config: config.molasses })
-  }, [opacity])
+    opacity.start(1, { delay, config: config.molasses })
+
+    // Run only on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (didScroll) {
@@ -48,11 +51,14 @@ function Arrow(props: TArrowProps) {
       opacity.start(0, { config: config.default })
     }
     window.addEventListener('scroll', scroll)
-    return () => window.removeEventListener('scroll', scroll)
+
+    return () => {
+      window.removeEventListener('scroll', scroll)
+    }
   }, [didScroll, opacity])
 
   return (
-    <AWrapper {...props} style={{ opacity }}>
+    <AWrapper {...restProps} style={{ opacity }}>
       <svg
         width="8"
         height="41"

@@ -1,21 +1,14 @@
 'use client'
 
 import styled from 'styled-components'
-import Section from '@/components/Section'
+import CenteredWrapper from '@/components/CenteredWrapper'
 
-export const Wrapper = styled(Section)`
+export const Wrapper = styled.section`
+  display: grid;
   padding-top: var(--space);
-  grid-gap: calc(var(--space) * 4);
+  grid-gap: calc(var(--space) * 2);
 `
 
-export const Head = styled.div`
-  display: grid;
-  grid-gap: calc(var(--space) / 8);
-  grid-column: 1 / -1;
-  place-items: center;
-`
-
-export const WorkItems = styled.div`
-  display: grid;
+export const WorkItems = styled(CenteredWrapper)`
   grid-gap: calc(var(--space) * 2);
 `

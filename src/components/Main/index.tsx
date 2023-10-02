@@ -7,12 +7,19 @@ import useWindowSize from '@/hooks/useWindowSize'
 import { MEDIA } from '@/styles/media'
 
 const Wrapper = styled.main`
-  display: grid;
-  grid-gap: var(--space);
+  > :not(:last-child) {
+    margin-bottom: var(--space);
+  }
+
+  ${MEDIA.tablet} {
+    > :not(:last-child) {
+      margin-bottom: initial;
+    }
+  }
 `
 
 export default function Main(props: PropsWithChildren) {
-  const tablet = useMediaQuery(MEDIA.tablet)
+  const tablet = useMediaQuery(MEDIA.tablet.replace('@media ', ''))
   const { width, height } = useWindowSize()
   const aspectRatio = width / height
   const landscape = aspectRatio > 1

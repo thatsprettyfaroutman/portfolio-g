@@ -1,17 +1,27 @@
 'use client'
 
 import styled from 'styled-components'
-import Arrow from '@/components/Arrow'
-import ThrottledFullHeight from '@/components/ThrottledFullHeight'
+import { MEDIA } from '@/styles/media'
 
-export const Wrapper = styled(ThrottledFullHeight)`
+export const Wrapper = styled.div`
   position: relative;
   display: grid;
-  min-height: 600px;
+  height: 400px;
   place-items: center;
   user-select: none;
-  background: linear-gradient(var(--color-hero-bg), var(--color-main-bg));
   overflow: hidden;
+  top: var(--space);
+
+  ${MEDIA.tablet} {
+    height: 600px;
+  }
+
+  ${MEDIA.tabletLandscape} {
+    height: 100vh;
+    max-height: 1024px;
+    top: 0;
+    grid-gap: var(--space);
+  }
 
   > .spline {
     position: absolute;
@@ -19,11 +29,5 @@ export const Wrapper = styled(ThrottledFullHeight)`
     right: 0;
     bottom: 0;
     left: 0;
-  }
-
-  > ${Arrow} {
-    position: absolute;
-    left: 50%;
-    bottom: var(--space);
   }
 `

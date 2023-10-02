@@ -17,8 +17,8 @@ export default function Brand({ children, ...restProps }: TBrandProps) {
     <Wrapper {...restProps}>
       <Image
         src={children.url}
-        width={children.width / 6}
-        height={children.height / 6}
+        width={children.width / 5}
+        height={children.height / 5}
         alt={children.title}
         style={{ filter }}
       />

@@ -45,7 +45,7 @@ export const MiniHeading = styled.h5`
   line-height: 18px;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: var(--color-main-text-alpha-15);
+  color: var(--color-main-text-alpha-50);
 `
 
 export const Paragraph = styled.p`

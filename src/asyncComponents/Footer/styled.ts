@@ -13,6 +13,7 @@ export const Wrapper = styled.footer`
   padding: calc(var(--space) * 1.5) var(--fluidSpace);
   gap: calc(var(--space) / 2);
   max-width: none;
+  margin-top: calc(var(--space) * 2);
 
   > ${MiniHeading} {
     color: var(--color-footer-text-alpha-50);
