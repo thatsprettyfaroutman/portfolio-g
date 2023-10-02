@@ -165,11 +165,9 @@ export default function VideoCard({
         <a.group
           // This group flips the card on click
           rotation-y={flipSpring.to((p) => lerp(0, Math.PI, p % 2))}
-          position-z={to([flipSpringWobbly, inViewSpring], (flipP, inViewP) => {
-            const flip = Math.sin(Math.abs(flipP % 1) * Math.PI) * 160
-            const view = (1 - inViewP) * -300
-            return flip + view
-          })}
+          position-z={flipSpringWobbly.to(
+            (p) => Math.sin(Math.abs(p % 1) * Math.PI) * -160
+          )}
           scale={[width, height, depth]}
         >
           <VideoCardBox>
