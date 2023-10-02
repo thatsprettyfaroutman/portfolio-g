@@ -8,7 +8,6 @@ import { useInView } from 'react-intersection-observer'
 import { mergeRefs } from 'react-merge-refs'
 import { useSpringValue } from 'react-spring'
 import useMeasure from 'react-use-measure'
-import useWindowSize from '@/hooks/useWindowSize'
 import Spinner from './components/Spinner'
 import { Wrapper } from './styled'
 
