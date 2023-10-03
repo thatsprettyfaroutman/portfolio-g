@@ -1,6 +1,8 @@
+import { a, useSpring, useSpringValue } from 'react-spring'
 import styled from 'styled-components'
 import { MiniHeading } from '@/components/Text'
 import { TTech } from '@/contentful/types'
+import useElementOffset from '@/hooks/useElementOffset'
 import { MEDIA } from '@/styles/media'
 import Tech from './components/Tech'
 
@@ -26,15 +28,56 @@ const Items = styled.div`
   }
 `
 
+const AItems = a(Items)
+
 function Techs({ children, ...restProps }: TTechsProps) {
+  const { ref: itemsRef, offset } = useElementOffset()
+
+  const [spring, springApi] = useSpring(() => ({
+    x: 0,
+    y: 0,
+  }))
+
+  const hovering = useSpringValue(0)
+
+  const handleMouse = (e: MouseEvent) => {
+    const x = e.clientX - offset.x + window.scrollX
+    const y = e.clientY - offset.y + window.scrollY
+
+    const entered = e.type === 'mouseenter'
+    const left = e.type === 'mouseleave'
+
+    springApi.start({
+      x,
+      y,
+      immediate: entered,
+    })
+
+    if (entered) {
+      hovering.start(1)
+    } else if (left) {
+      hovering.start(0)
+    }
+  }
+
   return (
     <Wrapper {...restProps}>
       <MiniHeading>Tech</MiniHeading>
-      <Items>
+      <AItems
+        ref={itemsRef}
+        onMouseEnter={handleMouse}
+        onMouseMove={handleMouse}
+        onMouseLeave={handleMouse}
+        style={{
+          '--bg-hover': hovering,
+          '--bg-mouse-x': spring.x.to((x) => `${x}px`),
+          '--bg-mouse-y': spring.y.to((y) => `${y}px`),
+        }}
+      >
         {children.map((tech) => (
           <Tech key={tech.sys.id} name={tech.name} iconSrc={tech.icon.url} />
         ))}
-      </Items>
+      </AItems>
     </Wrapper>
   )
 }
