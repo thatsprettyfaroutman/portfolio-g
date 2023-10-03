@@ -6,7 +6,7 @@ import FONT from '@/styles/fonts'
 import { MEDIA } from '@/styles/media'
 import Three from '@/three/lazy'
 
-const VideoCard = dynamic(() => import('@/three/components/VideoCard'), {
+const VideoPoster = dynamic(() => import('@/three/components/VideoPoster'), {
   ssr: false,
 })
 
@@ -14,7 +14,6 @@ const CARD_PIXEL_RATIO = 2
 
 type TCardProps = {
   src: string
-  backText: string
   width?: number
   height?: number
 }
@@ -58,13 +57,7 @@ const ThreeWrapper = styled.div`
   }
 `
 
-function Card({
-  width = 400,
-  height = 600,
-  backText,
-  src,
-  ...restProps
-}: TCardProps) {
+function Card({ width = 400, height = 600, src, ...restProps }: TCardProps) {
   const [measureRef, bounds] = useMeasure()
   const aspect = width / height
   const computedWidth = Math.min(width, bounds.width)
@@ -72,7 +65,7 @@ function Card({
 
   return (
     <Wrapper ref={measureRef} {...restProps}>
-      <MiniHeading>Flip Card</MiniHeading>
+      <MiniHeading>Poster</MiniHeading>
       <ThreeWrapper
         style={{
           height: computedHeight,
@@ -80,11 +73,10 @@ function Card({
         }}
       >
         <Three dpr={CARD_PIXEL_RATIO} inViewThreshold={0.5}>
-          <VideoCard
+          <VideoPoster
             src={src}
             width={computedWidth}
             height={computedHeight}
-            backText={backText}
           />
         </Three>
       </ThreeWrapper>

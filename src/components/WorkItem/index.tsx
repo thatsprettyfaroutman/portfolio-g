@@ -78,14 +78,7 @@ export default function WorkItem({ item, ...restProps }: TWorkItemProps) {
       </Title>
       <Client>{item.client}</Client>
       <Body>{item.body}</Body>
-      <Card
-        src={item.cardVideo.url}
-        backText={
-          (isEmpty(item.cardBackText) ? null : item.cardBackText) ??
-          item.impacts[0]?.body ??
-          item.title
-        }
-      />
+      <Card src={item.cardVideo.url} />
       <Impacts>{item.impacts}</Impacts>
       <Techs>{item.techs}</Techs>
     </Wrapper>
