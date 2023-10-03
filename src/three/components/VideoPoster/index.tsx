@@ -3,7 +3,12 @@ import { a, useSpring } from '@react-spring/three'
 import { useVideoTexture, useTexture } from '@react-three/drei'
 import { GroupProps, useFrame } from '@react-three/fiber'
 import lerp from 'lerp'
-import { type DirectionalLight, NearestFilter, RepeatWrapping } from 'three'
+import {
+  type DirectionalLight,
+  type Group,
+  NearestFilter,
+  RepeatWrapping,
+} from 'three'
 import { useColor } from '@/styles/theme'
 import { useThreeContext } from '@/three/context'
 import VideoPosterMaterial from './materials/VideoPosterMaterial'
@@ -32,6 +37,7 @@ export default function VideoPoster({
   const aspect = width / height
   const { inView, mousePresent } = useThreeContext()
 
+  const ref = useRef<Group>(null)
   const lightRef = useRef<DirectionalLight>(null)
   const ambientLightColor = useColor('ambientLight')
 
@@ -54,6 +60,7 @@ export default function VideoPoster({
     }
   }, [inView, videoTexture])
 
+  // Handle light position
   useFrame((s) => {
     if (!lightRef.current) {
       return
@@ -69,6 +76,21 @@ export default function VideoPoster({
     )
     position.z = 400
   })
+
+  // Handle poster rotation
+  useFrame((s) => {
+    if (!ref.current) {
+      return
+    }
+
+    const { rotation } = ref.current
+
+    const speed = mousePresent ? 0.1 : 0.05
+
+    rotation.x = lerp(rotation.x, mousePresent ? -s.mouse.y * 0.1 : 0, speed)
+    rotation.y = lerp(rotation.y, mousePresent ? s.mouse.x * 0.1 : 0, speed)
+  })
+
   const { opacity } = useSpring({
     config: {
       precision: 0.0001,
@@ -92,7 +114,7 @@ export default function VideoPoster({
         </mesh> */}
       </directionalLight>
 
-      <a.group scale={opacity.to((o) => lerp(0.9, 1.0, o))}>
+      <a.group ref={ref} scale={opacity.to((o) => lerp(0.9, 1.0, o))}>
         <mesh scale={[width, width, 100]}>
           <planeGeometry args={[1, 1 / aspect, width * 0.1, height * 0.2]} />
 
