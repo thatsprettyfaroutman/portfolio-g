@@ -5,7 +5,6 @@ import { useSpring } from '@react-spring/three'
 import { extend } from '@react-three/fiber'
 import { useInView } from 'react-intersection-observer'
 import { mergeRefs } from 'react-merge-refs'
-import styled from 'styled-components'
 import { Group } from 'three'
 import useWindowSize from '@/hooks/useWindowSize'
 import CustomCanvas from '@/three/components/CustomCanvas'
@@ -13,6 +12,7 @@ import {
   ThreeContextProvider,
   type TPassToThreeContextProps,
 } from '@/three/context'
+import { Loading, Wrapper } from './styled'
 
 extend({ Group })
 
@@ -22,13 +22,6 @@ type TThreeProps = TPassToThreeContextProps & {
   className?: string
   inViewThreshold?: number
 }
-
-const Wrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  user-select: none;
-  touch-action: pan-y;
-`
 
 /**
  * This is a wrapper component for the @react-three/fiber canvas.
@@ -68,6 +61,7 @@ export default function Three({
       ref={mergeRefs([renderRef, inViewRef])}
       {...restProps}
     >
+      <Loading $timeOffset={performance.now()} $playing={false} />
       <ThreeContextProvider {...contextProps}>
         <CustomCanvas>{children}</CustomCanvas>
       </ThreeContextProvider>

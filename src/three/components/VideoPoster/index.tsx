@@ -1,15 +1,13 @@
 import { useEffect, useRef } from 'react'
+import { a, useSpring } from '@react-spring/three'
 import { useVideoTexture, useTexture } from '@react-three/drei'
-import { GroupProps } from '@react-three/fiber'
-import { type Mesh, DoubleSide, NearestFilter, RepeatWrapping } from 'three'
+import { GroupProps, useFrame } from '@react-three/fiber'
+import lerp from 'lerp'
+import { type DirectionalLight, NearestFilter, RepeatWrapping } from 'three'
 import { useColor } from '@/styles/theme'
 import { useThreeContext } from '@/three/context'
 import VideoPosterMaterial from './materials/VideoPosterMaterial'
 import paperNormal from './textures/paper-normal.jpg'
-
-// TODO: add poster shader effect
-
-// import getShaderInjectors from '@/three/utils/injectShader'
 
 type TVideoPosterProps = GroupProps & {
   width?: number
@@ -20,8 +18,10 @@ type TVideoPosterProps = GroupProps & {
 // Preload textures
 useTexture.preload(paperNormal.src)
 
+const AVideoPosterMaterial = a(VideoPosterMaterial)
+
 /**
- * WIP - This component renders a 3d video poster using @react-three/fiber.
+ * This component renders a 3d video poster that gets wrinkled when hovering with mouse.
  */
 export default function VideoPoster({
   width = 400,
@@ -29,9 +29,10 @@ export default function VideoPoster({
   src,
   ...restProps
 }: TVideoPosterProps) {
-  const { inView } = useThreeContext()
+  const aspect = width / height
+  const { inView, mousePresent } = useThreeContext()
 
-  const ref = useRef<Mesh>(null)
+  const lightRef = useRef<DirectionalLight>(null)
   const ambientLightColor = useColor('ambientLight')
 
   const videoTexture = useVideoTexture(src, { start: false })
@@ -42,7 +43,7 @@ export default function VideoPoster({
   paperTexture.wrapS = RepeatWrapping
   paperTexture.wrapT = RepeatWrapping
   paperTexture.repeat.x = 4.0
-  paperTexture.repeat.y = 4.0 // / aspect
+  paperTexture.repeat.y = 4.0 / aspect
 
   // Play video textures when in view
   useEffect(() => {
@@ -53,31 +54,62 @@ export default function VideoPoster({
     }
   }, [inView, videoTexture])
 
+  useFrame((s) => {
+    if (!lightRef.current) {
+      return
+    }
+
+    const { position } = lightRef.current
+
+    position.x = lerp(position.x, s.mouse.x * width, 0.1)
+    position.y = lerp(
+      position.y,
+      mousePresent ? s.mouse.y * height : height * 0.5,
+      0.1
+    )
+    position.z = 400
+  })
+  const { opacity } = useSpring({
+    config: {
+      precision: 0.0001,
+    },
+    from: { opacity: 0 },
+    opacity: 1,
+  })
+
   return (
     <group {...restProps}>
       <ambientLight color={ambientLightColor} intensity={0.25} />
       <directionalLight
+        ref={lightRef}
         color={ambientLightColor}
         position-z={600}
         intensity={0.82}
-      />
+      >
+        {/* Light debug box */}
+        {/* <mesh>
+          <boxGeometry args={[10, 10, 10]} />
+        </mesh> */}
+      </directionalLight>
 
-      <mesh ref={ref} scale={[width, height, 100]}>
-        <planeGeometry args={[1, 1, width * 0.1, height * 0.1]} />
-        <VideoPosterMaterial
-          map={videoTexture}
-          width={width}
-          height={height}
-          // emissive="#f9f"
-          // emissiveIntensity={1}
-          roughnessMap={paperTexture}
-          roughness={1.1}
-          bumpMap={paperTexture}
-          bumpScale={0.25}
-          // side={DoubleSide}
-          // wireframe
-        />
-      </mesh>
+      <a.group scale={opacity.to((o) => lerp(0.9, 1.0, o))}>
+        <mesh scale={[width, width, 100]}>
+          <planeGeometry args={[1, 1 / aspect, width * 0.1, height * 0.2]} />
+
+          {/* @ts-ignore some mismatch with styled components and a-tag :| */}
+          <AVideoPosterMaterial
+            map={videoTexture}
+            width={width}
+            height={height}
+            roughnessMap={paperTexture}
+            roughness={1.1}
+            bumpMap={paperTexture}
+            bumpScale={0.25}
+            transparent
+            opacity={opacity}
+          />
+        </mesh>
+      </a.group>
     </group>
   )
 }

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import {
   type MeshPhysicalMaterialProps,
   useFrame,
@@ -6,7 +6,9 @@ import {
 } from '@react-three/fiber'
 import lerp from 'lerp'
 import clamp from 'ramda/src/clamp'
+import useMediaQuery from 'react-use-media-query-ts'
 import { Vector2 } from 'three'
+import { MEDIA } from '@/styles/media'
 import { useThreeContext } from '@/three/context'
 import getShaderInjectors from '@/three/utils/injectShader'
 // @ts-ignore
@@ -24,22 +26,17 @@ export default function VideoPosterMaterial({
   height,
   ...restProps
 }: TVideoPosterMaterial) {
-  const aspect = width / height
   const { mousePresent } = useThreeContext()
   const { size } = useThree()
+  const phone = !useMediaQuery(MEDIA.tablet.replace('@media ', ''))
 
   //
   // Uniforms
   const uniforms = useRef({
     uTime: { value: 0 },
-    uAspect: { value: aspect },
     uMouse: { value: new Vector2(0) },
     uMouseHover: { value: 0 },
   })
-
-  useEffect(() => {
-    uniforms.current.uAspect.value = aspect
-  }, [aspect])
 
   const xRatio = size.width / width
   const yRatio = size.height / height
@@ -47,9 +44,19 @@ export default function VideoPosterMaterial({
   useFrame((s) => {
     uniforms.current.uTime.value = s.clock.getElapsedTime()
 
+    const moveSpeed = phone ? 0.05 : 0.4
+
     const { uMouse, uMouseHover } = uniforms.current
-    uMouse.value.x = lerp(uMouse.value.x, clamp(-1, 1, s.mouse.x * xRatio), 0.4)
-    uMouse.value.y = lerp(uMouse.value.y, clamp(-1, 1, s.mouse.y * yRatio), 0.4)
+    uMouse.value.x = lerp(
+      uMouse.value.x,
+      clamp(-1, 1, s.mouse.x * xRatio),
+      moveSpeed
+    )
+    uMouse.value.y = lerp(
+      uMouse.value.y,
+      clamp(-1, 1, s.mouse.y * yRatio),
+      moveSpeed
+    )
 
     uMouseHover.value = lerp(
       uMouseHover.value,
@@ -58,7 +65,7 @@ export default function VideoPosterMaterial({
         Math.abs(s.mouse.y * yRatio) < 1
         ? 1
         : 0,
-      0.4
+      0.05
     )
   })
 

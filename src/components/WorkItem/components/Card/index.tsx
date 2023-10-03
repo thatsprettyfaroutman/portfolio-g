@@ -1,14 +1,9 @@
-import dynamic from 'next/dynamic'
 import useMeasure from 'react-use-measure'
 import styled from 'styled-components'
 import { MiniHeading } from '@/components/Text'
-import FONT from '@/styles/fonts'
 import { MEDIA } from '@/styles/media'
+import VideoPoster from '@/three/components/VideoPoster/lazy'
 import Three from '@/three/lazy'
-
-const VideoPoster = dynamic(() => import('@/three/components/VideoPoster'), {
-  ssr: false,
-})
 
 const CARD_PIXEL_RATIO = 2
 
@@ -21,7 +16,6 @@ type TCardProps = {
 const Wrapper = styled.div`
   display: grid;
   grid-gap: calc(var(--space) / 3);
-  font-family: ${FONT.Fasthand};
 
   > ${MiniHeading} {
     display: none;

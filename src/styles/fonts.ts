@@ -1,10 +1,5 @@
-import { Fasthand, Karla, Montserrat } from 'next/font/google'
+import { Karla, Montserrat } from 'next/font/google'
 
-const fontFasthand = Fasthand({
-  subsets: ['latin'],
-  weight: ['400'],
-  preload: true,
-})
 const fontKarla = Karla({
   subsets: ['latin'],
   weight: ['300', '400', '700'],
@@ -18,7 +13,6 @@ const fontMontserrat = Montserrat({
 })
 
 const FONT = {
-  Fasthand: fontFasthand.style.fontFamily,
   Karla: fontKarla.style.fontFamily,
   Montserrat: fontMontserrat.style.fontFamily,
 }
