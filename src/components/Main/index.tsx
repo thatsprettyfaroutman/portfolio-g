@@ -3,7 +3,6 @@
 import { useEffect, type PropsWithChildren } from 'react'
 import useMediaQuery from 'react-use-media-query-ts'
 import styled from 'styled-components'
-import useWindowSize from '@/hooks/useWindowSize'
 import { MEDIA } from '@/styles/media'
 
 const Wrapper = styled.main`
@@ -19,14 +18,11 @@ const Wrapper = styled.main`
 `
 
 export default function Main(props: PropsWithChildren) {
-  const tablet = useMediaQuery(MEDIA.tablet.replace('@media ', ''))
-  const { width, height } = useWindowSize()
-  const aspectRatio = width / height
-  const landscape = aspectRatio > 1
-  const landscapePhone = !tablet && landscape
+  const phone = !useMediaQuery(MEDIA.tabletLandscape.replace('@media ', ''))
+  const landscape = useMediaQuery('(orientation: landscape)')
 
   // Zoom out a bit on landscape phone to fit content more nicely without having to change every single component style
-  const scale = landscapePhone ? 0.5 : 1
+  const scale = phone && landscape ? 0.5 : 1
 
   // Update viewport meta tag based on `scale`
   useEffect(() => {
