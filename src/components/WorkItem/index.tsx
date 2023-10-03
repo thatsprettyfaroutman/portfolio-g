@@ -1,7 +1,6 @@
 'use client'
 
 import { type PropsWithChildren } from 'react'
-import isEmpty from 'ramda/src/isEmpty'
 import styled from 'styled-components'
 import { type TWorkItem } from '@/contentful/types'
 import { MEDIA } from '@/styles/media'
