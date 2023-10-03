@@ -1,6 +1,26 @@
 'use client'
 
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
+
+const animationFadeOut = keyframes`
+  0% {
+    opacity: 1;
+    transform: translate3d(-50%, -50%, 0) scale3d(0.8, 0.8, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0) scale3d(0.7, 0.7, 1);
+  }
+`
+
+const animationSpin = keyframes`
+  0% {
+    transform: rotate3d(0, 0, 1, -45deg);
+  }
+  100% {
+    transform: rotate3d(0, 0, 1, 315deg);
+  }
+`
 
 export const Wrapper = styled.div`
   position: relative;
@@ -19,12 +39,20 @@ export const Loading = styled.div<{ $timeOffset: number; $playing?: boolean }>`
   aspect-ratio: 2/3;
   background-color: var(--color-hero-bg);
   transform-origin: 50% 50%;
-  transform: translate(-50%, -50%) scale(0.95);
-  color: var(--color-hero-bg-up-200);
-
+  transform: translate3d(-50%, -50%, 0);
   display: flex;
   justify-content: center;
   align-items: center;
+
+  ${(p) =>
+    p.$playing === false &&
+    css`
+      animation-name: ${animationFadeOut};
+      animation-duration: 320ms;
+      animation-iteration-count: 1;
+      animation-timing-function: ease-out;
+      animation-fill-mode: both;
+    `};
 
   ::after {
     content: ' ';
@@ -34,18 +62,10 @@ export const Loading = styled.div<{ $timeOffset: number; $playing?: boolean }>`
     border-radius: 50%;
     border-right-color: transparent;
     border-bottom-color: transparent;
-
-    animation-name: ${keyframes`
-      0% {
-        transform: rotate3d(0, 0, 1, -45deg);
-      }
-      100% {
-        transform: rotate3d(0, 0, 1, 315deg);
-      }
-    `};
+    animation-name: ${animationSpin};
     animation-duration: 1s;
     animation-iteration-count: ${(p) =>
-      p.$playing === false ? 5 : 'infinite'};
+      p.$playing === false ? 2 : 'infinite'};
     animation-timing-function: ease-in-out;
     animation-delay: ${(p) => -(p.$timeOffset % 1000)}ms;
   }
