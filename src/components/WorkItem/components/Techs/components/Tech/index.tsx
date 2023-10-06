@@ -23,9 +23,9 @@ const Wrapper = styled.div`
     border-radius: inherit;
 
     background: radial-gradient(
-      500px circle at var(--x) var(--y),
-      var(--color-hero-bg-up-50),
-      var(--color-hero-bg-up-10) 50%
+      700px circle at var(--x) var(--y),
+      var(--color-hero-bg-up-150),
+      var(--color-hero-bg-up-10) 60%
     );
 
     opacity: var(--bg-hover);
@@ -42,10 +42,21 @@ const Content = styled.div`
   box-sizing: border-box;
   grid-gap: 0;
   padding-right: calc(var(--space) / 4);
-  background-color: var(--color-hero-bg-alpha-70);
-  border-radius: 3px;
+
+  ::before {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: var(--color-hero-bg-up-10);
+    opacity: 0.7;
+    border-radius: 3px;
+  }
 
   > p {
+    position: relative;
     display: block;
     width: 100%;
     padding: calc(var(--fluidSpace) / 4) 0;
@@ -55,6 +66,7 @@ const Content = styled.div`
 `
 
 const Icon = styled.div`
+  position: relative;
   align-self: stretch;
   display: flex;
   justify-content: center;
