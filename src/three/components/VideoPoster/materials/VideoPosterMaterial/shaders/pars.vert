@@ -12,6 +12,8 @@ uniform float uMouseHover;
 
 float noisify2(vec3 position) {
   float t = uTime * TIME_SCALE;
+  // float d = position.x * 0.25; 
+  // d += position.y * 0.125;
   float d = length(position.xy) * 0.25;
   float x = (position.x) * d * 20.0;
   float y = (position.y) * d * 20.0;
@@ -24,7 +26,9 @@ vec3 distort(vec3 position) {
   // Circular effect
   float alpha = (1.0 - smoothstep(0.0, 1.0, distance(position.xy, uMouse * 0.5))) * uMouseHover;
 
-  float theta = noisify2(position - vec3(uMouse.xy * 0.05, 0.0));
+  float theta = 1.0;
+
+  theta *= noisify2(position - vec3(uMouse.xy * 0.05, 0.0));
   theta *= alpha;
 
   float nudgeAmount = 0.08 * theta;
@@ -34,6 +38,8 @@ vec3 distort(vec3 position) {
 
   float scale = 2.0 / 3.0;
 
+  // float x = position.x;
+  // float y = position.y;
   float x = position.x + nudgeAmount * s;
   float y = (position.y / scale + nudgeAmount * c) * scale;
   float z = (position.z / scale + nudgeAmount * c * s * -1.0) * scale;

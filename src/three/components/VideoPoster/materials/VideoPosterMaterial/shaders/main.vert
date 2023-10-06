@@ -1,3 +1,12 @@
-vec3 pos = transformed;
+  
+
+#ifndef FLAT_SHADED 
+  vec3 pos =  transformed;
+#endif
+
 transformed = distort(transformed);
-vNormal = distortNormal(transformedNormal, pos, transformed);
+
+#ifndef FLAT_SHADED 
+  vNormal = distortNormal(transformedNormal, pos, transformed);
+#endif
+

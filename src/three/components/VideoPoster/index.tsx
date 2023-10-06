@@ -9,6 +9,7 @@ import {
   NearestFilter,
   RepeatWrapping,
 } from 'three'
+import { useControls } from '@/hooks/useControls'
 import { useColor } from '@/styles/theme'
 import { useThreeContext } from '@/three/context'
 import VideoPosterMaterial from './materials/VideoPosterMaterial'
@@ -36,7 +37,6 @@ export default function VideoPoster({
 }: TVideoPosterProps) {
   const aspect = width / height
   const { inView, mousePresent } = useThreeContext()
-
   const ref = useRef<Group>(null)
   const lightRef = useRef<DirectionalLight>(null)
   const ambientLightColor = useColor('ambientLight')
@@ -44,12 +44,11 @@ export default function VideoPoster({
   const videoTexture = useVideoTexture(src, { start: false })
   videoTexture.minFilter = NearestFilter
   videoTexture.magFilter = NearestFilter
-
   const paperTexture = useTexture(paperNormal.src)
   paperTexture.wrapS = RepeatWrapping
   paperTexture.wrapT = RepeatWrapping
-  paperTexture.repeat.x = 4.0
-  paperTexture.repeat.y = 4.0 / aspect
+  paperTexture.repeat.x = 5.0
+  paperTexture.repeat.y = 5.0 / aspect
 
   // Play video textures when in view
   useEffect(() => {
@@ -65,31 +64,27 @@ export default function VideoPoster({
     if (!lightRef.current) {
       return
     }
-
     const { position } = lightRef.current
-
     position.x = lerp(position.x, s.mouse.x * width, 0.1)
     position.y = lerp(
       position.y,
-      mousePresent ? s.mouse.y * height : height * 0.5,
+      mousePresent ? s.mouse.y * height * 0.5 : height * 0.5,
       0.1
     )
     position.z = 400
   })
 
+  // Uncomment to enable poster rotation on mouse hover
   // Handle poster rotation
-  useFrame((s) => {
-    if (!ref.current) {
-      return
-    }
-
-    const { rotation } = ref.current
-
-    const speed = mousePresent ? 0.1 : 0.05
-
-    rotation.x = lerp(rotation.x, mousePresent ? -s.mouse.y * 0.1 : 0, speed)
-    rotation.y = lerp(rotation.y, mousePresent ? s.mouse.x * 0.1 : 0, speed)
-  })
+  // useFrame((s) => {
+  //   if (!ref.current) {
+  //     return
+  //   }
+  //   const { rotation } = ref.current
+  //   const speed = mousePresent ? 0.1 : 0.05
+  //   rotation.x = lerp(rotation.x, mousePresent ? -s.mouse.y * 0.1 : 0, speed)
+  //   rotation.y = lerp(rotation.y, mousePresent ? s.mouse.x * 0.1 : 0, speed)
+  // })
 
   const { opacity } = useSpring({
     config: {
@@ -98,6 +93,28 @@ export default function VideoPoster({
     from: { opacity: 0 },
     opacity: 1,
   })
+
+  const levaProps = useControls({
+    roughness: {
+      value: 1.0,
+      min: 0,
+      max: 2,
+    },
+    metalness: {
+      value: 0.0,
+      min: 0,
+      max: 1,
+    },
+    bumpScale: {
+      value: 0.25,
+      min: 0,
+      max: 1,
+    },
+    flatShading: false,
+  } as const)
+
+  const widthSegments = (levaProps.flatShading ? 0.01 : 0.1) * width
+  const heightSegments = (levaProps.flatShading ? 0.01 : 0.2) * height
 
   return (
     <group {...restProps}>
@@ -115,20 +132,22 @@ export default function VideoPoster({
       </directionalLight>
 
       <a.group ref={ref} scale={opacity.to((o) => lerp(0.9, 1.0, o))}>
-        <mesh scale={[width, width, 100]}>
-          <planeGeometry args={[1, 1 / aspect, width * 0.1, height * 0.2]} />
+        <mesh scale={[width, width, 1000]}>
+          <planeGeometry
+            args={[1, 1 / aspect, widthSegments, heightSegments]}
+          />
 
           {/* @ts-ignore some mismatch with styled components and a-tag :| */}
           <AVideoPosterMaterial
+            key={levaProps.flatShading ? 'flat' : 'smooth'}
             map={videoTexture}
             width={width}
             height={height}
             roughnessMap={paperTexture}
-            roughness={1.1}
             bumpMap={paperTexture}
-            bumpScale={0.25}
             transparent
             opacity={opacity}
+            {...levaProps}
           />
         </mesh>
       </a.group>
