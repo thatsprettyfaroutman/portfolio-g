@@ -3,11 +3,17 @@
 import { useEffect, useState } from 'react'
 import { a, useSpringValue, config } from 'react-spring'
 import styled, { keyframes } from 'styled-components'
+import { MEDIA } from '@/styles/media'
 
 type TArrowProps = { delay?: number }
 
 const Wrapper = styled.div`
   transform: translateX(-50%);
+  display: none;
+
+  ${MEDIA.tabletLandscape} {
+    display: block;
+  }
 
   > svg {
     display: block;
